@@ -3,7 +3,59 @@ import 'package:get/get.dart';
 import '../config/services/auth_service.dart';
 import '../config/size_config.dart';
 import '../config/theme/app_colors.dart';
+import '../config/theme/button_styles.dart';
 import 'app_text.dart';
+
+MyButton btn = MyButton(
+  title: '',
+  onPressed: () {},
+  buttonStyleClass: ButtonStyleClass(width: Get.width, height: Get.height),
+);
+
+class MyButton extends StatelessWidget {
+  MyButton(
+      {super.key,
+      this.buttonType = ButtonType.Primary,
+      required this.title,
+      required this.onPressed,
+      this.buttonStyleClass});
+
+  ButtonType buttonType;
+  String title;
+  Function() onPressed;
+  ButtonStyleClass? buttonStyleClass;
+
+  @override
+  Widget build(BuildContext context) {
+    return getButton(buttonType, title, onPressed);
+  }
+
+  Widget getButton(ButtonType buttonType, String title, Function() onPressed) {
+    switch (buttonType) {
+      case ButtonType.Primary:
+        return TextButton(
+          style: primaryBtnStyle(
+              buttonStyleClass: buttonStyleClass ?? ButtonStyleClass()),
+          onPressed: onPressed,
+          child: Text(title),
+        );
+      case ButtonType.Secondary:
+        return ElevatedButton(
+          style: secondaryBtnStyle(
+              buttonStyleClass: buttonStyleClass ?? ButtonStyleClass()),
+          onPressed: onPressed,
+          child: Text(title),
+        );
+      case ButtonType.Outline:
+        return OutlinedButton(
+          style: outlineBtnStyle(
+              buttonStyleClass: buttonStyleClass ?? ButtonStyleClass()),
+          onPressed: onPressed,
+          child: Text(title),
+        );
+    }
+  }
+}
 
 //ignore: must_be_immutable
 class AppButton extends StatelessWidget {
@@ -206,17 +258,18 @@ class AppIconButton extends StatelessWidget {
                   : Colors.transparent),
           gradient: gradient,
           boxShadow: isShadow
-              ? (boxShadow ?? [
-            BoxShadow(
-              color: ((Get.find<AuthService>().isDarkTheme() ?? false)
-                  ? AppColors.background
-                  : AppDarkColors.background)
-                  .withOpacity(0.05),
-              spreadRadius: shadow ?? 3,
-              blurRadius: shadow1 ?? 5,
-              offset: const Offset(0, 3), // changes position of shadow
-            ),
-          ])
+              ? (boxShadow ??
+                  [
+                    BoxShadow(
+                      color: ((Get.find<AuthService>().isDarkTheme() ?? false)
+                              ? AppColors.background
+                              : AppDarkColors.background)
+                          .withOpacity(0.05),
+                      spreadRadius: shadow ?? 3,
+                      blurRadius: shadow1 ?? 5,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ])
               : [],
         ),
         alignment: Alignment.center,
@@ -243,4 +296,3 @@ class AppIconButton extends StatelessWidget {
     );
   }
 }
-
