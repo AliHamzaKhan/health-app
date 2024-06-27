@@ -1,0 +1,17 @@
+
+
+
+const String TERMS_CONDITION = '''
+1. Exclusions: 
+1.1 Crescent Tracking shall use its best endeavors to ensure continuous provision of the Services of the client but shall not be liable and/or responsible in any manner for any cessation that many occur in the provision of the services of the client.
+1.2 save for willful misconduct and gross negligence on the part of Crescent Tracking shall not be held liable and/or be held liable and/or responsible for any loss, damage detriment and/or harm that may be accessioned by the Client due to the cessation of service, and/or pursuant, connected, related and/or ancillary to have enter into the Agreement.
+1.3 The services that are being provided to the client are dependent upon the cellular mobile telecommunication services that are to be provided to Crescent Tracking. Crescent Tracking shall not be held liable and/or responsible for any loss, damage, detriment and/or harm that may be occasioned by the client due to the cassation of the cellular mobile telecommunication services to Crescent Tracking.
+1.4 Crescent Tracking is licensed by the government for the provision of the services, Crescent Tracking shall not be held liable and/or responsible for any loss, damage, determent and/or harm that may be occasioned by the client due to temporary or permanent revocation of the license, for the provision of the services of the government.
+1.5 Crescent Tracking shall not be responsible for the performance of any acts, other than those stipulated in this agreement. 
+1.6 Crescent Tracking shall not be liable for the equipment not performed as required event after the requisite instructions have been issued by Crescent Tracking.
+1.7 Crescent Tracking shall not be liable for any action, claim loss damage and/or detriment that is occasioned by the client as a result of immobilization of the motor vehicle and/or related connect, pursuant and/or ancillary there to.
+1.8 Crescent Tracking shall not be responsible for the recovery of any motor vehicle that is misappropriated despite being protected by the service contemplated here in, and no loss, action, claim and/or detriment shall be claimed against Crescent Tracking in this regard.
+1.9 Crescent Tracking shall not be held responsible for any voice use that is made of the cellular mobile telecommunications apparatus installed in motor vehicles, and/or any thing connected there to. Crescent Tracking is informed by the provider of the cellular mobile communications installed the service forth with without any notice to the client and any charges to the voice of Crescent Tracking, then Crescent Tracking shall have the right to terminate the services forth with without any notice. The charges shall be payable by the client to Crescent Tracking with in three days of the same having been demanded by Crescent Tracking 
+1.10 The obligations of Crescent Tracking towards the costumer under this agreement shall be held in abeyance during the period that the equipment is not in working order.
+1.11 Crescent Tracking shall not be liable/responsible for the provision of services or any thing related, connected, pursuant, and/or ancillary their to if Crescent Tracking is not informed by the client of having divested it self of the ownership/possession/control of the motor vehicle and Crescent Tracking would stand this charge of its obligations under this agreement and/or any thing related, connected, pursuant and/or ancillary therein.
+''';
