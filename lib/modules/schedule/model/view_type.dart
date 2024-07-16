@@ -1,0 +1,7 @@
+
+
+
+enum ViewType{
+  Add,
+  Edit
+}

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../config/size_config.dart';
 import '../config/theme/app_colors.dart';
@@ -15,7 +16,9 @@ class AppText extends StatelessWidget {
       this.decorationStyle = TextDecorationStyle.solid,
       this.decorationThickness,
       this.letterSpacing,
-      this.color});
+      this.color,
+      this.textAlign = TextAlign.left
+      });
 
   TextTypeEnum textType;
   String title;
@@ -26,12 +29,13 @@ class AppText extends StatelessWidget {
   TextDecorationStyle decorationStyle;
   double? letterSpacing;
   Color? color;
-
+  TextAlign textAlign;
   @override
   Widget build(BuildContext context) {
     return Text(
       title,
       style: getStyle(context),
+      textAlign: textAlign,
     );
   }
 
@@ -68,17 +72,103 @@ class AppText extends StatelessWidget {
   getStyle(context) {
     return TextStyle(
         fontWeight: getWeight(),
-        color: color ??
-            (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.text),
+        color: color ?? (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.text),
         fontSize: getSize(),
-        overflow: TextOverflow.ellipsis,
-        decoration: TextDecoration.none,
-        decorationColor: color ??
-            (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.text),
+        overflow: overflow,
+        decoration:decoration,
+        decorationColor: color ?? (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.text),
         decorationThickness: decorationThickness,
-        decorationStyle: TextDecorationStyle.solid,
-        letterSpacing: letterSpacing);
+        decorationStyle:  decorationStyle,
+        letterSpacing: letterSpacing,
+    );
   }
+}
+Widget TitleSubTitleText({
+  required String head,
+  required String title,
+  maxLines,
+  CrossAxisAlignment? crossAxisAlignment,
+  int? headFlex,
+  Color? titleColor,
+  Color? headColor,
+  MainAxisAlignment? mainAxisAlignment,
+  TextAlign? align,
+}) {
+  return Row(
+    mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
+    crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
+    children: [
+      AppText(
+        title: '$head : ',
+        fontSize: 14,
+        color: headColor,
+        textAlign: TextAlign.left,
+        textType: TextTypeEnum.Bold,
+      ),
+      setWidth(10),
+      Expanded(
+          child: AppText(
+            title: title,
+            fontSize: 14,
+            color: titleColor,
+            textAlign: align ?? TextAlign.start,
+            overflow: TextOverflow.clip,
+            textType: TextTypeEnum.Regular,
+          )),
+    ],
+  );
+}
+
+Widget TitleSubTitleColumnText(
+    {required String head,
+      required String title,
+      maxLines,
+      CrossAxisAlignment? crossAxisAlignment,
+      MainAxisAlignment? mainAxisAlignment,
+      int? headFlex,
+      titleColor,
+      double? titleSize,
+      double? headeSize,
+      FontWeight? weight,
+      double midPadding = 10,
+      TextAlign? titleTextAlign}) {
+  return Column(
+    mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
+    crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
+    children: [
+      AppText(
+        title: head,
+        fontSize: headeSize ?? 14,
+        textAlign: TextAlign.left,
+        textType: TextTypeEnum.Bold,
+      ),
+      setHeight(midPadding),
+      AppText(
+        title: title,
+        fontSize: titleSize ?? 14,
+        color: titleColor,
+        textAlign:  titleTextAlign ?? TextAlign.start,
+        overflow: TextOverflow.clip,
+        textType: TextTypeEnum.Medium,
+      ),
+      // AppTextExtraLight(
+      //   text: head,
+      //   size: headeSize ?? 14,
+      //   // color: AppColors.text2,
+      //   align: TextAlign.left,
+      // ),
+      // setHeight(midPadding),
+      // AppTextRegular(
+      //   text: title,
+      //   size: titleSize ?? 14,
+      //   align: titleTextAlign ?? TextAlign.start,
+      //   color: titleColor,
+      //   maxLines: maxLines,
+      //   overFlow: TextOverflow.clip,
+      //   weight: weight,
+      // )
+    ],
+  );
 }
 
 //ignore: must_be_immutable
@@ -412,74 +502,4 @@ appTextStyleSemiBold(context,
       letterSpacing: letterSpacing);
 }
 
-Widget TitleSubTitleText({
-  required String head,
-  required String title,
-  maxLines,
-  CrossAxisAlignment? crossAxisAlignment,
-  int? headFlex,
-  Color? titleColor,
-  Color? headColor,
-  MainAxisAlignment? mainAxisAlignment,
-  TextAlign? align,
-}) {
-  return Row(
-    mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
-    crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
-    children: [
-      AppTextExtraLight(
-        text: head,
-        size: 14,
-        color: headColor,
-        align: TextAlign.left,
-      ),
-      setWidth(10),
-      Expanded(
-          child: AppTextMedium(
-        text: title,
-        size: 14,
-        align: align ?? TextAlign.end,
-        color: titleColor,
-        maxLines: maxLines,
-        overFlow: TextOverflow.clip,
-      ))
-    ],
-  );
-}
 
-Widget TitleSubTitleColumnText(
-    {required String head,
-    required String title,
-    maxLines,
-    CrossAxisAlignment? crossAxisAlignment,
-    MainAxisAlignment? mainAxisAlignment,
-    int? headFlex,
-    titleColor,
-    double? titleSize,
-    double? headeSize,
-    FontWeight? weight,
-    double midPadding = 10,
-    TextAlign? titleTextAlign}) {
-  return Column(
-    mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
-    crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
-    children: [
-      AppTextExtraLight(
-        text: head,
-        size: headeSize ?? 14,
-        // color: AppColors.text2,
-        align: TextAlign.left,
-      ),
-      setHeight(midPadding),
-      AppTextRegular(
-        text: title,
-        size: titleSize ?? 14,
-        align: titleTextAlign ?? TextAlign.start,
-        color: titleColor,
-        maxLines: maxLines,
-        overFlow: TextOverflow.clip,
-        weight: weight,
-      )
-    ],
-  );
-}

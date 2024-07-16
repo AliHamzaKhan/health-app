@@ -10,63 +10,62 @@ import '../config/theme/app_colors.dart';
 import '../widget/app_button.dart';
 import '../widget/app_text.dart';
 
-showDateRangePickerDialogue(context,
-    {required ValueChanged<DateRange?> onDateRangeChanged}) {
-  showDialog(
-      context: context,
-      // barrierColor: AppColors.borderColor,
-      builder: (_) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: Get.width,
-            maxHeight: Get.width * 0.9,
-          ),
-          child: AlertDialog(
-            content: DateRangePickerWidget(
-              height: Get.width,
-              doubleMonth: false,
-              maximumDateRangeLength: 10,
-              minimumDateRangeLength: 1,
-              initialDateRange: DateRange(
-                  DateTime.now().subtract(Duration(days: 90)), DateTime.now()),
-              // disabledDates: [DateTime(2023, 11, 20)],
-              // initialDisplayedDate: selectedDateRange?.start ?? DateTime.now(),
-              initialDisplayedDate: DateTime.now(),
-              onDateRangeChanged: onDateRangeChanged,
-              theme: CalendarTheme(
-                selectedColor: Theme.of(context).primaryColor,
-                dayNameTextStyle: appTextStyleBold(context, size: 10),
-                inRangeColor: Color(0xFFD9EDFA),
-                inRangeTextStyle: appTextStyleRegular(context,
-                    color: Theme.of(context).primaryColor, size: 13),
-                selectedTextStyle:
-                    appTextStyleRegular(context, color: Colors.white, size: 13),
-                todayTextStyle: TextStyle(fontWeight: FontWeight.bold),
-                defaultTextStyle: TextStyle(color: Colors.black, fontSize: 12),
-                radius: 10,
-                tileSize: setWidthValue(90),
-                disabledTextStyle: TextStyle(color: Colors.grey),
-              ),
-            ),
-            actions: [
-              AppButton(
-                  isOutline: true,
-                  title: 'Cancel',
-                  btnColor: Colors.transparent,
-                  textColor: Theme.of(context).primaryColor,
-                  onTap: () {
-                    Get.back();
-                  }),
-              AppButton(
-                  title: 'OK',
-                  onTap: () {
-                    Get.back();
-                  })
-            ],
-          ),
-        );
-      });
-}
+// showDateRangePickerDialogue(context, {required ValueChanged<DateRange?> onDateRangeChanged}) {
+//   showDialog(
+//       context: context,
+//       // barrierColor: AppColors.borderColor,
+//       builder: (_) {
+//         return ConstrainedBox(
+//           constraints: BoxConstraints(
+//             maxWidth: Get.width,
+//             maxHeight: Get.width * 0.9,
+//           ),
+//           child: AlertDialog(
+//             content: DateRangePickerWidget(
+//               height: Get.width,
+//               doubleMonth: false,
+//               maximumDateRangeLength: 10,
+//               minimumDateRangeLength: 1,
+//               initialDateRange: DateRange(
+//                   DateTime.now().subtract(Duration(days: 90)), DateTime.now()),
+//               // disabledDates: [DateTime(2023, 11, 20)],
+//               // initialDisplayedDate: selectedDateRange?.start ?? DateTime.now(),
+//               initialDisplayedDate: DateTime.now(),
+//               onDateRangeChanged: onDateRangeChanged,
+//               theme: CalendarTheme(
+//                 selectedColor: Theme.of(context).primaryColor,
+//                 dayNameTextStyle: appTextStyleBold(context, size: 10),
+//                 inRangeColor: Color(0xFFD9EDFA),
+//                 inRangeTextStyle: appTextStyleRegular(context,
+//                     color: Theme.of(context).primaryColor, size: 13),
+//                 selectedTextStyle:
+//                     appTextStyleRegular(context, color: Colors.white, size: 13),
+//                 todayTextStyle: TextStyle(fontWeight: FontWeight.bold),
+//                 defaultTextStyle: TextStyle(color: Colors.black, fontSize: 12),
+//                 radius: 10,
+//                 tileSize: setWidthValue(90),
+//                 disabledTextStyle: TextStyle(color: Colors.grey),
+//               ),
+//             ),
+//             actions: [
+//               AppButton(
+//                   // isOutline: true,
+//                   title: 'Cancel',
+//                   btnColor: Colors.transparent,
+//                   textColor: Theme.of(context).primaryColor,
+//                   onTap: () {
+//                     Get.back();
+//                   }),
+//               AppButton(
+//                   title: 'OK',
+//                   onTap: () {
+//                     Get.back();
+//                   })
+//             ],
+//           ),
+//         );
+//       });
+// }
 
 appCalendarDialogue(
     {required context,
@@ -142,4 +141,38 @@ appCalendarDialogue(
     default:
       return ('', '');
   }
+}
+Future<DateTime?> pickDateTime(BuildContext context) async {
+  // Show the date picker first
+  final DateTime? date = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(2000),
+    lastDate: DateTime(2101),
+  );
+
+  if (date == null) {
+    return null; // User canceled the date picker
+  }
+
+  // Show the time picker after selecting the date
+  final TimeOfDay? time = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+  );
+
+  if (time == null) {
+    return null; // User canceled the time picker
+  }
+
+  // Combine the selected date and time into a DateTime object
+  final DateTime dateTime = DateTime(
+    date.year,
+    date.month,
+    date.day,
+    time.hour,
+    time.minute,
+  );
+
+  return dateTime;
 }

@@ -10,70 +10,70 @@ import 'api_service.dart';
 
 class AuthService extends GetxService {
   saveName(String name) {
-    dataStore.setString(AppStringConstant.kName, name);
+    dataStore.setString(AppKeyConstant.kName, name);
   }
 
   saveEmail(String email) {
-    dataStore.setString(AppStringConstant.kEmail, email);
+    dataStore.setString(AppKeyConstant.kEmail, email);
   }
 
   saveToken(String data) {
-    dataStore.setString(AppStringConstant.kToken, data);
+    dataStore.setString(AppKeyConstant.kToken, data);
   }
 
   saveImage(String url) {
-    dataStore.setString(AppStringConstant.kImage, url);
+    dataStore.setString(AppKeyConstant.kImage, url);
   }
 
   saveFirstTime(bool value) {
-    dataStore.setBool(AppStringConstant.firstTime, value);
+    dataStore.setBool(AppKeyConstant.firstTime, value);
   }
 
   getFirstTime() {
-    return dataStore.getBool(AppStringConstant.firstTime);
+    return dataStore.getBool(AppKeyConstant.firstTime);
   }
 
   // remember
   saveRememberMe(bool value) {
-    dataStore.setBool(AppStringConstant.kRemember, value);
+    dataStore.setBool(AppKeyConstant.kRemember, value);
   }
 
   bool getRememberMe() {
-    return dataStore.getBool(AppStringConstant.kRemember);
+    return dataStore.getBool(AppKeyConstant.kRemember);
   }
 
   // password
   savePassword(String value) {
-    dataStore.setString(AppStringConstant.kPassword, value);
+    dataStore.setString(AppKeyConstant.kPassword, value);
   }
 
   getPassword() {
-    return dataStore.getString(AppStringConstant.kPassword);
+    return dataStore.getString(AppKeyConstant.kPassword);
   }
 
   getImage() {
-    return dataStore.getString(AppStringConstant.kImage);
+    return dataStore.getString(AppKeyConstant.kImage);
   }
 
   getToken() {
-    return dataStore.getString(AppStringConstant.kToken);
+    return dataStore.getString(AppKeyConstant.kToken);
   }
 
   getName() {
-    return dataStore.getString(AppStringConstant.kName);
+    return dataStore.getString(AppKeyConstant.kName);
   }
 
   getEmail() {
-    return dataStore.getString(AppStringConstant.kEmail);
+    return dataStore.getString(AppKeyConstant.kEmail);
   }
 
 
   saveTheme(bool isDark) {
-    dataStore.setBool(AppStringConstant.theme, isDark);
+    dataStore.setBool(AppKeyConstant.theme, isDark);
   }
 
   bool? isDarkTheme() {
-    return dataStore.getBool(AppStringConstant.theme) ?? false;
+    return dataStore.getBool(AppKeyConstant.theme) ?? false;
   }
 
 
@@ -108,26 +108,18 @@ class AuthService extends GetxService {
 
   clearAll() {
     dataStore.remove(
-      AppStringConstant.kName,
+      AppKeyConstant.kName,
     );
     // dataStore.remove(
     //   AppStringConstant.kEmail,
     // );
     dataStore.remove(
-      AppStringConstant.kToken,
+      AppKeyConstant.kToken,
     );
     dataStore.remove(
-      AppStringConstant.kImage,
+      AppKeyConstant.kImage,
     );
-    // dataStore.remove(
-    //   AppStringConstant.kPassword,
-    // );
-    dataStore.remove(
-      AppStringConstant.dId,
-    );
-    // dataStore.remove(
-    //   AppStringConstant.,
-    // );
+
   }
 
   logout() async {

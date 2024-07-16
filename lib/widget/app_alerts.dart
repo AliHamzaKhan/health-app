@@ -42,14 +42,14 @@ class AppAlerts {
     List<Widget> getBtns(BuildContext context) {
       return [
         AppButton(
-            onTap: () {
+            onPressed: () {
               Get.back();
               if (callback != null) {
                 callback();
               }
             },
             title: okText ?? (alertTypes == AlertTypes.warning ? 'Yes' : 'OK'),
-            width: 80),
+        ),
         if (otherCallback != null &&
             otherActionText != null &&
             otherActionText.isNotEmpty) ...[
@@ -58,14 +58,12 @@ class AppAlerts {
             height: 10,
           ),
           AppButton(
-            onTap: () {
+            onPressed: () {
               Get.back();
               otherCallback();
             },
             title: otherActionText,
-            textColor: AppColors.background,
-            btnColor: AppColors.danger,
-            width: setWidthValue(100),
+
           ),
         ],
         if (cancelCallback != null) ...[
@@ -74,15 +72,13 @@ class AppAlerts {
             height: 10,
           ),
           AppButton(
-            onTap: () {
+            onPressed: () {
               Get.back();
               cancelCallback();
             },
             title: cancelText ??
                 (alertTypes == AlertTypes.warning ? 'No' : 'Cancel'),
-            textColor: AppColors.background,
-            btnColor: AppColors.danger,
-            width: setWidthValue(100),
+
           ),
         ],
       ];
@@ -278,27 +274,19 @@ showDialogueApp(context,
                             Expanded(
                               child: AppButton(
                                 title: noText ?? 'No',
-                                onTap: () {
+                                onPressed: () {
                                   Get.back();
                                 },
-                                isOutline: true,
-                                borderColor: cancelBtnColor ??
-                                    Theme.of(context).primaryColor,
-                                textColor: Theme.of(context).primaryColor,
                               ),
                             ),
                             setWidth(20),
                             Expanded(
                               child: AppButton(
                                 title: okText ?? 'Exit',
-                                onTap: () {
+                                onPressed: () {
                                   Get.back();
                                   onOkClick();
                                 },
-                                isOutline: false,
-                                btnColor: okBtnColor ??
-                                    Theme.of(context).primaryColor,
-                                textColor: okBtnTextColor,
                               ),
                             ),
                           ],
@@ -312,63 +300,63 @@ showDialogueApp(context,
       });
 }
 
-showDebugDialogue(context,
-    {String? noText,
-    okText,
-    Color? okBtnColor,
-    Color? cancelBtnColor,
-    Color? okBtnTextColor}) async {
-  await showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.zero,
-          backgroundColor: AppColors.background,
-          surfaceTintColor: AppColors.background,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(setHeightValue(10))),
-          content: Container(
-            width: Get.width * 0.8,
-            height: Get.width * 0.6,
-            alignment: Alignment.topCenter,
-            padding: EdgeInsets.symmetric(
-              horizontal: setWidthValue(20),
-              vertical: setWidthValue(10),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AppTextBold(
-                  text: 'we are sorry!',
-                  size: setHeightValue(25),
-                  color: Theme.of(context).primaryColor,
-                ),
-                setHeight(10),
-                AppTextSemiBold(
-                    text: 'We apologize for any inconvenience caused. Please note that we are currently in the development phase for this feature. Thank you for your understanding',
-                    size: setHeightValue(20),
-                    overFlow: TextOverflow.clip,
-                    align: TextAlign.center),
-                setHeight(20),
-              ],
-            ),
-          ),
-          actions: [
-            AppButton(
-              width: Get.width,
-              margin: EdgeInsets.symmetric(vertical: setWidthValue(10)),
-              title: 'Ok',
-              onTap: () {
-                Get.back();
-              },
-              isOutline: false,
-              btnColor: okBtnColor ?? Theme.of(context).primaryColor,
-              textColor: okBtnTextColor,
-            ),
-          ],
-        );
-      });
-}
+// showDebugDialogue(context,
+//     {String? noText,
+//     okText,
+//     Color? okBtnColor,
+//     Color? cancelBtnColor,
+//     Color? okBtnTextColor}) async {
+//   await showDialog(
+//       context: context,
+//       builder: (_) {
+//         return AlertDialog(
+//           contentPadding: EdgeInsets.zero,
+//           backgroundColor: AppColors.background,
+//           surfaceTintColor: AppColors.background,
+//           elevation: 0,
+//           shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(setHeightValue(10))),
+//           content: Container(
+//             width: Get.width * 0.8,
+//             height: Get.width * 0.6,
+//             alignment: Alignment.topCenter,
+//             padding: EdgeInsets.symmetric(
+//               horizontal: setWidthValue(20),
+//               vertical: setWidthValue(10),
+//             ),
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.spaceAround,
+//               crossAxisAlignment: CrossAxisAlignment.center,
+//               children: [
+//                 AppTextBold(
+//                   text: 'we are sorry!',
+//                   size: setHeightValue(25),
+//                   color: Theme.of(context).primaryColor,
+//                 ),
+//                 setHeight(10),
+//                 AppTextSemiBold(
+//                     text: 'We apologize for any inconvenience caused. Please note that we are currently in the development phase for this feature. Thank you for your understanding',
+//                     size: setHeightValue(20),
+//                     overFlow: TextOverflow.clip,
+//                     align: TextAlign.center),
+//                 setHeight(20),
+//               ],
+//             ),
+//           ),
+//           actions: [
+//             AppButton(
+//               width: Get.width,
+//               margin: EdgeInsets.symmetric(vertical: setWidthValue(10)),
+//               title: 'Ok',
+//               onTap: () {
+//                 Get.back();
+//               },
+//               isOutline: false,
+//               btnColor: okBtnColor ?? Theme.of(context).primaryColor,
+//               textColor: okBtnTextColor,
+//             ),
+//           ],
+//         );
+//       });
+// }
 

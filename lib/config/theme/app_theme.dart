@@ -12,7 +12,7 @@ final ThemeData lightThemeData = ThemeData(
     unselectedLabelColor: AppColors.text,
     labelColor: AppColors.primary,
     labelStyle: TextStyle(
-      fontFamily: getMedFontFamily,
+      fontFamily: getFontFamily,
       fontSize: 16,
       color: AppColors.text,
     ),
@@ -39,7 +39,7 @@ final ThemeData lightThemeData = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(
       color: AppColors.background,
-      fontFamily: getRegFontFamily,
+      fontFamily: getFontFamily,
     ),
   ),
   appBarTheme: AppBarTheme(
@@ -75,19 +75,19 @@ final ThemeData lightThemeData = ThemeData(
     backgroundColor: Colors.white,
   ),
   textTheme: TextTheme(
-    displayLarge:
-        TextStyle(fontFamily: getFontFamily, fontSize: 21, color: AppColors.text),
-    displayMedium:
-        TextStyle(fontFamily: getFontFamily, fontSize: 21, color: AppColors.text),
+    displayLarge: TextStyle(
+        fontFamily: getFontFamily, fontSize: 21, color: AppColors.text),
+    displayMedium: TextStyle(
+        fontFamily: getFontFamily, fontSize: 21, color: AppColors.text),
     displaySmall: TextStyle(fontFamily: getFontFamily, color: AppColors.text),
-    headlineMedium:
-        TextStyle(fontFamily: getFontFamily, fontSize: 18, color: AppColors.text),
-    headlineSmall:
-        TextStyle(fontFamily: getFontFamily, fontSize: 16, color: AppColors.text),
-    bodyLarge:
-        TextStyle(fontFamily: getFontFamily, fontSize: 16, color: AppColors.text),
-    bodyMedium:
-        TextStyle(fontFamily: getFontFamily, fontSize: 14, color: AppColors.text),
+    headlineMedium: TextStyle(
+        fontFamily: getFontFamily, fontSize: 18, color: AppColors.text),
+    headlineSmall: TextStyle(
+        fontFamily: getFontFamily, fontSize: 16, color: AppColors.text),
+    bodyLarge: TextStyle(
+        fontFamily: getFontFamily, fontSize: 16, color: AppColors.text),
+    bodyMedium: TextStyle(
+        fontFamily: getFontFamily, fontSize: 14, color: AppColors.text),
     titleSmall: TextStyle(
         fontFamily: getFontFamily, fontSize: 16, color: AppColors.text),
     titleMedium: TextStyle(
@@ -99,7 +99,7 @@ final ThemeData lightThemeData = ThemeData(
   brightness: Brightness.light,
   indicatorColor: AppColors.primary,
   primaryColor: AppColors.primary,
-  floatingActionButtonTheme:  FloatingActionButtonThemeData(
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: const Color.fromRGBO(0, 0, 0, 0.3),
     foregroundColor: AppColors.primary,
   ),
@@ -123,7 +123,7 @@ final ThemeData darkThemeData = ThemeData(
     unselectedLabelColor: AppDarkColors.background,
     labelColor: AppDarkColors.background,
     labelStyle: TextStyle(
-      fontFamily: getMedFontFamily,
+      fontFamily: getFontFamily,
       fontSize: 16,
       color: AppDarkColors.text,
     ),
@@ -150,7 +150,7 @@ final ThemeData darkThemeData = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: TextStyle(
       color: AppDarkColors.text,
-      fontFamily: getRegFontFamily,
+      fontFamily: getFontFamily,
     ),
   ),
   appBarTheme: AppBarTheme(
@@ -186,19 +186,19 @@ final ThemeData darkThemeData = ThemeData(
   ),
   dividerColor: AppDarkColors.accent.withOpacity(0.3),
   textTheme: TextTheme(
-    displayLarge:
-        TextStyle(fontFamily: getFontFamily, fontSize: 21, color: AppDarkColors.text),
-    displayMedium:
-        TextStyle(fontFamily: getFontFamily, fontSize: 21, color: AppDarkColors.text),
+    displayLarge: TextStyle(
+        fontFamily: getFontFamily, fontSize: 21, color: AppDarkColors.text),
+    displayMedium: TextStyle(
+        fontFamily: getFontFamily, fontSize: 21, color: AppDarkColors.text),
     displaySmall: TextStyle(fontFamily: getFontFamily, color: AppDarkColors.text),
-    headlineMedium:
-        TextStyle(fontFamily: getFontFamily, fontSize: 18, color: AppDarkColors.text),
-    headlineSmall:
-        TextStyle(fontFamily: getFontFamily, fontSize: 16, color: AppDarkColors.text),
-    bodyLarge:
-        TextStyle(fontFamily: getFontFamily, fontSize: 16, color: AppDarkColors.text),
-    bodyMedium:
-        TextStyle(fontFamily: getFontFamily, fontSize: 14, color: AppDarkColors.text),
+    headlineMedium: TextStyle(
+        fontFamily: getFontFamily, fontSize: 18, color: AppDarkColors.text),
+    headlineSmall: TextStyle(
+        fontFamily: getFontFamily, fontSize: 16, color: AppDarkColors.text),
+    bodyLarge: TextStyle(
+        fontFamily: getFontFamily, fontSize: 16, color: AppDarkColors.text),
+    bodyMedium: TextStyle(
+        fontFamily: getFontFamily, fontSize: 14, color: AppDarkColors.text),
     titleSmall: TextStyle(
         fontFamily: getFontFamily, fontSize: 16, color: AppDarkColors.text),
     titleMedium: TextStyle(
@@ -230,8 +230,4 @@ final ThemeData darkThemeData = ThemeData(
 //
 // String get getMedFontFamily => 'Lato';
 
-String get getFontFamily => 'Poppins';
-
-String get getRegFontFamily => 'Poppins';
-
-String get getMedFontFamily => 'Poppins';
+String get getFontFamily => 'Nunito';

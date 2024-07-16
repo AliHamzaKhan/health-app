@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../config/size_config.dart';
 import '../config/theme/app_colors.dart';
 import 'app_text.dart';
@@ -46,13 +45,15 @@ class AppLabeledCheckbox extends StatefulWidget {
   @override
   State<AppLabeledCheckbox> createState() => _AppLabeledCheckboxState();
 }
-
 class _AppLabeledCheckboxState extends State<AppLabeledCheckbox> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        widget.onChanged(!widget.value);
+        setState(() {
+          widget.value = !widget.value;
+          widget.onChanged(widget.value);
+        });
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -78,22 +79,22 @@ class _AppLabeledCheckboxState extends State<AppLabeledCheckbox> {
                     borderRadius: BorderRadius.circular(
                         setHeightValue(widget.iconRadius ?? 5))),
                 onChanged: (bool? newValue) {
-                  setState(() {
-                    widget.value = newValue!;
-                    widget.onChanged(newValue);
-                  });
+                  // setState(() {
+                  //   widget.value = newValue!;
+                  //   widget.onChanged(newValue);
+                  // });
                 },
               ),
             ),
             SizedBox(
               width: widget.centerPadding ?? 0,
             ),
-            AppTextRegular(
-              text: widget.label,
+            AppText(
+              title: widget.label,
               color: AppColors.text,
-              size: widget.labelSize ?? 14,
-              overFlow: widget.overflow,
-              align: widget.textAlign,
+              fontSize: widget.labelSize ?? 14,
+              overflow: widget.overflow ?? TextOverflow.ellipsis,
+              textAlign: widget.textAlign ?? TextAlign.left,
             )
           ],
         ),
@@ -129,13 +130,15 @@ class PbLabelRadioButton extends StatefulWidget {
   @override
   State<PbLabelRadioButton> createState() => _PbLabelRadioButtonState();
 }
-
 class _PbLabelRadioButtonState extends State<PbLabelRadioButton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        widget.onChanged(!widget.value);
+       setState(() {
+         widget.value = !widget.value;
+         widget.onChanged(widget.value);
+       });
       },
       child: Wrap(
         direction: Axis.horizontal,
@@ -151,160 +154,23 @@ class _PbLabelRadioButtonState extends State<PbLabelRadioButton> {
                 value: widget.value,
                 groupValue: true,
                 onChanged: (bool? newValue) {
-                  setState(() {
-                    widget.value = newValue!;
-                    widget.onChanged(newValue);
-                  });
+                  // setState(() {
+                  //   widget.value = newValue!;
+                  //   widget.onChanged(newValue);
+                  // });
                 }),
           ),
           setWidth(widget.centerPadding ?? 5),
-          AppTextRegular(
-              text: widget.label,
-              color: widget.checkColor ?? Theme.of(context).primaryColor,
-              size: widget.textSize ?? 18),
+          // AppTextRegular(
+          //     text: widget.label,
+          //     color: widget.checkColor ?? Theme.of(context).primaryColor,
+          //     size: widget.textSize ?? 18),
+          AppText(
+            title: widget.label,
+            color: AppColors.text,
+            fontSize: widget.textSize ?? 14,
+          )
         ],
-      ),
-    );
-  }
-}
-
-//ignore: must_be_immutable
-class CustomLabeledCheckbox extends StatefulWidget {
-  final String label;
-  bool value;
-  final Function onChanged;
-  Color? checkColor;
-  Color? activeColor;
-  WrapAlignment? alignment;
-  double? labelSize;
-  double? scale;
-  double? centerPadding;
-  double? padding;
-  double? checkSize;
-  double? horizontalPadding;
-  MainAxisAlignment? mainAxisAlignment;
-  Axis? direction;
-  TextOverflow? overflow;
-  TextAlign? textAlign;
-
-  CustomLabeledCheckbox(
-      {super.key,
-      required this.label,
-      required this.value,
-      required this.onChanged,
-      this.checkColor,
-      this.activeColor,
-      this.labelSize,
-      this.checkSize,
-      this.scale,
-      this.mainAxisAlignment,
-      this.centerPadding,
-      this.direction,
-      this.padding,
-      this.horizontalPadding,
-      this.overflow,
-      this.textAlign,
-      this.alignment});
-
-  @override
-  State<CustomLabeledCheckbox> createState() => _CustomLabeledCheckboxState();
-}
-
-class _CustomLabeledCheckboxState extends State<CustomLabeledCheckbox> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          vertical: widget.padding ?? 0,
-          horizontal: setWidthValue(widget.horizontalPadding ?? 0)),
-      child: InkWell(
-        onTap: () {
-          widget.onChanged(!widget.value);
-        },
-        child: Row(
-          mainAxisAlignment:
-              widget.mainAxisAlignment ?? MainAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: setHeightValue(widget.checkSize ?? 24),
-              width: setHeightValue(widget.checkSize ?? 24),
-              child: Checkbox(
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-                value: widget.value,
-                checkColor: widget.checkColor ?? AppColors.background,
-                activeColor: widget.activeColor ?? AppColors.primary,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onChanged: (bool? newValue) {
-                  setState(() {
-                    widget.value = newValue!;
-                    widget.onChanged(newValue);
-                  });
-                },
-              ),
-            ),
-            setWidth(widget.centerPadding ?? 0),
-            Flexible(
-              child: SingleChildScrollView(
-                child: AppTextBold(
-                  text: widget.label,
-                  size: widget.labelSize ?? 16,
-                  overFlow: widget.overflow,
-                  align: widget.textAlign,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-//ignore: must_be_immutable
-class PbChips extends StatefulWidget {
-  PbChips(
-      {super.key,
-      required this.label,
-      required this.value,
-      required this.onChange,
-      this.padding});
-
-  final String label;
-  bool value;
-  var onChange;
-  var padding;
-
-  @override
-  State<PbChips> createState() => _PbChipsState();
-}
-
-class _PbChipsState extends State<PbChips> {
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          widget.value = !widget.value;
-          widget.onChange(widget.value);
-        });
-      },
-      child: Chip(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(setHeightValue(20)),
-            side: BorderSide(
-                color: widget.value ? AppColors.primary : AppColors.accent)),
-        side: BorderSide(
-            color: widget.value ? AppColors.primary : AppColors.accent),
-        shadowColor: Colors.transparent,
-        elevation: 0,
-        padding: widget.padding ?? EdgeInsets.zero,
-        label: AppTextBold(
-          text: widget.label,
-          color: widget.value ? AppColors.background : AppColors.accent,
-          size: 12,
-        ),
-        backgroundColor:
-            widget.value ? AppColors.primary : AppColors.background,
       ),
     );
   }
@@ -336,13 +202,15 @@ class AppCheckbox extends StatefulWidget {
   @override
   State<AppCheckbox> createState() => _AppCheckboxState();
 }
-
 class _AppCheckboxState extends State<AppCheckbox> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        widget.onChanged(!widget.value);
+        setState(() {
+          widget.value = !widget.value;
+          widget.onChanged(widget.value);
+        });
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -360,10 +228,10 @@ class _AppCheckboxState extends State<AppCheckbox> {
                 borderRadius: BorderRadius.circular(
                     setHeightValue(widget.iconRadius ?? 5))),
             onChanged: (bool? newValue) {
-              setState(() {
-                widget.value = newValue!;
-                widget.onChanged(newValue);
-              });
+              // setState(() {
+              //   widget.value = newValue!;
+              //   widget.onChanged(newValue);
+              // });
             },
           ),
         ),

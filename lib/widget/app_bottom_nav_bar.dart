@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,15 +7,17 @@ import '../config/theme/app_colors.dart';
 import '../config/theme/app_gradient.dart';
 import '../constant/assets_contant.dart';
 
-
 class AppBottomNavBar extends StatelessWidget {
-  AppBottomNavBar({super.key,required this.onNavSelected, required this.selectedNavType});
+  AppBottomNavBar(
+      {super.key, required this.onNavSelected, required this.selectedNavType});
+
   Function(BottomNavType) onNavSelected;
   BottomNavType selectedNavType;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      // height: setHeightValue(50),
       padding: EdgeInsets.symmetric(
           horizontal: setWidthValue(60), vertical: setHeightValue(15)),
       margin: EdgeInsets.symmetric(vertical: setHeightValue(10)),
@@ -33,94 +34,53 @@ class AppBottomNavBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: bottomNavBarList
             .map((e) => GestureDetector(
-          onTap: () {
-            onNavSelected(e.type);
-          },
-          child: Container(
-            padding: EdgeInsets.all(setHeightValue(
-                e.type == selectedNavType
-                    ? 15
-                    : 10)),
-            decoration: BoxDecoration(
-              color: e.type == selectedNavType
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).scaffoldBackgroundColor,
-              borderRadius:
-              BorderRadius.circular(setWidthValue(120)),
-              gradient: e.type == selectedNavType
-                  ? createLinearGradient()
-                  : null,
-            ),
-            child: Image.asset(
-              e.icon,
-              width: setWidthValue(
-                  e.type == selectedNavType
-                      ? 40
-                      : 50),
-              height: setWidthValue(
-                  e.type == selectedNavType
-                      ? 40
-                      : 50),
-              fit: BoxFit.contain,
-              color: e.type == selectedNavType
-                  ? Theme.of(context).scaffoldBackgroundColor
-                  : (Get.find<AuthService>().isDarkTheme() ?? false) ? AppColors.accent : AppDarkColors.accent,
-            ),
-          ),
-        ))
+                  onTap: () {
+                    onNavSelected(e.type);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(
+                        setHeightValue(e.type == selectedNavType ? 15 : 10)),
+                    decoration: BoxDecoration(
+                      color: e.type == selectedNavType
+                          ? Theme.of(context).primaryColor
+                          : Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.circular(setWidthValue(120)),
+                      gradient: e.type == selectedNavType
+                          ? createLinearGradient()
+                          : null,
+                    ),
+                    child: Image.asset(
+                      e.icon,
+                      width: setWidthValue(e.type == selectedNavType ? 40 : 50),
+                      height: setWidthValue(e.type == selectedNavType ? 40 : 50),
+                      fit: BoxFit.contain,
+                      color: e.type == selectedNavType
+                          ? Theme.of(context).scaffoldBackgroundColor
+                          : (Get.find<AuthService>().isDarkTheme() ?? false)
+                              ? AppColors.accent
+                              : AppDarkColors.accent,
+                    ),
+                  ),
+                ))
             .toList(),
       ),
     );
   }
 }
-
-// if (controller.bottomNavType.value == BottomNavType.List) {
-//   Get.toNamed(AppRoutes.list)?.then((value) {
-//     var a = convertStringToLatLng(value);
-//     if (a != null) {
-//       controller.mapController.value.mapController.animateCamera(CameraUpdate.newLatLngZoom(a, 15));
-//     }
-//     appDebugPrint('value $value');
-//   });
-// } else if (controller.bottomNavType.value ==
-//     BottomNavType.Notification) {
-//   Get.toNamed(AppRoutes.notification);
-// } else if (controller.bottomNavType.value ==
-//     BottomNavType.Profile) {
-//   Get.toNamed(AppRoutes.setting);
-// }
 List<BottomNavModel> bottomNavBarList = [
   BottomNavModel(
       index: 1,
-      icon: AssetsConstant.notification,
-      type: BottomNavType.Alarm,
-      onClick: () {
-        // Get.offNamed(AppRoutes.notification);
-      }),
-  BottomNavModel(
-      index: 2,
       icon: AssetsConstant.home,
       type: BottomNavType.Home,
-      onClick: () {
-        // Get.offNamed(AppRoutes.home);
-      }),
+      onClick: () {}),
   BottomNavModel(
-      index: 3,
-      icon: AssetsConstant.list,
-      type: BottomNavType.List,
-      onClick: () {
-        // Get.offNamed(AppRoutes.list);
-      }),
-  BottomNavModel(
-      index: 4,
-      icon: AssetsConstant.profile,
-      type: BottomNavType.Profile,
-      onClick: () {
-        // Get.offNamed(AppRoutes.setting);
-      }),
+      index: 2,
+      icon: AssetsConstant.notification,
+      type: BottomNavType.Schedule,
+      onClick: () {}),
 ];
 
-enum BottomNavType { Alarm, Home, List, Profile , /*Report, History, Vehicle, Dashboard*/}
+enum BottomNavType { Home, Schedule }
 
 class BottomNavModel {
   int index;

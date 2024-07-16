@@ -1,12 +1,17 @@
-abstract class AppKeyConstant {
+abstract class AppStringConstant {
   static const String kToken = 'token';
-  static const String kCompanyName = 'Progatix';
-  static const String kAppName = 'Crescent Track Ultra';
-  static const String kApiKey = 'AIzaSyBGlXojd67aiB5_xUwRr9ywzukenTg9aus';
+  static const String kCompanyName = 'AhkStudio';
+  static const String kAppName = 'Health App';
+
+
+
+  static const String dr1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
+  static const String dr2 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
+  static const String dr3 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
+
 }
 
-abstract class AppStringConstant {
-
+abstract class AppKeyConstant {
   static const String kToken = 'token';
   static const String kName = 'name';
   static const String kEmail = 'email';
@@ -14,14 +19,10 @@ abstract class AppStringConstant {
   static const String kImage = 'image';
   static const String kPassword = 'password';
   static const String kRemember = 'remember';
-  static const String dId = 'dId';
-  static const String domain = 'domain';
-  static const String port = 'port';
-  static const String sound = 'sound';
   static const String firstTime = 'first';
   static const String theme = 'theme';
 
-  static const int kLoadListSize = 20;
+
 }
 
 abstract class AppSizeConstant{
@@ -29,6 +30,9 @@ abstract class AppSizeConstant{
   static const double kRadius = 20;
   static const double kAppRadius = 30;
   static const double kHeaderHeight = 110.0;
+  static const int kLoadListSize = 20;
+  static const int kPerPageLimit = 20;
+  static const double kCardRadius = 10;
 }
 
 

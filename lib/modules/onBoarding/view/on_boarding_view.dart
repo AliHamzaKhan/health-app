@@ -1,0 +1,156 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:health_app/config/routes/app_routes.dart';
+import 'package:health_app/config/size_config.dart';
+import 'package:health_app/config/theme/app_colors.dart';
+import 'package:health_app/constant/assets_contant.dart';
+import 'package:health_app/widget/app_button.dart';
+import 'package:health_app/widget/app_chips.dart';
+import 'package:health_app/widget/app_text.dart';
+import 'package:onboarding/onboarding.dart';
+
+import '../../../constant/app_key_contant.dart';
+import '../../../widget/app_scaffold.dart';
+import '../controller/on_boarding_controller.dart';
+
+class OnBoardingView extends StatefulWidget {
+  OnBoardingView({super.key});
+
+  @override
+  State<OnBoardingView> createState() => _OnBoardingViewState();
+}
+
+class _OnBoardingViewState extends State<OnBoardingView> {
+  var controller = Get.put(OnBoardingController());
+
+  List<Widget> onboardingPagesList = [];
+
+  final activePainter = Paint();
+
+  final inactivePainter = Paint();
+
+
+  @override
+  void initState() {
+    super.initState();
+    activePainter.color = AppColors.background;
+    activePainter.strokeWidth = 1;
+    activePainter.strokeCap = StrokeCap.round;
+    activePainter.style = PaintingStyle.fill;
+
+    inactivePainter.color = AppColors.background;
+    inactivePainter.strokeWidth = 1;
+    inactivePainter.strokeCap = StrokeCap.round;
+    inactivePainter.style = PaintingStyle.stroke;
+    onboardingPagesList.add(OnBoardingPage(image: AssetsConstant.dr1, description: AppStringConstant.dr1));
+    onboardingPagesList.add(OnBoardingPage(image: AssetsConstant.dr2, description: AppStringConstant.dr2));
+    onboardingPagesList.add(OnBoardingPage(image: AssetsConstant.dr3, description: AppStringConstant.dr3));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return AppScaffold(
+      body: Obx(() => Onboarding(
+            swipeableBody: onboardingPagesList,
+            startIndex: controller.currentIndex.value,
+            onPageChanges: (_, __, currentIndex, sd) {
+              controller.currentIndex(currentIndex);
+            },
+            buildFooter: (context, dragDistance, pagesLength, currentIndex,
+                setIndex, sd) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  border: Border.all(
+                    width: 0.0,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                child: ColoredBox(
+                  color: Theme.of(context).primaryColor,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        controller.currentIndex.value != pagesLength - 1
+                            ? _skipButton()
+                            : _signupButton(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 45.0),
+                          child: Indicator<CirclePainter>(
+                            painter: CirclePainter(
+                              currentPageIndex: currentIndex,
+                              pagesLength: pagesLength,
+                              netDragPercent: dragDistance,
+                              activePainter: activePainter,
+                              inactivePainter: inactivePainter,
+                              slideDirection: sd,
+                              radius: 5.0,
+                              space: 10.0,
+                              showAllActiveIndicators: false,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          )),
+    );
+  }
+
+  Widget _skipButton() {
+    return AppChips(
+        label: 'Skip',
+        value: false,
+        onTap: (value) {
+          controller.currentIndex.value = 2;
+        });
+  }
+
+  Widget _signupButton() {
+    return AppButton(
+        title: 'Get Started', onPressed: () {
+      Get.toNamed(AppRoutes.login);
+    });
+  }
+}
+class OnBoardingPage extends StatelessWidget {
+   OnBoardingPage({required this.image, required this.description});
+   String image;
+   String description;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: Get.width,
+      height: Get.height,
+      padding: EdgeInsets.symmetric(
+        horizontal: setWidthValue(30)
+      ),
+      color: Theme.of(context).primaryColor,
+      child: Column(
+        children: [
+          Image.asset(
+            image,
+            width: Get.width,
+            height: Get.height * 0.6,
+          ),
+          setHeight(20),
+          AppText(
+            title: description,
+            textType: TextTypeEnum.ExtraBold,
+            overflow: TextOverflow.clip,
+            textAlign: TextAlign.center,
+            color: Theme.of(context).scaffoldBackgroundColor,
+          )
+        ],
+      ),
+    );
+  }
+}
+
