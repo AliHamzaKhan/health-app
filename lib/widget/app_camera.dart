@@ -9,6 +9,7 @@ class AppCamera extends StatelessWidget {
   // Controller should be initialized once in the constructor or via a method
   final AppCameraController controller = Get.put(AppCameraController());
 
+
   AppCamera({super.key});
 
   @override
