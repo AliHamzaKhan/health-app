@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:health_app/config/routes/app_routes.dart';
 import 'package:health_app/config/size_config.dart';
 import 'package:health_app/config/theme/app_colors.dart';
+import 'package:health_app/config/theme/button_styles.dart';
 import 'package:health_app/constant/assets_contant.dart';
 import 'package:health_app/widget/app_button.dart';
 import 'package:health_app/widget/app_chips.dart';
@@ -29,7 +30,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
   final inactivePainter = Paint();
 
-
   @override
   void initState() {
     super.initState();
@@ -42,14 +42,16 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     inactivePainter.strokeWidth = 1;
     inactivePainter.strokeCap = StrokeCap.round;
     inactivePainter.style = PaintingStyle.stroke;
-    onboardingPagesList.add(OnBoardingPage(image: AssetsConstant.dr1, description: AppStringConstant.dr1));
-    onboardingPagesList.add(OnBoardingPage(image: AssetsConstant.dr2, description: AppStringConstant.dr2));
-    onboardingPagesList.add(OnBoardingPage(image: AssetsConstant.dr3, description: AppStringConstant.dr3));
+    onboardingPagesList.add(OnBoardingPage(
+        image: AssetsConstant.dr1, description: AppStringConstant.dr1));
+    onboardingPagesList.add(OnBoardingPage(
+        image: AssetsConstant.dr2, description: AppStringConstant.dr2));
+    onboardingPagesList.add(OnBoardingPage(
+        image: AssetsConstant.dr3, description: AppStringConstant.dr3));
   }
 
   @override
   Widget build(BuildContext context) {
-
     return AppScaffold(
       body: Obx(() => Onboarding(
             swipeableBody: onboardingPagesList,
@@ -78,22 +80,25 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                         controller.currentIndex.value != pagesLength - 1
                             ? _skipButton()
                             : _signupButton(),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 45.0),
-                          child: Indicator<CirclePainter>(
-                            painter: CirclePainter(
-                              currentPageIndex: currentIndex,
-                              pagesLength: pagesLength,
-                              netDragPercent: dragDistance,
-                              activePainter: activePainter,
-                              inactivePainter: inactivePainter,
-                              slideDirection: sd,
-                              radius: 5.0,
-                              space: 10.0,
-                              showAllActiveIndicators: false,
+                        if (controller.currentIndex.value !=
+                            pagesLength - 1) ...[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 45.0),
+                            child: Indicator<CirclePainter>(
+                              painter: CirclePainter(
+                                currentPageIndex: currentIndex,
+                                pagesLength: pagesLength,
+                                netDragPercent: dragDistance,
+                                activePainter: activePainter,
+                                inactivePainter: inactivePainter,
+                                slideDirection: sd,
+                                radius: 5.0,
+                                space: 10.0,
+                                showAllActiveIndicators: false,
+                              ),
                             ),
                           ),
-                        ),
+                        ]
                       ],
                     ),
                   ),
@@ -107,6 +112,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   Widget _skipButton() {
     return AppChips(
         label: 'Skip',
+        padding: EdgeInsets.symmetric(horizontal: setWidthValue(50)),
+        borderRadius: 10,
         value: false,
         onTap: (value) {
           controller.currentIndex.value = 2;
@@ -114,24 +121,34 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   }
 
   Widget _signupButton() {
-    return AppButton(
-        title: 'Get Started', onPressed: () {
-      Get.toNamed(AppRoutes.login);
-    });
+    return Expanded(
+      child: AppButton(
+          title: 'Get Started',
+          // buttonStyleClass: ButtonStyleClass(
+          //   backgroundColor: AppColors.background
+          // ),
+          buttonType: ButtonType.Outline,
+          onPressed: () {
+            Get.toNamed(AppRoutes.login);
+          },
+
+      ),
+    );
   }
 }
+
 class OnBoardingPage extends StatelessWidget {
-   OnBoardingPage({required this.image, required this.description});
-   String image;
-   String description;
+  OnBoardingPage({required this.image, required this.description});
+
+  String image;
+  String description;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: Get.width,
       height: Get.height,
-      padding: EdgeInsets.symmetric(
-        horizontal: setWidthValue(30)
-      ),
+      padding: EdgeInsets.symmetric(horizontal: setWidthValue(30)),
       color: Theme.of(context).primaryColor,
       child: Column(
         children: [
@@ -153,4 +170,3 @@ class OnBoardingPage extends StatelessWidget {
     );
   }
 }
-

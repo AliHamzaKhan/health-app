@@ -10,13 +10,19 @@ class AppChips extends StatefulWidget {
       required this.label,
       required this.value,
       required this.onTap,
-      this.padding});
+      this.padding,
+      this.borderRadius,
+        this.fontSize
+      });
 
   final String label;
   bool value;
   var onTap;
-  var padding;
+  EdgeInsets? padding;
 
+  double? borderRadius;
+
+  double? fontSize;
   @override
   State<AppChips> createState() => _PbChipsState();
 }
@@ -33,7 +39,7 @@ class _PbChipsState extends State<AppChips> {
       },
       child: Chip(
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(setHeightValue(20)),
+            borderRadius: BorderRadius.circular(setHeightValue(widget.borderRadius ?? 20)),
             side: BorderSide(
                 color: widget.value ? AppColors.primary : AppColors.accent)),
         side: BorderSide(
@@ -41,10 +47,10 @@ class _PbChipsState extends State<AppChips> {
         shadowColor: Colors.transparent,
         elevation: 0,
         padding: widget.padding ?? EdgeInsets.zero,
-        label: AppTextBold(
-          text: widget.label,
-          color: widget.value ? AppColors.background : AppColors.accent,
-          size: 12,
+        label: AppText(
+          title: widget.label,
+          color: widget.value ? AppColors.background : AppColors.primary,
+          fontSize:widget.fontSize ??  12,
         ),
         backgroundColor:
             widget.value ? AppColors.primary : AppColors.background,
@@ -64,10 +70,10 @@ Widget chipWidget(context, {required String title, color}) {
     padding: EdgeInsets.zero,
     labelPadding: EdgeInsets.symmetric(horizontal: setWidthValue(20)),
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    label: AppTextRegular(
-      text: title,
+    label: AppText(
+      title: title,
       color: Theme.of(context).scaffoldBackgroundColor,
-      size: 8,
+      fontSize:8,
     ),
     backgroundColor: color ?? Theme.of(context).primaryColor,
   );

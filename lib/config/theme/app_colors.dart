@@ -5,12 +5,12 @@ abstract class AppColors {
   static Color primary = const Color(0xFF005B35);
   static Color primary2 = const Color(0xFF566559);
   static Color secondary = const Color(0xFFCFE6C2);
-  static Color accent = const Color(0xFFEEEEEE);
+  static Color accent = const Color(0xFFBAC7B6);
   static Color card = const Color(0xFFEEEEEE);
   static Color text = const Color(0xFF323643);
   static Color text2 = const Color(0xFF7F8386);
   static Color danger = const Color(0xFFE8411C);
-  static Color borderColor = const Color(0xFFF4F4F4);
+  static Color borderColor = const Color(0xFFA7B0AB);
   static Color polylineColor = const Color(0xFF102477);
 }
 abstract class AppDarkColors {

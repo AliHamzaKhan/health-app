@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_app/config/routes/app_routes.dart';
 import 'package:health_app/config/size_config.dart';
 import 'package:health_app/constant/assets_contant.dart';
 import 'package:health_app/widget/app_button.dart';
@@ -42,13 +43,13 @@ class _AppDrawerState extends State<AppDrawer>
           setHeight(30),
           Expanded(
               child: ListView.builder(
-                itemCount: appDrawersList.length,
-                  itemBuilder: (context, index){
-                  return DrawerItem(
-                    item: appDrawersList[index],
-                    width: width,
-                    isAnimated: widget.isAnimated,
-                  );
+                  itemCount: appDrawersList.length,
+                  itemBuilder: (context, index) {
+                    return DrawerItem(
+                      item: appDrawersList[index],
+                      width: width,
+                      isAnimated: widget.isAnimated,
+                    );
                   })),
           setHeight(20),
         ],
@@ -70,9 +71,8 @@ class DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // margin: EdgeInsets.all(setWidthValue(30)),
-      // width: isAnimated ? (Get.width * 0.6) : width,
+    return GestureDetector(
+      onTap: item.onClick,
       child: Padding(
         padding: EdgeInsets.all(setWidthValue(30)),
         child: Row(
@@ -87,7 +87,6 @@ class DrawerItem extends StatelessWidget {
                   child: setWidth(20),
                 ),
               ),
-
               Flexible(
                 flex: 4,
                 child: AnimatedOpacity(
@@ -113,29 +112,65 @@ class DrawerItem extends StatelessWidget {
 
 List<AppDrawerClass> appDrawersList = [
   AppDrawerClass(
-      title: 'Ecg Reader', image: AssetsConstant.ecg, onClick: () {}),
+      title: 'Ecg Reader',
+      image: AssetsConstant.ecg,
+      onClick: () {
+        Get.toNamed(AppRoutes.ecg);
+      }),
   AppDrawerClass(
-      title: 'BMI Calculator', image: AssetsConstant.bmi, onClick: () {}),
+      title: 'BMI Calculator',
+      image: AssetsConstant.bmi,
+      onClick: () {
+        Get.toNamed(AppRoutes.bmi);
+      }),
   AppDrawerClass(
-      title: 'Blood Test', image: AssetsConstant.bloodTest, onClick: () {}),
+      title: 'Blood Test',
+      image: AssetsConstant.bloodTest,
+      onClick: () {
+        Get.toNamed(AppRoutes.bloodTest);
+      }),
   AppDrawerClass(
       title: 'Allergy Detection',
       image: AssetsConstant.allergy,
-      onClick: () {}),
+      onClick: () {
+        Get.toNamed(AppRoutes.allergyDetection);
+      }),
   AppDrawerClass(
       title: 'Radiology Report',
       image: AssetsConstant.radiology,
-      onClick: () {}),
+      onClick: () {
+        Get.toNamed(AppRoutes.radiology);
+      }),
   AppDrawerClass(
       title: 'Medicine Searching',
       image: AssetsConstant.medicine,
-      onClick: () {}),
+      onClick: () {
+        Get.toNamed(AppRoutes.medicine);
+      }),
   AppDrawerClass(
-      title: 'Find Doctor', image: AssetsConstant.doctor, onClick: () {}),
+      title: 'Find Calories',
+      image: AssetsConstant.calories,
+      onClick: () {
+        Get.toNamed(AppRoutes.calories);
+      }),
   AppDrawerClass(
-      title: 'Monitor Sugar', image: AssetsConstant.bloodSugar, onClick: () {}),
+      title: 'Find Doctor',
+      image: AssetsConstant.doctor,
+      onClick: () {
+        Get.toNamed(AppRoutes.findDoctor);
+      }),
   AppDrawerClass(
-      title: 'Find Hospitals', image: AssetsConstant.hospital, onClick: () {}),
+      title: 'Monitor Sugar',
+      image: AssetsConstant.bloodSugar,
+      onClick: () {
+        Get.toNamed(AppRoutes.monitorSugar);
+      }),
+  AppDrawerClass(
+      title: 'Find Hospitals',
+      image: AssetsConstant.hospital,
+      onClick: () {
+        Get.toNamed(AppRoutes.findHospital);
+      }),
 ];
 
 class AppDrawerClass {

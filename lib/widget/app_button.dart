@@ -46,14 +46,14 @@ class AppButton extends StatelessWidget {
           style: secondaryBtnStyle(
               buttonStyleClass: buttonStyleClass ?? ButtonStyleClass()),
           onPressed: onPressed,
-          child: Text(title),
+          child: Text(title,style: TextStyle(color: AppColors.background),),
         );
       case ButtonType.Outline:
         return OutlinedButton(
           style: outlineBtnStyle(
               buttonStyleClass: buttonStyleClass ?? ButtonStyleClass()),
           onPressed: onPressed,
-          child: Text(title),
+          child: Text(title,style: TextStyle(color: AppColors.background),),
         );
       case ButtonType.Floating:
         return FloatingActionButton(

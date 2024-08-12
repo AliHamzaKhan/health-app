@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Health App need access to the camera to take pictures of your image.</string>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
     <key>GADApplicationIdentifier</key>
     <string>ca-app-pub-2347127270568674~5206035421</string>
     <key>NSPhotoLibraryUsageDescription</key>
