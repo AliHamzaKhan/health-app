@@ -1,68 +1,155 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_app/config/size_config.dart';
+import 'package:health_app/constant/assets_contant.dart';
 import 'package:health_app/utils/app_print.dart';
+import 'package:health_app/widget/app_button.dart';
 import 'package:health_app/widget/app_scaffold.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AppCamera extends StatelessWidget {
   // Controller should be initialized once in the constructor or via a method
   final AppCameraController controller = Get.put(AppCameraController());
 
-
-  AppCamera({super.key});
+  AppCamera({super.key,required this.onImageClick});
+  Function(File) onImageClick;
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      body: cameraPreviewWidget(),
+      body: cameraPreviewWidget(context, onImageClick: onImageClick),
     );
   }
 
-  Widget cameraPreviewWidget() {
-    final CameraController? cameraController = controller.cameraController;
+  Widget cameraPreviewWidget(context, {required Function(File) onImageClick}) {
+    return Obx(() {
+      final CameraController? cameraController = controller.cameraController;
 
-    if (cameraController == null || !cameraController.value.isInitialized) {
-      return const Center(
-        child: Text(
-          'Tap a camera',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24.0,
-            fontWeight: FontWeight.w900,
+      if (!controller.isCameraInitialized.value ||
+          cameraController == null ||
+          !cameraController.value.isInitialized) {
+        return const Center(
+          child: Text(
+            'Initializing camera...',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 24.0,
+              fontWeight: FontWeight.w900,
+            ),
           ),
-        ),
-      );
-    } else {
-      return Listener(
-        onPointerDown: (_) => controller.incrementPointers(),
-        onPointerUp: (_) => controller.decrementPointers(),
-        child: CameraPreview(
-          cameraController,
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onScaleStart: controller.handleScaleStart,
-                onScaleUpdate: (details) =>
-                    controller.handleScaleUpdate(details),
-                onTapDown: (TapDownDetails details) =>
-                    controller.onViewFinderTap(details, constraints),
+        );
+      } else {
+        return controller.imageFile?.value != null
+            ? Stack(
+                children: [
+                  Image.file(
+                    File(controller.imageFile!.value.path),
+                    width: Get.width,
+                    height: Get.height,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child:
+                                  AppButton(title: 'Retake', onPressed: () {
+                                    controller.imageFile = null;
+                                  })),
+                          setWidth(10),
+                          Expanded(
+                              child:
+                                  AppButton(title: 'Check', onPressed: () {
+                                    onImageClick(File(controller.imageFile!.value.path));
+                                  })),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              )
+            : Stack(
+                children: [
+                  Container(
+                    width: Get.width,
+                    height: Get.height,
+                    child: Listener(
+                      onPointerDown: (_) => controller.incrementPointers(),
+                      onPointerUp: (_) => controller.decrementPointers(),
+                      child: CameraPreview(
+                        cameraController,
+                        child: LayoutBuilder(
+                          builder: (BuildContext context,
+                              BoxConstraints constraints) {
+                            return GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onScaleStart: controller.handleScaleStart,
+                              onScaleUpdate: (details) =>
+                                  controller.handleScaleUpdate(details),
+                              onTapDown: (TapDownDetails details) => controller
+                                  .onViewFinderTap(details, constraints),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.all(setWidthValue(50)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppIconButton(
+                            icon: AssetsConstant.reload,
+                            onTap: () {
+                              controller.onCameraChange();
+                            },
+                            btnColor: Theme.of(context).scaffoldBackgroundColor,
+                            iconColor: Theme.of(context).primaryColor,
+                          ),
+                          AppIconButton(
+                            icon: AssetsConstant.add,
+                            onTap: () {
+                              controller.onPictureClick();
+                            },
+                            width: 70,
+                            height: 70,
+                            iconSize: 45,
+                            btnColor: Theme.of(context).primaryColor,
+                            iconColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                          ),
+                          AppIconButton(
+                            icon: AssetsConstant.gallery,
+                            onTap: () {
+                              controller.onOpenGallery();
+                            },
+                            btnColor: Theme.of(context).scaffoldBackgroundColor,
+                            iconColor: Theme.of(context).primaryColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               );
-            },
-          ),
-        ),
-      );
-    }
+      }
+    });
   }
 }
 
 class AppCameraController extends GetxController
     with GetTickerProviderStateMixin, WidgetsBindingObserver {
   CameraController? cameraController;
-  XFile? imageFile;
-
-  // Variables related to zoom and exposure
+  Rx<XFile>? imageFile;
   double minAvailableZoom = 1.0;
   double maxAvailableZoom = 1.0;
   double currentScale = 1.0;
@@ -70,17 +157,18 @@ class AppCameraController extends GetxController
   double minAvailableExposureOffset = 0.0;
   double maxAvailableExposureOffset = 0.0;
 
-  // Animation controller for flash mode UI
   late AnimationController flashModeControlRowAnimationController;
   late Animation<double> flashModeControlRowAnimation;
 
   int pointers = 0; // Track number of fingers on screen for zooming
+  var isCameraInitialized = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
     initializeFlashModeAnimation();
+    _initializeCamera(); // Call the camera initialization
   }
 
   @override
@@ -102,6 +190,22 @@ class AppCameraController extends GetxController
     );
   }
 
+  Future<void> _initializeCamera() async {
+    try {
+      final cameras = await availableCameras();
+      if (cameras.isNotEmpty) {
+        await initializeCameraController(cameras.first);
+        isCameraInitialized.value = true;
+      } else {
+        handleCameraException(CameraException(
+            'NoCameraAvailable', 'No cameras are available on this device.'));
+      }
+    } catch (e) {
+      handleCameraException(
+          CameraException('CameraInitializationError', e.toString()));
+    }
+  }
+
   Future<void> initializeCameraController(
       CameraDescription cameraDescription) async {
     final CameraController controller = CameraController(
@@ -115,7 +219,7 @@ class AppCameraController extends GetxController
 
     controller.addListener(() {
       if (controller.value.hasError) {
-        showInSnackBar('Camera error ${controller.value.errorDescription}');
+        showInSnackBar('Camera error: ${controller.value.errorDescription}');
       }
     });
 
@@ -123,8 +227,9 @@ class AppCameraController extends GetxController
       await controller.initialize();
       await Future.wait(<Future<Object?>>[
         if (!kIsWeb) ...[
-          controller.getMinExposureOffset().then(
-                  (double value) => minAvailableExposureOffset = value),
+          controller
+              .getMinExposureOffset()
+              .then((double value) => minAvailableExposureOffset = value),
           controller
               .getMaxExposureOffset()
               .then((double value) => maxAvailableExposureOffset = value),
@@ -151,7 +256,7 @@ class AppCameraController extends GetxController
     if (state == AppLifecycleState.inactive) {
       controller.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      initializeCameraController(controller.description);
+      _initializeCamera(); // Reinitialize the camera when app is resumed
     }
   }
 
@@ -165,8 +270,8 @@ class AppCameraController extends GetxController
       return;
     }
 
-    currentScale = (baseScale * details.scale)
-        .clamp(minAvailableZoom, maxAvailableZoom);
+    currentScale =
+        (baseScale * details.scale).clamp(minAvailableZoom, maxAvailableZoom);
 
     await cameraController?.setZoomLevel(currentScale);
   }
@@ -190,6 +295,7 @@ class AppCameraController extends GetxController
 
   // Methods for managing the number of pointers (fingers) on screen
   void incrementPointers() => pointers++;
+
   void decrementPointers() => pointers--;
 
   // Error handling
@@ -216,6 +322,55 @@ class AppCameraController extends GetxController
       default:
         _showCameraException(e);
         break;
+    }
+  }
+
+  Future<void> onCameraChange() async {
+    if (cameraController == null) return;
+
+    final cameras = await availableCameras();
+    final currentIndex = cameras.indexOf(cameraController!.description);
+
+    // Determine the next camera index
+    final nextIndex = (currentIndex + 1) % cameras.length;
+    final newCameraDescription = cameras[nextIndex];
+
+    // Reinitialize the camera controller with the new camera
+    await initializeCameraController(newCameraDescription);
+  }
+
+  Future<void> onPictureClick() async {
+    if (cameraController == null || !cameraController!.value.isInitialized)
+      return;
+
+    try {
+      final XFile picture = await cameraController!.takePicture();
+      imageFile?.value = picture;
+
+      // You can also add code here to display the picture or navigate to a different screen.
+      showInSnackBar('Picture captured successfully!');
+    } catch (e) {
+      handleCameraException(
+          CameraException('PictureCaptureError', e.toString()));
+    }
+  }
+
+  Future<void> onOpenGallery() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile =
+          await picker.pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        imageFile?.value = pickedFile;
+        // Add code to display the selected image or perform other actions.
+        showInSnackBar('Image selected from gallery!');
+      } else {
+        showInSnackBar('No image selected.');
+      }
+    } catch (e) {
+      handleCameraException(
+          CameraException('GalleryAccessError', e.toString()));
     }
   }
 }

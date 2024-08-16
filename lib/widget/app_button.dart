@@ -284,7 +284,7 @@ class AppIconButton extends StatelessWidget {
               ? (boxShadow ??
                   [
                     BoxShadow(
-                      color: ((Get.find<AuthService>().isDarkTheme() ?? false)
+                      color: ((Get.find<AuthService>().saveData.isDarkTheme() ?? false)
                               ? AppColors.background
                               : AppDarkColors.background)
                           .withOpacity(0.05),
@@ -308,7 +308,7 @@ class AppIconButton extends StatelessWidget {
                 icon,
                 size: setHeightValue(iconSize ?? 25),
                 color: iconColor ??
-                    ((Get.find<AuthService>().isDarkTheme() ?? false)
+                    ((Get.find<AuthService>().saveData.isDarkTheme() ?? false)
                         ? AppColors.background
                         : AppDarkColors.background),
               ),

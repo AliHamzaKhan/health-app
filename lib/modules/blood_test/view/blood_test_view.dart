@@ -3,6 +3,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import '../../../widget/app_camera.dart';
+import '../../../widget/app_scaffold.dart';
 import '../controller/blood_test_controller.dart';
 
 class BloodTestView extends StatelessWidget {
@@ -11,6 +13,10 @@ class BloodTestView extends StatelessWidget {
   var controller = Get.put(BloodTestController());
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return AppScaffold(
+      body: AppCamera(
+        onImageClick: (file) {},
+      ),
+    );
   }
 }

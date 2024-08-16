@@ -180,7 +180,7 @@ class ValueMeter extends StatelessWidget {
       // padding: EdgeInsets.all(setHeightValue(5)),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: color ?? ((Get.find<AuthService>().isDarkTheme() ?? false) ? AppDarkColors.borderColor : AppColors.borderColor),
+        color: color ?? ((Get.find<AuthService>().saveData.isDarkTheme() ?? false) ? AppDarkColors.borderColor : AppColors.borderColor),
         border: Border.all(color: borderColor ?? AppColors.text, width: 5),
       ),
       child: Container(

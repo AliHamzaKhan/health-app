@@ -143,6 +143,7 @@ class OnBoardingPage extends StatelessWidget {
   String image;
   String description;
 
+
   @override
   Widget build(BuildContext context) {
     return Container(

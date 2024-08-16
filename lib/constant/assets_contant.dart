@@ -39,7 +39,8 @@ abstract class AssetsConstant {
   static const String time = 'assets/icons/time.png';
   static const String upload = 'assets/icons/upload.png';
   static const String voice = 'assets/icons/voice.png';
-  
+  static const String gallery = 'assets/icons/gallery.png';
+
   
   static const String allergy = 'assets/icons/allergy.png';
   static const String bloodSugar = 'assets/icons/blood_sugar.png';

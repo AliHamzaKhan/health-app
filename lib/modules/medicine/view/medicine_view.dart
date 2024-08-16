@@ -3,6 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../widget/app_camera.dart';
+import '../../../widget/app_scaffold.dart';
 import '../controller/medicine_controller.dart';
 
 class MedicineView extends StatelessWidget {
@@ -11,6 +13,10 @@ class MedicineView extends StatelessWidget {
   var controller = Get.put(MedicineController());
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return AppScaffold(
+      body: AppCamera(
+        onImageClick: (file) {},
+      ),
+    );
   }
 }

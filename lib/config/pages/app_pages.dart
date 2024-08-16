@@ -13,7 +13,7 @@ import 'package:health_app/modules/monitor_sugar/view/monitor_sugar_view.dart';
 import 'package:health_app/modules/onBoarding/view/on_boarding_view.dart';
 import 'package:health_app/modules/radiology/view/radiology_view.dart';
 import 'package:health_app/modules/registry/view/otp_screen_view.dart';
-import '../../modules/onBoarding/view/splash_view.dart';
+import '../../modules/splash/view/splash_view.dart';
 import '../../modules/registry/view/login_view.dart';
 import '../routes/app_routes.dart';
 

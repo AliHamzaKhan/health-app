@@ -8,10 +8,13 @@ class EcgView extends StatelessWidget {
   EcgView({super.key});
 
   var controller = Get.put(EcgController());
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      body: AppCamera(),
+      body: AppCamera(
+        onImageClick: (file) {},
+      ),
     );
   }
 }

@@ -7,8 +7,4 @@ class ApiController extends GetxService {
   APIService apiService = APIService();
   AuthService authService = Get.find();
 
-
-  getToken() {
-    return authService.getToken();
-  }
 }

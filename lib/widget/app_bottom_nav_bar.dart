@@ -56,7 +56,7 @@ class AppBottomNavBar extends StatelessWidget {
                       fit: BoxFit.contain,
                       color: e.type == selectedNavType
                           ? Theme.of(context).scaffoldBackgroundColor
-                          : (Get.find<AuthService>().isDarkTheme() ?? false)
+                          : (Get.find<AuthService>().saveData.isDarkTheme() ?? false)
                               ? AppColors.accent
                               : AppDarkColors.accent,
                     ),
