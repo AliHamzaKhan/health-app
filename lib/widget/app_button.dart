@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../config/services/auth_service.dart';
+import '../config/auth/auth_service.dart';
 import '../config/size_config.dart';
 import '../config/theme/app_colors.dart';
 import '../config/theme/button_styles.dart';

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../config/services/auth_service.dart';
+import '../config/auth/auth_service.dart';
 import '../config/theme/app_colors.dart';
 
 // class MeterWidget extends StatelessWidget {

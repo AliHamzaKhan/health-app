@@ -43,11 +43,20 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     inactivePainter.strokeCap = StrokeCap.round;
     inactivePainter.style = PaintingStyle.stroke;
     onboardingPagesList.add(OnBoardingPage(
-        image: AssetsConstant.dr1, description: AppStringConstant.dr1));
+      image: AssetsConstant.ob1,
+      description: AppStringConstant.obDesc1,
+      title: AppStringConstant.obTitle1,
+    ));
     onboardingPagesList.add(OnBoardingPage(
-        image: AssetsConstant.dr2, description: AppStringConstant.dr2));
+      image: AssetsConstant.ob2,
+      description: AppStringConstant.obDesc2,
+      title: AppStringConstant.obTitle2,
+    ));
     onboardingPagesList.add(OnBoardingPage(
-        image: AssetsConstant.dr3, description: AppStringConstant.dr3));
+      image: AssetsConstant.ob3,
+      description: AppStringConstant.obDesc3,
+      title: AppStringConstant.obTitle3,
+    ));
   }
 
   @override
@@ -123,26 +132,26 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   Widget _signupButton() {
     return Expanded(
       child: AppButton(
-          title: 'Get Started',
-          // buttonStyleClass: ButtonStyleClass(
-          //   backgroundColor: AppColors.background
-          // ),
-          buttonType: ButtonType.Outline,
-          onPressed: () {
-            Get.toNamed(AppRoutes.login);
-          },
-
+        title: 'Get Started',
+        // buttonStyleClass: ButtonStyleClass(
+        //   backgroundColor: AppColors.background
+        // ),
+        buttonType: ButtonType.Outline,
+        onPressed: () {
+          Get.toNamed(AppRoutes.login);
+        },
       ),
     );
   }
 }
 
 class OnBoardingPage extends StatelessWidget {
-  OnBoardingPage({required this.image, required this.description});
+  OnBoardingPage(
+      {required this.image, required this.title, required this.description});
 
   String image;
+  String title;
   String description;
-
 
   @override
   Widget build(BuildContext context) {
@@ -150,21 +159,32 @@ class OnBoardingPage extends StatelessWidget {
       width: Get.width,
       height: Get.height,
       padding: EdgeInsets.symmetric(horizontal: setWidthValue(30)),
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         children: [
           Image.asset(
             image,
             width: Get.width,
-            height: Get.height * 0.6,
+            height: Get.width,
+            fit: BoxFit.contain,
+          ),
+          // setHeight(5),
+          AppText(
+            title: title,
+            textType: TextTypeEnum.Bold,
+            overflow: TextOverflow.clip,
+            textAlign: TextAlign.center,
+            fontSize: 22,
+            color: Theme.of(context).primaryColor,
           ),
           setHeight(20),
           AppText(
             title: description,
-            textType: TextTypeEnum.ExtraBold,
+            textType: TextTypeEnum.Regular,
             overflow: TextOverflow.clip,
             textAlign: TextAlign.center,
-            color: Theme.of(context).scaffoldBackgroundColor,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
+            fontSize: 16,
           )
         ],
       ),

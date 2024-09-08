@@ -12,7 +12,7 @@ import '../enviroment/app_environment.dart';
 import '../storage/data_store_service.dart';
 import 'api_response_model.dart';
 import 'package:http/http.dart' as http;
-import 'auth_service.dart';
+import '../auth/auth_service.dart';
 
 typedef CompleteCallback = void Function(dynamic callBack);
 typedef SuccessCallback = void Function(dynamic success);

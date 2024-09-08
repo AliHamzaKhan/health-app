@@ -9,7 +9,6 @@ import 'package:health_app/widget/app_input_field.dart';
 import 'package:health_app/widget/app_scaffold.dart';
 import 'package:health_app/widget/app_text.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../controller/login_controller.dart';
 
 class LoginView extends StatelessWidget {
@@ -19,44 +18,58 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formkey = GlobalKey<FormState>();
+
     return AppScaffold(
       body: Padding(
         padding: EdgeInsets.all(setHeightValue(30)),
-        child: Column(
-          children: [
-            setHeight(70),
-            AppText(title: 'Login'),
-            setHeight(40),
-            AppInputField(hintText: 'Phone No', onChanged: (value) {}),
-            setHeight(20),
-            AppButton(
-              title: 'Continue',
-              onPressed: () {
-                Get.toNamed(AppRoutes.otp);
-              },
-              buttonStyleClass: ButtonStyleClass(
-                  width: Get.width, height: setHeightValue(50)),
-            ),
-            setHeight(30),
-            const Spacer(),
-            setHeight(30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                iconWidget(
-                    title: 'Facebook',
-                    image: AssetsConstant.facebook,
-                    onClick: () {}),
-                iconWidget(
-                    title: 'Google',
-                    image: AssetsConstant.google,
-                    onClick: () {}),
-              ],
-            ),
-            setHeight(70),
-            termsAndCondition(context),
-            setHeight(30),
-          ],
+        child: Form(
+          key: formkey,
+          child: Column(
+            children: [
+              setHeight(70),
+              AppText(title: 'Login'),
+              setHeight(40),
+              AppInputField(
+                  hintText: 'Phone No', 
+                  onChanged: (value) {
+                    controller.phoneNo = value;
+                  },
+                  keyboardType: TextInputType.phone,
+              ),
+              setHeight(20),
+              AppButton(
+                title: 'Continue',
+                onPressed: () {
+                  // if(formkey.currentState!.validate()){
+                  //   controller.login();
+                  // }
+                  Get.toNamed(AppRoutes.otp);
+                },
+                buttonStyleClass: ButtonStyleClass(
+                    width: Get.width, height: setHeightValue(50)),
+              ),
+              setHeight(30),
+              const Spacer(),
+              setHeight(30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  iconWidget(
+                      title: 'Facebook',
+                      image: AssetsConstant.facebook,
+                      onClick: () {}),
+                  iconWidget(
+                      title: 'Google',
+                      image: AssetsConstant.google,
+                      onClick: () {}),
+                ],
+              ),
+              setHeight(70),
+              termsAndCondition(context),
+              setHeight(30),
+            ],
+          ),
         ),
       ),
     );

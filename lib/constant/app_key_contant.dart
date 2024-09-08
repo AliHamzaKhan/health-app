@@ -5,9 +5,13 @@ abstract class AppStringConstant {
 
 
 
-  static const String dr1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
-  static const String dr2 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
-  static const String dr3 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
+  static const String obTitle1 = 'Schedule Appointments & Medicine Reminders';
+  static const String obTitle2 = 'Report Analysis at Your Fingertips';
+  static const String obTitle3 = 'Comprehensive Health Monitoring';
+
+  static const String obDesc1 = "Easily schedule your doctor appointments and set medicine reminders to stay on top of your health.";
+  static const String obDesc2 = "Upload your medical reports, and we’ll provide comprehensive insights including diagnosis, treatment options, and doctor recommendations.";
+  static const String obDesc3 = "Monitor your sugar levels, check your ECG, find nearby hospitals, and take control of your health anytime, anywhere.";
 
 }
 

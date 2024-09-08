@@ -6,13 +6,15 @@ import '../../widget/app_alerts.dart';
 import '../routes/app_routes.dart';
 import '../storage/data_store_service.dart';
 import '../storage/save_data.dart';
-import 'api_response_model.dart';
-import 'api_service.dart';
+import '../services/api_response_model.dart';
+import '../services/api_service.dart';
 
 class AuthService extends GetxService {
 
   SaveData saveData = SaveData();
-  Future loginWithPhoneNumber() async{}
+  Future loginWithPhoneNumber() async{
+
+  }
   Future googleLogin() async{}
   facebookLogin() async{}
 

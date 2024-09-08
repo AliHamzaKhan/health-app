@@ -11,9 +11,12 @@ abstract class AssetsConstant {
   static const String call = 'assets/icons/call.png';
 
 
-  static const String dr1 = 'assets/images/dr1.png';
-  static const String dr2 = 'assets/images/dr2.png';
-  static const String dr3 = 'assets/images/dr3.png';
+  static const String ob1 = 'assets/images/ob1.png';
+  static const String ob2 = 'assets/images/ob2.png';
+  static const String ob3 = 'assets/images/ob3.png';
+
+
+
   static const String notification = 'assets/icons/notification.png';
   static const String home = 'assets/icons/home.png';
   static const String activity = 'assets/icons/activity.png';
