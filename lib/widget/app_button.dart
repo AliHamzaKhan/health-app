@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../config/auth/auth_service.dart';
 import '../config/size_config.dart';
 import '../config/theme/app_colors.dart';
 import '../config/theme/button_styles.dart';
-import 'app_text.dart';
-
-AppButton btn = AppButton(
-  title: '',
-  onPressed: () {},
-  buttonStyleClass: ButtonStyleClass(width: Get.width, height: Get.height),
-);
 
 class AppButton extends StatelessWidget {
   AppButton(
@@ -39,29 +31,47 @@ class AppButton extends StatelessWidget {
           style: primaryBtnStyle(
               buttonStyleClass: buttonStyleClass ?? ButtonStyleClass()),
           onPressed: onPressed,
-          child: Text(title, style: TextStyle(color: AppColors.background),),
+          child: Text(title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: (buttonStyleClass ?? ButtonStyleClass()).textColor,
+                  fontSize: (buttonStyleClass ?? ButtonStyleClass()).textSize)),
         );
       case ButtonType.Secondary:
         return ElevatedButton(
-          style: secondaryBtnStyle(
-              buttonStyleClass: buttonStyleClass ?? ButtonStyleClass()),
-          onPressed: onPressed,
-          child: Text(title,style: TextStyle(color: AppColors.background),),
-        );
+            style: secondaryBtnStyle(
+                buttonStyleClass: buttonStyleClass ?? ButtonStyleClass()),
+            onPressed: onPressed,
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: (buttonStyleClass ?? ButtonStyleClass()).textColor,
+                  fontSize: (buttonStyleClass ?? ButtonStyleClass()).textSize),
+            ));
       case ButtonType.Outline:
         return OutlinedButton(
           style: outlineBtnStyle(
               buttonStyleClass: buttonStyleClass ?? ButtonStyleClass()),
           onPressed: onPressed,
-          child: Text(title,style: TextStyle(color: AppColors.background),),
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: (buttonStyleClass ?? ButtonStyleClass()).textColor,
+                fontSize: (buttonStyleClass ?? ButtonStyleClass()).textSize),
+          ),
         );
       case ButtonType.Floating:
         return FloatingActionButton(
           onPressed: onPressed,
           tooltip: title,
-          backgroundColor: (buttonStyleClass ?? ButtonStyleClass()).backgroundColor,
-          foregroundColor: (buttonStyleClass ?? ButtonStyleClass()).foregroundColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          backgroundColor:
+              (buttonStyleClass ?? ButtonStyleClass()).backgroundColor,
+          foregroundColor:
+              (buttonStyleClass ?? ButtonStyleClass()).foregroundColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           child: icon is String
               ? Image.asset(
                   icon,
@@ -273,21 +283,19 @@ class AppIconButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: isOutline
               ? (btnColor ?? Theme.of(context).scaffoldBackgroundColor)
-              : (btnColor ?? Theme.of(context).scaffoldBackgroundColor),
+              : (btnColor ?? Theme.of(context).primaryColor),
           borderRadius: BorderRadius.circular(radius ?? setHeightValue(36)),
           border: Border.all(
               color: isOutline
-                  ? ((borderColor ?? btnColor) ?? AppColors.primary)
+                  ? ((borderColor ?? btnColor) ??
+                      Theme.of(context).primaryColor)
                   : Colors.transparent),
           gradient: gradient,
           boxShadow: isShadow
               ? (boxShadow ??
                   [
                     BoxShadow(
-                      color: ((Get.find<AuthService>().saveData.isDarkTheme() ?? false)
-                              ? AppColors.background
-                              : AppDarkColors.background)
-                          .withOpacity(0.05),
+                      color: AppDarkColors.background,
                       spreadRadius: shadow ?? 3,
                       blurRadius: shadow1 ?? 5,
                       offset: const Offset(0, 3), // changes position of shadow
@@ -304,14 +312,9 @@ class AppIconButton extends StatelessWidget {
                 color: iconColor,
                 fit: BoxFit.cover,
               )
-            : Icon(
-                icon,
+            : Icon(icon,
                 size: setHeightValue(iconSize ?? 25),
-                color: iconColor ??
-                    ((Get.find<AuthService>().saveData.isDarkTheme() ?? false)
-                        ? AppColors.background
-                        : AppDarkColors.background),
-              ),
+                color: iconColor ?? Theme.of(context).scaffoldBackgroundColor),
       ),
     );
   }

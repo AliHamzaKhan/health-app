@@ -6,8 +6,7 @@ import 'package:health_app/widget/app_button.dart';
 import 'package:health_app/widget/app_dropdown.dart';
 import 'package:health_app/widget/app_input_field.dart';
 import 'package:health_app/widget/app_text.dart';
-
-import '../../../widget/app_camera.dart';
+import '../../../widget/app_appbar.dart';
 import '../../../widget/app_scaffold.dart';
 import '../controller/bmi_controller.dart';
 
@@ -19,6 +18,9 @@ class BmiView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
+      appBar: HaAppBar(
+        titleText: 'BMI Calculator',
+      ),
       body: Obx(() => Padding(
         padding: EdgeInsets.all(setWidthValue(30)),
         child: Column(

@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../widget/app_appbar.dart';
 import '../../../widget/app_camera.dart';
 import '../../../widget/app_scaffold.dart';
 import '../controller/medicine_controller.dart';
@@ -14,9 +15,10 @@ class MedicineView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      body: AppCamera(
-        onImageClick: (file) {},
+      appBar: HaAppBar(
+        titleText: 'Find Medicines',
       ),
+
     );
   }
 }

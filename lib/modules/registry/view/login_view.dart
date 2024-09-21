@@ -9,6 +9,8 @@ import 'package:health_app/widget/app_input_field.dart';
 import 'package:health_app/widget/app_scaffold.dart';
 import 'package:health_app/widget/app_text.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../widget/app_widgets.dart';
+import '../../other_modules/terms_condition_view.dart';
 import '../controller/login_controller.dart';
 
 class LoginView extends StatelessWidget {
@@ -19,7 +21,6 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formkey = GlobalKey<FormState>();
-
     return AppScaffold(
       body: Padding(
         padding: EdgeInsets.all(setHeightValue(30)),
@@ -27,15 +28,20 @@ class LoginView extends StatelessWidget {
           key: formkey,
           child: Column(
             children: [
+              appIconImage(),
               setHeight(70),
-              AppText(title: 'Login'),
+              AppText(
+                title: 'Login',
+                textType: TextTypeEnum.Bold,
+                fontSize: 20,
+              ),
               setHeight(40),
               AppInputField(
-                  hintText: 'Phone No', 
-                  onChanged: (value) {
-                    controller.phoneNo = value;
-                  },
-                  keyboardType: TextInputType.phone,
+                hintText: 'Phone No',
+                onChanged: (value) {
+                  controller.phoneNo = value;
+                },
+                keyboardType: TextInputType.phone,
               ),
               setHeight(20),
               AppButton(
@@ -46,8 +52,8 @@ class LoginView extends StatelessWidget {
                   // }
                   Get.toNamed(AppRoutes.otp);
                 },
-                buttonStyleClass: ButtonStyleClass(
-                    width: Get.width, height: setHeightValue(50)),
+                buttonStyleClass:
+                    ButtonStyleClass(width: Get.width, height: 50),
               ),
               setHeight(30),
               const Spacer(),
@@ -75,12 +81,14 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Widget iconWidget({required String title, required String image, required onClick}) {
+  Widget iconWidget(
+      {required String title, required String image, required onClick}) {
     return Column(
       children: [
         AppIconButton(
           icon: image,
           onTap: onClick,
+          btnColor: Colors.transparent,
         ),
         AppText(title: title)
       ],
@@ -91,10 +99,7 @@ class LoginView extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () async {
-        final Uri url = Uri.parse('https://pigybak.com/privacy-policy');
-        if (!await launchUrl(url)) {
-          throw Exception('Could not launch $url');
-        }
+        Get.to(()=>TermsConditionView());
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

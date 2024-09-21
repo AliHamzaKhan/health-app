@@ -136,7 +136,12 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         // buttonStyleClass: ButtonStyleClass(
         //   backgroundColor: AppColors.background
         // ),
-        buttonType: ButtonType.Outline,
+        // buttonType: ButtonType.Outline,
+        buttonStyleClass: ButtonStyleClass(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          textColor: Theme.of(context).primaryColor,
+          radius: 10
+        ),
         onPressed: () {
           Get.toNamed(AppRoutes.login);
         },

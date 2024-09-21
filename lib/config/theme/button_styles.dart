@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
-import 'package:health_app/config/size_config.dart';
-import 'package:health_app/config/theme/app_colors.dart';
-import 'package:health_app/constant/app_key_contant.dart';
-import 'package:health_app/utils/app_print.dart';
+import '../../constant/app_key_contant.dart';
+import '../../utils/app_print.dart';
+import '../size_config.dart';
+import 'app_colors.dart';
 
 ButtonStyle primaryBtnStyle({required ButtonStyleClass buttonStyleClass}) {
   appDebugPrint('buttonStyleClass.width ${buttonStyleClass.width}');
@@ -17,6 +16,7 @@ ButtonStyle primaryBtnStyle({required ButtonStyleClass buttonStyleClass}) {
         vertical: buttonStyleClass.verticalPadding),
     elevation: buttonStyleClass.elevation,
     shadowColor: buttonStyleClass.shadowColor,
+    alignment: Alignment.center,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(buttonStyleClass.radius)),
     ),
@@ -28,6 +28,7 @@ ButtonStyle secondaryBtnStyle({required ButtonStyleClass buttonStyleClass}) {
     foregroundColor: buttonStyleClass.foregroundColor,
     backgroundColor: buttonStyleClass.backgroundColor,
     minimumSize: Size(buttonStyleClass.width, buttonStyleClass.height),
+    alignment: Alignment.center,
     padding: EdgeInsets.symmetric(
         horizontal: buttonStyleClass.horizontalPadding,
         vertical: buttonStyleClass.verticalPadding),
@@ -41,19 +42,22 @@ ButtonStyle secondaryBtnStyle({required ButtonStyleClass buttonStyleClass}) {
 
 ButtonStyle outlineBtnStyle({required ButtonStyleClass buttonStyleClass}) {
   return OutlinedButton.styleFrom(
+    side: BorderSide(color: buttonStyleClass.borderColor),
     foregroundColor: buttonStyleClass.foregroundColor,
     minimumSize: Size(buttonStyleClass.width, buttonStyleClass.height),
+    alignment: Alignment.center,
     padding: EdgeInsets.symmetric(
         horizontal: buttonStyleClass.horizontalPadding,
         vertical: buttonStyleClass.verticalPadding),
     elevation: buttonStyleClass.elevation,
     shadowColor: buttonStyleClass.shadowColor,
     shape: RoundedRectangleBorder(
+      side: BorderSide(color: buttonStyleClass.borderColor),
       borderRadius: BorderRadius.all(Radius.circular(buttonStyleClass.radius)),
     ),
   ).copyWith(
     side: MaterialStateProperty.resolveWith<BorderSide?>(
-      (Set<MaterialState> states) {
+          (Set<MaterialState> states) {
         if (states.contains(MaterialState.pressed)) {
           return BorderSide(
             color: buttonStyleClass.borderColor,
@@ -80,6 +84,8 @@ class ButtonStyleClass {
   double elevation;
   Color? shadowColor;
   Color? iconColor;
+  Color textColor;
+  double textSize;
 
   ButtonStyleClass({
     double? width,
@@ -90,15 +96,19 @@ class ButtonStyleClass {
     Color? backgroundColor,
     Color? borderColor,
     Color? foregroundColor,
+    Color? textColor,
+    double? textSize,
     this.elevation = 0,
     this.shadowColor,
     this.iconColor,
   })  : backgroundColor = backgroundColor ?? AppColors.primary,
         foregroundColor = foregroundColor ?? AppColors.primary,
         borderColor = borderColor ?? AppColors.primary,
+        textColor = textColor ?? AppColors.background,
         height =  setHeightValue(height ?? 50),
         width = width ?? Get.width,
-        radius = radius ?? (AppSizeConstant.kRadius),
+        radius = radius ?? 10,
         horizontalPadding = horizontalPadding ?? (AppSizeConstant.kPadding),
+        textSize = textSize ?? 14,
         verticalPadding = verticalPadding ?? 5;
 }
