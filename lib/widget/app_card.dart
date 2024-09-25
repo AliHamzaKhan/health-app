@@ -46,8 +46,16 @@ class MedicineScheduleCard extends StatelessWidget {
                 ],
               ),
             ),
-            AppIconButton(icon: AssetsConstant.delete, onTap: onDeleteClick),
-            AppIconButton(icon: AssetsConstant.edit, onTap: onEditClick),
+            AppIconButton(
+              icon: AssetsConstant.delete,
+              onTap: onDeleteClick,
+              btnColor: Colors.transparent,
+            ),
+            AppIconButton(
+              icon: AssetsConstant.edit,
+              onTap: onEditClick,
+              btnColor: Colors.transparent,
+            ),
           ],
         ),
         AppLabeledCheckbox(
@@ -98,8 +106,16 @@ class AppointmentScheduleCard extends StatelessWidget {
                 ],
               ),
             ),
-            AppIconButton(icon: AssetsConstant.delete, onTap: onDeleteClick),
-            AppIconButton(icon: AssetsConstant.edit, onTap: onEditClick),
+            AppIconButton(
+              icon: AssetsConstant.delete,
+              onTap: onDeleteClick,
+              btnColor: Colors.transparent,
+            ),
+            AppIconButton(
+              icon: AssetsConstant.edit,
+              onTap: onEditClick,
+              btnColor: Colors.transparent,
+            ),
           ],
         ),
         AppLabeledCheckbox(
@@ -122,7 +138,7 @@ Widget appCard({required Widget child}) {
         horizontal: setWidthValue(30), vertical: setHeightValue(10)),
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppSizeConstant.kCardRadius),
-        border: Border.all(color: AppColors.borderColor)),
+        border: Border.all(color: AppColors.borderColor.withOpacity(0.5))),
     child: child,
   );
 }

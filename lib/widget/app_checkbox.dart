@@ -7,22 +7,24 @@ import 'app_text.dart';
 class AppLabeledCheckbox extends StatefulWidget {
   AppLabeledCheckbox(
       {Key? key,
-      required this.label,
-      required this.value,
-      required this.onChanged,
-      this.checkColor,
-      this.labelSize,
-      this.checkSize,
-      this.scale,
-      this.wrapCrossAlignment,
-      this.centerPadding,
-      this.direction,
-      this.padding,
-      this.horizontalPadding,
-      this.iconRadius,
-      this.overflow,
-      this.textAlign,
-      this.alignment})
+        required this.label,
+        required this.value,
+        required this.onChanged,
+        this.checkColor,
+        this.labelSize,
+        this.checkSize,
+        this.scale,
+        this.wrapCrossAlignment,
+        this.centerPadding = 5,
+        this.direction,
+        this.padding,
+        this.horizontalPadding,
+        this.iconRadius,
+        this.overflow,
+        this.textAlign,
+        this.alignment,
+        this.enable = true
+      })
       : super(key: key);
 
   final String label;
@@ -33,7 +35,7 @@ class AppLabeledCheckbox extends StatefulWidget {
   double? labelSize;
   double? checkSize;
   double? scale;
-  double? centerPadding;
+  double centerPadding;
   double? padding;
   double? horizontalPadding;
   double? iconRadius;
@@ -41,19 +43,25 @@ class AppLabeledCheckbox extends StatefulWidget {
   Axis? direction;
   TextOverflow? overflow;
   TextAlign? textAlign;
+  bool enable;
 
   @override
   State<AppLabeledCheckbox> createState() => _AppLabeledCheckboxState();
 }
+
 class _AppLabeledCheckboxState extends State<AppLabeledCheckbox> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
-        setState(() {
-          widget.value = !widget.value;
-          widget.onChanged(widget.value);
-        });
+        if(widget.enable){
+          setState(() {
+            widget.value = !widget.value;
+            widget.onChanged(widget.value);
+          });
+        }
+
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -63,7 +71,7 @@ class _AppLabeledCheckboxState extends State<AppLabeledCheckbox> {
           clipBehavior: Clip.antiAliasWithSaveLayer,
           direction: widget.direction ?? Axis.horizontal,
           crossAxisAlignment:
-              widget.wrapCrossAlignment ?? WrapCrossAlignment.center,
+          widget.wrapCrossAlignment ?? WrapCrossAlignment.center,
           alignment: widget.alignment ?? WrapAlignment.center,
           // spacing: -10,
           children: <Widget>[
@@ -76,13 +84,19 @@ class _AppLabeledCheckboxState extends State<AppLabeledCheckbox> {
                 activeColor: AppColors.primary,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        setHeightValue(widget.iconRadius ?? 5))),
+                  side: BorderSide(
+                    color: AppColors.background,
+                  ),
+                  borderRadius: BorderRadius.circular(
+                      setHeightValue(widget.iconRadius ?? 5)),
+                ),
                 onChanged: (bool? newValue) {
-                  // setState(() {
-                  //   widget.value = newValue!;
-                  //   widget.onChanged(newValue);
-                  // });
+                  if(widget.enable){
+                    setState(() {
+                      widget.value = !widget.value;
+                      widget.onChanged(widget.value);
+                    });
+                  }
                 },
               ),
             ),
@@ -107,14 +121,14 @@ class _AppLabeledCheckboxState extends State<AppLabeledCheckbox> {
 class PbLabelRadioButton extends StatefulWidget {
   PbLabelRadioButton(
       {Key? key,
-      required this.label,
-      required this.value,
-      required this.onChanged,
-      this.checkColor,
-      this.textSize,
-      this.radioSize,
-      this.centerPadding,
-      this.alignment})
+        required this.label,
+        required this.value,
+        required this.onChanged,
+        this.checkColor,
+        this.textSize,
+        this.radioSize,
+        this.centerPadding,
+        this.alignment})
       : super(key: key);
 
   final String label;
@@ -126,19 +140,19 @@ class PbLabelRadioButton extends StatefulWidget {
   double? radioSize;
   double? centerPadding;
 
-
   @override
   State<PbLabelRadioButton> createState() => _PbLabelRadioButtonState();
 }
+
 class _PbLabelRadioButtonState extends State<PbLabelRadioButton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-       setState(() {
-         widget.value = !widget.value;
-         widget.onChanged(widget.value);
-       });
+        setState(() {
+          widget.value = !widget.value;
+          widget.onChanged(widget.value);
+        });
       },
       child: Wrap(
         direction: Axis.horizontal,
@@ -150,7 +164,7 @@ class _PbLabelRadioButtonState extends State<PbLabelRadioButton> {
             width: setHeightValue(widget.radioSize ?? 30),
             child: Radio(
                 activeColor:
-                    widget.checkColor ?? Theme.of(context).primaryColor,
+                widget.checkColor ?? Theme.of(context).primaryColor,
                 value: widget.value,
                 groupValue: true,
                 onChanged: (bool? newValue) {
@@ -202,6 +216,7 @@ class AppCheckbox extends StatefulWidget {
   @override
   State<AppCheckbox> createState() => _AppCheckboxState();
 }
+
 class _AppCheckboxState extends State<AppCheckbox> {
   @override
   Widget build(BuildContext context) {

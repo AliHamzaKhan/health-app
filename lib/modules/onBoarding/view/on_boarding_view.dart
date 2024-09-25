@@ -143,7 +143,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
           radius: 10
         ),
         onPressed: () {
-          Get.toNamed(AppRoutes.login);
+          Get.toNamed(AppRoutes.userType);
+
         },
       ),
     );

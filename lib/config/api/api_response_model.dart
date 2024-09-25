@@ -1,6 +1,6 @@
 import 'dart:convert';
 import '../../utils/app_print.dart';
-import 'data_parser_service.dart';
+import '../services/data_parser_service.dart';
 
 class ApiResponseModel {
   int? status;

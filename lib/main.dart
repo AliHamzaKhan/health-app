@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ late final FirebaseAuth auth;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setSystemPreference();
   await setupFirebase();
   await Alarm.init();
   await dotenv.load(fileName: ".env");
@@ -55,4 +57,16 @@ Future setupFirebase() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   auth = FirebaseAuth.instanceFor(app: app);
+}
+void setSystemPreference() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.white,
+      statusBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.light
+  ));
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 }

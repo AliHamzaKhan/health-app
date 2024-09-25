@@ -7,72 +7,99 @@ import '../config/enums/date_type_enum.dart';
 import '../config/services/date_parser_service.dart';
 import '../config/size_config.dart';
 import '../config/theme/app_colors.dart';
+import '../constant/app_key_contant.dart';
+import '../constant/assets_contant.dart';
 import '../widget/app_button.dart';
 import '../widget/app_text.dart';
+import 'app_print.dart';
 
-// showDateRangePickerDialogue(context, {required ValueChanged<DateRange?> onDateRangeChanged}) {
-//   showDialog(
-//       context: context,
-//       // barrierColor: AppColors.borderColor,
-//       builder: (_) {
-//         return ConstrainedBox(
-//           constraints: BoxConstraints(
-//             maxWidth: Get.width,
-//             maxHeight: Get.width * 0.9,
-//           ),
-//           child: AlertDialog(
-//             content: DateRangePickerWidget(
-//               height: Get.width,
-//               doubleMonth: false,
-//               maximumDateRangeLength: 10,
-//               minimumDateRangeLength: 1,
-//               initialDateRange: DateRange(
-//                   DateTime.now().subtract(Duration(days: 90)), DateTime.now()),
-//               // disabledDates: [DateTime(2023, 11, 20)],
-//               // initialDisplayedDate: selectedDateRange?.start ?? DateTime.now(),
-//               initialDisplayedDate: DateTime.now(),
-//               onDateRangeChanged: onDateRangeChanged,
-//               theme: CalendarTheme(
-//                 selectedColor: Theme.of(context).primaryColor,
-//                 dayNameTextStyle: appTextStyleBold(context, size: 10),
-//                 inRangeColor: Color(0xFFD9EDFA),
-//                 inRangeTextStyle: appTextStyleRegular(context,
-//                     color: Theme.of(context).primaryColor, size: 13),
-//                 selectedTextStyle:
-//                     appTextStyleRegular(context, color: Colors.white, size: 13),
-//                 todayTextStyle: TextStyle(fontWeight: FontWeight.bold),
-//                 defaultTextStyle: TextStyle(color: Colors.black, fontSize: 12),
-//                 radius: 10,
-//                 tileSize: setWidthValue(90),
-//                 disabledTextStyle: TextStyle(color: Colors.grey),
-//               ),
-//             ),
-//             actions: [
-//               AppButton(
-//                   // isOutline: true,
-//                   title: 'Cancel',
-//                   btnColor: Colors.transparent,
-//                   textColor: Theme.of(context).primaryColor,
-//                   onTap: () {
-//                     Get.back();
-//                   }),
-//               AppButton(
-//                   title: 'OK',
-//                   onTap: () {
-//                     Get.back();
-//                   })
-//             ],
-//           ),
-//         );
-//       });
-// }
+Widget appDateSelectionWidget({
+  required context,
+  required String label,
+  background,
+  radius,
+  borderColor,
+  String? date,
+  DateTime? initialDate,
+  DateTime? firstDate,
+  DateTime? lastDate,
+  required Function(String) onSelectedDate,
+  double labelSize = 16,
+  String? format,
+}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(vertical: setHeightValue(5)),
+    child: GestureDetector(
+      onTap: () async {
+        await appCalendarDialogue(
+            context: context,
+            selectedDate: onSelectedDate,
+            initialDate: initialDate,
+            firstDate: firstDate,
+            lastDate: lastDate,
+            format: format);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppText(
+            title: label,
+            fontSize: labelSize,
+            textType: TextTypeEnum.Medium,
+          ),
+          Stack(
+            alignment: Alignment.centerRight,
+            children: [
+              Container(
+                width: Get.width,
+                // height: setHeightValue(43),
+                padding: const EdgeInsets.only(left: 15,
+                top: 11,
+                  bottom: 11
+                ),
+                margin: EdgeInsets.only(right: setWidthValue(30)),
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                    color: background ?? AppColors.background,
+                    borderRadius: BorderRadius.circular(
+                        setHeightValue(radius ?? 5)),
+                    border: Border.all(
+                        color: borderColor ?? AppColors.accent.withOpacity(0.5),
+                        width: setHeightValue(1))),
+                child: AppText(
+                  title: (date == null || date == '')
+                      ? ''
+                      : dateTimeParserService.dateParser(date,
+                      format: 'EEE MMM dd yyyy'),
+                  fontSize: 18,
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: AppIconButton(
+                  icon: AssetsConstant.time,
+                  onTap: null,
+                  width: 50,
+                  height: 50,
+                  iconColor: Theme.of(context).scaffoldBackgroundColor,
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    ),
+  );
+}
 
 appCalendarDialogue(
     {required context,
-    selectedDate,
-    int? initialDate,
-    int? firstDate,
-    int? lastDate}) async {
+      required Function(String) selectedDate,
+      DateTime? initialDate,
+      DateTime? firstDate,
+      DateTime? lastDate,
+      String? format}) async {
   DateTime? picked = await showDatePicker(
       context: context,
       builder: (context, child) {
@@ -81,21 +108,23 @@ appCalendarDialogue(
               primaryColor: AppColors.primary,
               colorScheme: ColorScheme.light(primary: AppColors.primary),
               buttonTheme:
-                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+              const ButtonThemeData(textTheme: ButtonTextTheme.primary),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
                   foregroundColor:
-                      Colors.teal, // Your desired button text color
+                  Colors.teal, // Your desired button text color
                 ),
               ),
             ),
             child: child!);
       },
-      initialDate: DateTime.now().add(Duration(days: initialDate ?? 0)),
-      firstDate: DateTime.now().add(Duration(days: firstDate ?? 0)),
-      lastDate: DateTime.now().add(Duration(days: lastDate ?? 365)));
+      initialDate: initialDate ?? DateTime.now(),
+      firstDate: firstDate ?? DateTime.now().subtract(Duration(days: 30)),
+      lastDate: lastDate ?? DateTime.now().add(Duration(days: 30)));
+  appDebugPrint('picked ${picked.toString()}');
   if (picked != null) {
-    selectedDate(dateTimeParserService.dateParser(picked.toString()));
+    selectedDate(dateTimeParserService.dateParser(picked.toString(),
+        format: format ?? "EEE MMM dd yyyy"));
   }
 }
 

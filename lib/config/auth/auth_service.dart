@@ -6,8 +6,8 @@ import '../../widget/app_alerts.dart';
 import '../routes/app_routes.dart';
 import '../storage/data_store_service.dart';
 import '../storage/save_data.dart';
-import '../services/api_response_model.dart';
-import '../services/api_service.dart';
+import '../api/api_response_model.dart';
+import '../api/api_service.dart';
 
 class AuthService extends GetxService {
 

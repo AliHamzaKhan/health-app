@@ -9,6 +9,8 @@ import 'package:health_app/widget/app_button.dart';
 import 'package:health_app/widget/app_scaffold.dart';
 import 'package:health_app/widget/app_text.dart';
 
+import '../../../widget/app_widgets.dart';
+
 class OtpScreenView extends StatelessWidget {
   const OtpScreenView({super.key});
 
@@ -22,17 +24,10 @@ class OtpScreenView extends StatelessWidget {
           // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             setHeight(30),
-            AppText(
-              title: 'Verification Code',
-              textType: TextTypeEnum.Bold,
-              fontSize: 20,
-            ),
+            appHeaderText('Verification Code'),
             setHeight(20),
-            AppText(
-              title: 'Verification Code has been sent to your number please paste it here to verify it',
-              textType: TextTypeEnum.Medium,
-              overflow: TextOverflow.clip,
-            ),
+
+            appSubtitleText('Verification Code has been sent to your number please paste it here to verify it'),
             setHeight(20),
             OtpTextField(
               numberOfFields: 5,
@@ -68,6 +63,7 @@ class OtpScreenView extends StatelessWidget {
             AppButton(
                 title: 'Continue',
                 onPressed: () {
+                  Get.toNamed(AppRoutes.setupProfile);
                   Get.toNamed(AppRoutes.app);
                 })
           ],

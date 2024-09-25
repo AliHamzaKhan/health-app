@@ -17,7 +17,7 @@ class AppText extends StatelessWidget {
       this.decorationThickness,
       this.letterSpacing,
       this.color,
-      this.textAlign = TextAlign.left
+      this.textAlign = TextAlign.left, this.maxLines = 1
       });
 
   TextTypeEnum textType;
@@ -30,12 +30,14 @@ class AppText extends StatelessWidget {
   double? letterSpacing;
   Color? color;
   TextAlign textAlign;
+  int maxLines;
   @override
   Widget build(BuildContext context) {
     return Text(
       title,
       style: getStyle(context),
       textAlign: textAlign,
+      maxLines: maxLines,
     );
   }
 
@@ -80,6 +82,7 @@ class AppText extends StatelessWidget {
         decorationThickness: decorationThickness,
         decorationStyle:  decorationStyle,
         letterSpacing: letterSpacing,
+
     );
   }
 }
@@ -151,22 +154,6 @@ Widget TitleSubTitleColumnText(
         overflow: TextOverflow.clip,
         textType: TextTypeEnum.Medium,
       ),
-      // AppTextExtraLight(
-      //   text: head,
-      //   size: headeSize ?? 14,
-      //   // color: AppColors.text2,
-      //   align: TextAlign.left,
-      // ),
-      // setHeight(midPadding),
-      // AppTextRegular(
-      //   text: title,
-      //   size: titleSize ?? 14,
-      //   align: titleTextAlign ?? TextAlign.start,
-      //   color: titleColor,
-      //   maxLines: maxLines,
-      //   overFlow: TextOverflow.clip,
-      //   weight: weight,
-      // )
     ],
   );
 }

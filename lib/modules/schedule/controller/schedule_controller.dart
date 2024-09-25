@@ -13,8 +13,8 @@ class ScheduleController extends GetxController{
 
   loadData(){
     for(int i=0; i<10; i++){
-      medicineSchedulingList.add(MedicineScheduleModel());
-      appointmentSchedulingList.add(AppointmentScheduleModel());
+      medicineSchedulingList.add(MedicineScheduleModel.fromJson({}));
+      appointmentSchedulingList.add(AppointmentScheduleModel.fromJson({}));
     }
   }
   @override

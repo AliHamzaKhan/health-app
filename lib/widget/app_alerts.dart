@@ -1,9 +1,9 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../config/size_config.dart';
 import '../config/theme/app_colors.dart';
+import '../config/theme/button_styles.dart';
 import 'app_button.dart';
 import 'app_text.dart';
 
@@ -41,14 +41,17 @@ class AppAlerts {
   }) async {
     List<Widget> getBtns(BuildContext context) {
       return [
-        AppButton(
-            onPressed: () {
-              Get.back();
-              if (callback != null) {
-                callback();
-              }
-            },
-            title: okText ?? (alertTypes == AlertTypes.warning ? 'Yes' : 'OK'),
+        Expanded(
+          child: AppButton(
+              onPressed: () {
+                Get.back();
+                if (callback != null) {
+                  callback();
+                }
+              },
+              title:
+                  okText ?? (alertTypes == AlertTypes.warning ? 'Yes' : 'OK'),
+              buttonStyleClass: getButtonClass()),
         ),
         if (otherCallback != null &&
             otherActionText != null &&
@@ -57,13 +60,14 @@ class AppAlerts {
             width: 8,
             height: 10,
           ),
-          AppButton(
-            onPressed: () {
-              Get.back();
-              otherCallback();
-            },
-            title: otherActionText,
-
+          Expanded(
+            child: AppButton(
+                onPressed: () {
+                  Get.back();
+                  otherCallback();
+                },
+                title: otherActionText,
+                buttonStyleClass: getButtonClass()),
           ),
         ],
         if (cancelCallback != null) ...[
@@ -71,14 +75,15 @@ class AppAlerts {
             width: 8,
             height: 10,
           ),
-          AppButton(
-            onPressed: () {
-              Get.back();
-              cancelCallback();
-            },
-            title: cancelText ??
-                (alertTypes == AlertTypes.warning ? 'No' : 'Cancel'),
-
+          Expanded(
+            child: AppButton(
+                onPressed: () {
+                  Get.back();
+                  cancelCallback();
+                },
+                title: cancelText ??
+                    (alertTypes == AlertTypes.warning ? 'No' : 'Cancel'),
+                buttonStyleClass: getButtonClass(color: AppColors.danger)),
           ),
         ],
       ];
@@ -91,6 +96,7 @@ class AppAlerts {
         onWillPop: onWillPop,
         title: '',
         titlePadding: const EdgeInsets.all(0),
+        backgroundColor: AppColors.background,
         contentPadding: EdgeInsets.symmetric(
           horizontal: setWidthValue(10),
         ),
@@ -101,95 +107,40 @@ class AppAlerts {
               width: Get.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(height: 5),
-                  if (alertTypes == AlertTypes.warning) ...[
-                    const Icon(
-                      Icons.warning_amber,
-                      size: 40,
-                    )
-                  ] else if (alertTypes == AlertTypes.error) ...[
-                    const Icon(
-                      Icons.error_outline,
-                      size: 40,
-                    )
-                  ] else if (alertTypes == AlertTypes.info) ...[
-                    const Icon(
-                      Icons.info_outline,
-                      size: 40,
-                    )
-                  ] else if (alertTypes == AlertTypes.connectivity) ...[
-                    const Icon(
-                      Icons.wifi,
-                      size: 40,
-                    )
-                  ] else if (alertTypes == AlertTypes.success) ...[
-                    const Icon(
-                      Icons.check_circle_outline,
-                      size: 40,
-                    )
-                  ] else if (alertTypes == AlertTypes.congrats) ...[
-                    const Icon(
-                      Icons.handshake_outlined,
-                      size: 40,
-                    )
-                  ] else if (alertTypes == AlertTypes.logout) ...[
-                    const Icon(
-                      Icons.logout,
-                      size: 40,
-                    )
-                  ] else if (alertTypes == AlertTypes.alert) ...[
-                    const Icon(
-                      Icons.add_alert_outlined,
-                      size: 40,
-                    )
-                  ],
-                  SizedBox(height: setHeightValue(10)),
+                  // getAlertIcon(alertTypes),
+                  // SizedBox(height: setHeightValue(5)),
                   if (title != null && title.isNotEmpty) ...[
                     const SizedBox(height: 5),
-                    Text(
-                      title,
-                      maxLines: 2,
+                    AppText(
+                      title: title,
+                      maxLines: 1,
+                      textType: TextTypeEnum.Medium,
+                      fontSize: 18,
                       textAlign: TextAlign.center,
-                      style: appTextStyleBold(context, size: 18),
-                    ),
+                    )
                   ],
                   if (subTitle != null && subTitle.isNotEmpty) ...[
                     const SizedBox(height: 5),
-                    AppTextBold(
-                        text: subTitle,
-                        align: TextAlign.center,
-                        size: setHeightValue(15),
-                        overFlow: TextOverflow.clip,
-                        maxLines: 3),
+                    AppText(
+                      title: subTitle,
+                      textAlign: TextAlign.center,
+                      fontSize: 14,
+                      overflow: TextOverflow.clip,
+                      maxLines: 3,
+                    ),
                   ],
                   if (message != null && message.isNotEmpty) ...[
                     const SizedBox(height: 5),
-                    Text(
-                      message,
+                    AppText(
+                      title: message,
                       maxLines: 3,
-                      style: appTextStyleMedium(context, size: 18),
+                      fontSize: 14,
                       textAlign: TextAlign.center,
-                    ),
-                  ],
-                  SizedBox(height: setHeightValue(10)),
-                  if (showCheckbox) ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Checkbox(
-                            value: checkBoxValue,
-                            onChanged: (val) {
-                              setState(() {
-                                checkBoxValue = !checkBoxValue;
-                              });
-                              onChangeCallback!.call(val);
-                            }),
-                        const Text('Enable Recurring Payment'),
-                      ],
                     )
                   ],
+
                   SizedBox(height: setHeightValue(10)),
                   getBtns(context).length > 4
                       ? isWeb()
@@ -216,6 +167,34 @@ class AppAlerts {
 
   bool isWeb() {
     return kIsWeb;
+  }
+
+  Widget getAlertIcon(AlertTypes alertTypes) {
+    switch (alertTypes) {
+      case AlertTypes.warning:
+        return const Icon(Icons.warning_amber, size: 40);
+      case AlertTypes.error:
+        return const Icon(Icons.error_outline, size: 40);
+      case AlertTypes.info:
+        return const Icon(Icons.info_outline, size: 40);
+      case AlertTypes.connectivity:
+        return const Icon(Icons.wifi, size: 40);
+      case AlertTypes.success:
+        return const Icon(Icons.check_circle_outline, size: 40);
+      case AlertTypes.congrats:
+        return const Icon(Icons.handshake_outlined, size: 40);
+      case AlertTypes.logout:
+        return const Icon(Icons.logout, size: 40);
+      case AlertTypes.alert:
+        return const Icon(Icons.add_alert_outlined, size: 40);
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
+  ButtonStyleClass getButtonClass({color}) {
+    return ButtonStyleClass(
+        height: 35, backgroundColor: color, foregroundColor: color);
   }
 }
 
@@ -359,4 +338,3 @@ showDialogueApp(context,
 //         );
 //       });
 // }
-

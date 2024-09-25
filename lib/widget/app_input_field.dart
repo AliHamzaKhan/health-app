@@ -247,10 +247,17 @@ Widget appInputWithCustomLabel({
   TextInputType? keyboardType,
   int? maxLines,
   required String label,
+  String hintText = '',
   bool enable = true,
-  double height = 1,
+  double height = 3,
   bool showTitle = true,
   EdgeInsets? margin,
+  isSuffixIcon = false,
+  obSecureText,
+  double textSize = 12,
+  double? radius,
+  TextTypeEnum textType = TextTypeEnum.Regular,
+  EdgeInsets? padding
 }) {
   return Container(
     // padding: EdgeInsets.symmetric(horizontal: setWidthValue(30)),
@@ -260,23 +267,27 @@ Widget appInputWithCustomLabel({
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (showTitle)
-          AppTextRegular(
-            text: '*$label',
-            size: 12,
+          AppText(
+            title: label,
+            fontSize: textSize,
+            textType: textType,
           ),
         setHeight(height),
         AppInputField(
           enable: enable,
-          radius: 20,
-          hintText: label,
+          radius: radius ?? 5,
+          hintText: hintText,
           onChanged: onChanged,
           controller: controller,
           focusNode: focusNode,
           keyboardType: keyboardType,
-          textSize: 14,
+          textSize: 16,
           maxLines: maxLines ?? 1,
-          padding:
-              const EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 7.5),
+          padding: padding ?? EdgeInsets.all(setHeightValue(13)),
+          borderColor: AppColors.accent.withOpacity(0.5),
+          // hintTextSize: 12,
+          isSuffixIcon: isSuffixIcon,
+          obSecureText: obSecureText,
         ),
       ],
     ),

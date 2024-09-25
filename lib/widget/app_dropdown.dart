@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../config/size_config.dart';
 import '../config/theme/app_colors.dart';
+import '../constant/app_key_contant.dart';
 import 'app_text.dart';
 
 //ignore: must_be_immutable
@@ -53,9 +54,10 @@ class AppDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      height: setHeightValue(height ?? 45),
+      // height: setHeightValue(height ?? 45),
       padding: EdgeInsets.symmetric(
         horizontal: setWidthValue(horizontalPadding ?? 30),
+        // vertical: setHeightValue(5)
       ),
       margin: EdgeInsets.symmetric(
           horizontal: setWidthValue(horizontalMargin ?? 30),
@@ -130,7 +132,7 @@ Widget appDropDownWithCustomLabel(
       children: [
         if (showLabel)
           AppTextRegular(
-            text: '*$label',
+            text: label,
             size: 12,
           ),
         AppDropdown(
@@ -147,9 +149,10 @@ Widget appDropDownWithCustomLabel(
           verticalMargin: 0,
           iconColor: AppColors.accent,
           dropdownColor: AppColors.background,
-          radius: radius ?? 20,
+          radius: radius ?? 5,
           hintText: value == '' ? '' : null,
           height: height,
+          
         ),
       ],
     ),
@@ -201,4 +204,56 @@ Widget appDropDownWithCustomLabelWithId(
       ],
     ),
   );
+}
+class DropdownWithTitleColumn extends StatelessWidget {
+  DropdownWithTitleColumn(
+      {super.key,
+        this.text = '',
+        this.textTypeEnum = TextTypeEnum.Medium,
+        this.textSize = 10,
+        required this.items,
+        required this.value,
+        this.hintText,
+        this.background,
+        this.onSelected});
+
+  String text;
+  TextTypeEnum textTypeEnum;
+  double textSize;
+  List<String> items = [];
+  String value;
+  String? hintText;
+  Color? background;
+  Function(String?)? onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (text != '') ...[
+          AppText(
+            title: text,
+            fontSize: textSize,
+            textType: textTypeEnum,
+          )
+        ],
+        setHeight(5),
+        AppDropdown(
+          items: items,
+          onSelected: onSelected,
+          value: value,
+          hintText: hintText ?? 'Select This',
+          borderColor: AppColors.borderColor,
+          height: 40,
+          radius: AppSizeConstant.kCardRadius,
+          isExpanded: true,
+          background: background,
+          textColor: AppColors.text2,
+          // textSize: textSize,
+        )
+      ],
+    );
+  }
 }

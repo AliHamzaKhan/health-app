@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 abstract class AppStringConstant {
   static const String kToken = 'token';
   static const String kCompanyName = 'AhkStudio';
@@ -39,4 +41,8 @@ abstract class AppSizeConstant{
   static const double kCardRadius = 10;
 }
 
+extension View on num {
+  Widget get height => SizedBox(height: toDouble());
 
+  Widget get width => SizedBox(width: toDouble());
+}

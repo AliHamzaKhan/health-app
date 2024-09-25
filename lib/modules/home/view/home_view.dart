@@ -18,18 +18,16 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       scaffoldKey: controller.scaffoldKey,
-      appBar: appBar(
-        context,
-        leadingType: LeadingType.Menu,
-        onLeadingClick: (){
+      appBar: HaAppBar(
+        appBarType: AppBarType.Menu,
+        onMenuClick: () {
           controller.openDrawer();
         },
-          titleWidget: setImage(
-              image: AssetsConstant.appIconTransparent,
-              height: 70,
-              width: 70,
-              fit: BoxFit.contain
-          )),
+        titleWidget: appIconImage(size: Size(200, 200)),
+      ),
+      body: Column(
+        children: [],
+      ),
       drawer: AppDrawer(),
     );
   }

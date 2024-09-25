@@ -2,6 +2,7 @@ abstract class AssetsConstant {
   // images
   static const String appIcon = 'assets/images/app_icon.png';
   static const String appIconTransparent = 'assets/images/icon_transparent.png';
+  static const String userProfileImage = 'assets/images/user_profile.png';
   // icons
 
 

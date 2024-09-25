@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_app/widget/app_text.dart';
+import '../config/routes/app_routes.dart';
 import '../config/size_config.dart';
 import '../constant/assets_contant.dart';
 import 'app_button.dart';
@@ -84,10 +85,10 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actionWidget,
     this.onBackPressed,
     this.onMenuClick,
-    this.title,
     this.titleWidget,
     this.titleText = '',
-    this.backgroundColor
+    this.backgroundColor,
+    this.appbarHeight = 70
   });
 
   AppBarType appBarType;
@@ -96,11 +97,11 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget? actionWidget;
   var onBackPressed;
   var onMenuClick;
-  var onProfileClick;
-  Widget? title;
+  // var onProfileClick;
   Widget? titleWidget;
   String titleText;
   Color? backgroundColor;
+  double appbarHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -141,10 +142,11 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
           (titleWidget ?? AppText(title: titleText ?? '', textType: TextTypeEnum.Bold,)),
 
           actionWidget ??
-
               AppIconButton(
                 icon: AssetsConstant.profile,
-                onTap: onProfileClick,
+                onTap: (){
+                  Get.toNamed(AppRoutes.profile);
+                },
                 width: 30,
                 height: 30,
                 iconSize: 18,
@@ -157,7 +159,7 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size(200, 50);
+  Size get preferredSize => Size(200, appbarHeight);
 }
 
 enum AppBarType { Back, Home, Menu }

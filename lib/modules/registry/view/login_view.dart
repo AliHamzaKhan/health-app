@@ -22,6 +22,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final formkey = GlobalKey<FormState>();
     return AppScaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.all(setHeightValue(30)),
         child: Form(
@@ -30,11 +31,7 @@ class LoginView extends StatelessWidget {
             children: [
               appIconImage(),
               setHeight(70),
-              AppText(
-                title: 'Login',
-                textType: TextTypeEnum.Bold,
-                fontSize: 20,
-              ),
+              appHeaderText('Login'),
               setHeight(40),
               AppInputField(
                 hintText: 'Phone No',

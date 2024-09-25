@@ -13,6 +13,9 @@ import 'package:health_app/modules/monitor_sugar/view/monitor_sugar_view.dart';
 import 'package:health_app/modules/onBoarding/view/on_boarding_view.dart';
 import 'package:health_app/modules/radiology/view/radiology_view.dart';
 import 'package:health_app/modules/registry/view/otp_screen_view.dart';
+import '../../modules/profile/view/profile_view.dart';
+import '../../modules/profile/view/setup_profile_view.dart';
+import '../../modules/registry/view/user_type_view.dart';
 import '../../modules/splash/view/splash_view.dart';
 import '../../modules/registry/view/login_view.dart';
 import '../routes/app_routes.dart';
@@ -30,6 +33,24 @@ abstract class AppPages {
       transitionDuration: screenDuration,
     ),
     GetPage(
+      name: AppRoutes.onBoarding,
+      page: () => OnBoardingView(),
+      transition: appTransition,
+      transitionDuration: screenDuration,
+    ),
+    GetPage(
+      name: AppRoutes.userType,
+      page: () => UserTypeView(),
+      transition: appTransition,
+      transitionDuration: screenDuration,
+    ),
+    GetPage(
+      name: AppRoutes.login,
+      page: () => LoginView(),
+      transition: appTransition,
+      transitionDuration: screenDuration,
+    ),
+    GetPage(
       name: AppRoutes.login,
       page: () => LoginView(),
       transition: appTransition,
@@ -42,15 +63,22 @@ abstract class AppPages {
       transitionDuration: screenDuration,
     ),
 
+
     GetPage(
-      name: AppRoutes.onBoarding,
-      page: () => OnBoardingView(),
+      name: AppRoutes.app,
+      page: () => AppView(),
       transition: appTransition,
       transitionDuration: screenDuration,
     ),
     GetPage(
-      name: AppRoutes.app,
-      page: () => AppView(),
+      name: AppRoutes.profile,
+      page: () => ProfileView(),
+      transition: appTransition,
+      transitionDuration: screenDuration,
+    ),
+    GetPage(
+      name: AppRoutes.setupProfile,
+      page: () => SetupProfileView(),
       transition: appTransition,
       transitionDuration: screenDuration,
     ),

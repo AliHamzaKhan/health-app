@@ -33,7 +33,9 @@ class ScheduleView extends StatelessWidget {
                 color: Theme.of(context).textTheme.bodySmall?.color),
             labelStyle: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColor),
+                color: Theme.of(context).primaryColor,
+                fontSize: 18
+            ),
             tabs: const <Widget>[
               Tab(
                 text: 'Appointment',
