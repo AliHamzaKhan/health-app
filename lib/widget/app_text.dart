@@ -96,6 +96,8 @@ Widget TitleSubTitleText({
   Color? headColor,
   MainAxisAlignment? mainAxisAlignment,
   TextAlign? align,
+  TextOverflow? titleOverFlow,
+  int titleMaxLines = 1
 }) {
   return Row(
     mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.center,
@@ -115,8 +117,9 @@ Widget TitleSubTitleText({
             fontSize: 14,
             color: titleColor,
             textAlign: align ?? TextAlign.start,
-            overflow: TextOverflow.clip,
+            overflow: titleOverFlow ?? TextOverflow.clip,
             textType: TextTypeEnum.Regular,
+            maxLines: titleMaxLines,
           )),
     ],
   );

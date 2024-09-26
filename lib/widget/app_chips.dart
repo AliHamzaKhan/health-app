@@ -59,10 +59,10 @@ class _PbChipsState extends State<AppChips> {
   }
 }
 
-Widget chipWidget(context, {required String title, color}) {
+Widget chipWidget(context, {required String title, Color? color, double? borderRadius}) {
   return Chip(
     shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(setHeightValue(5)),
+        borderRadius: BorderRadius.circular(setHeightValue(borderRadius ?? 5)),
         side: BorderSide(color: color ?? Theme.of(context).primaryColor)),
     side: BorderSide(color: AppColors.accent),
     shadowColor: Colors.transparent,

@@ -13,6 +13,16 @@ import '../widget/app_button.dart';
 import '../widget/app_text.dart';
 import 'app_print.dart';
 
+
+List<String> daysOfWeek = [
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat',
+  'Sun',
+];
 Widget appDateSelectionWidget({
   required context,
   required String label,
@@ -124,7 +134,7 @@ appCalendarDialogue(
   appDebugPrint('picked ${picked.toString()}');
   if (picked != null) {
     selectedDate(dateTimeParserService.dateParser(picked.toString(),
-        format: format ?? "EEE MMM dd yyyy"));
+        format: format ?? "EEE MM dd yyyy"));
   }
 }
 
@@ -181,20 +191,18 @@ Future<DateTime?> pickDateTime(BuildContext context) async {
   );
 
   if (date == null) {
-    return null; // User canceled the date picker
+    return null;
   }
 
-  // Show the time picker after selecting the date
   final TimeOfDay? time = await showTimePicker(
     context: context,
     initialTime: TimeOfDay.fromDateTime(DateTime.now()),
   );
 
   if (time == null) {
-    return null; // User canceled the time picker
+    return null;
   }
 
-  // Combine the selected date and time into a DateTime object
   final DateTime dateTime = DateTime(
     date.year,
     date.month,

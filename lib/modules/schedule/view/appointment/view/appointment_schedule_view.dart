@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:health_app/config/theme/button_styles.dart';
-import 'package:health_app/constant/assets_contant.dart';
-import 'package:health_app/widget/app_button.dart';
 import 'package:health_app/widget/app_scaffold.dart';
+import '../../../../../config/theme/button_styles.dart';
+import '../../../../../constant/assets_contant.dart';
+import '../../../../../widget/app_button.dart';
 import '../../../../../widget/app_card.dart';
 import '../../../controller/schedule_controller.dart';
-import 'add_edit_medicine_view.dart';
+import 'add_edit_appointment_view.dart';
 
-class MedicineScheduleView extends StatelessWidget {
-  MedicineScheduleView({super.key, required this.controller});
+class AppointmentScheduleView extends StatelessWidget {
+  AppointmentScheduleView({super.key, required this.controller});
 
   ScheduleController controller;
 
@@ -18,29 +18,24 @@ class MedicineScheduleView extends StatelessWidget {
     return AppScaffold(
       body: GetBuilder<ScheduleController>(builder: (ScheduleController controller) {
         return ListView.builder(
-            itemCount: controller.medicineSchedulingList.length,
+            itemCount: controller.appointmentSchedulingList.length,
             itemBuilder: (context, index) {
-              var model = controller.medicineSchedulingList[index];
-              return MedicineScheduleCard(
+              var model = controller.appointmentSchedulingList[index];
+              return AppointmentScheduleCard(
                 model: model,
-                onEditClick: (){
-                  Get.to(()=>AddEditMedicineView(), arguments: {
-                    'args' : model
-                  });
+                onDeleteClick: () {},
+                onEditClick: () {
+                  Get.to(() => AddEditAppointmentView(),
+                      arguments: {'args': model})?.then((value){controller.getAppointments();});
                 },
-                onDeleteClick: (){},
-                onNotifyChanged: (value ) {  },
+                onNotifyChanged: (value) {},
               );
             });
       },),
       floatingButton: AppButton(
         title: 'Add',
         onPressed: () {
-          Get.to(()=>AddEditMedicineView(), arguments: {
-            'args' : null
-          })?.then((value){
-            controller.getMedicines();
-          });
+          Get.to(() => AddEditAppointmentView(), arguments: {'args': null})?.then((value){controller.getAppointments();});
         },
         buttonType: ButtonType.Floating,
         icon: AssetsConstant.add,

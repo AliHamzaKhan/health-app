@@ -1,6 +1,7 @@
 
 
 
+import 'package:health_app/utils/app_print.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../model/medicine_schedule_model.dart';
@@ -48,9 +49,9 @@ class MedicineScheduleDB {
   }
 
   Future _createDB(Database db, int version) async {
-    const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
+    const idType = 'TEXT PRIMARY KEY';  // Using UUID, which is a TEXT type
     const textType = 'TEXT NOT NULL';
-    const boolType = 'BOOLEAN NOT NULL';
+    const boolType = 'INTEGER NOT NULL'; // Store booleans as INTEGER (0 or 1)
 
     await db.execute('''
     CREATE TABLE medicine_schedule (
@@ -73,6 +74,7 @@ class MedicineScheduleDB {
 
     final result = await db.query('medicine_schedule');
 
+    appDebugPrint('result $result');
     return result.map((json) => MedicineScheduleModel.fromJson(json)).toList();
   }
 
@@ -87,7 +89,7 @@ class MedicineScheduleDB {
     );
   }
 
-  Future<int> deleteMedicineSchedule(int id) async {
+  Future<int> deleteMedicineSchedule(String id) async {
     final db = await instance.database;
 
     return await db.delete(

@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_app/config/model/medicine_schedule_model.dart';
 import 'package:health_app/config/theme/button_styles.dart';
 import 'package:health_app/utils/app_print.dart';
 import 'package:health_app/widget/app_alerts.dart';
 import 'package:health_app/widget/app_chips.dart';
 import 'package:health_app/widget/app_scaffold.dart';
+import 'package:health_app/widget/app_text.dart';
 import 'package:health_app/widget/app_widgets.dart';
 import '../../../../../config/size_config.dart';
+import '../../../../../config/theme/app_colors.dart';
 import '../../../../../constant/app_key_contant.dart';
 import '../../../../../utils/date_selection.dart';
 import '../../../../../widget/app_appbar.dart';
 import '../../../../../widget/app_button.dart';
 import '../../../../../widget/app_checkbox.dart';
+import '../../../../../widget/app_dialogue.dart';
 import '../../../../../widget/app_input_field.dart';
+import '../controller/add_edit_medicine_controller.dart';
 
 class AddEditMedicineView extends StatelessWidget {
   AddEditMedicineView({super.key});
+
+  var controller = Get.put(AddEditMedicineController());
 
   @override
   Widget build(BuildContext context) {
@@ -25,209 +32,107 @@ class AddEditMedicineView extends StatelessWidget {
       ),
 
       // appBar(context, titleText: 'Add Medicine'),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizeConstant.kPadding),
-        child: Column(
-          children: [
-            AppInputField(
-              hintText: 'Medicine Name',
-              onChanged: (value) {},
-              labelText: 'Medicine Name',
-            ),
-            10.height,
-            AppInputField(
-              hintText: 'Description',
-              onChanged: (value) {},
-              labelText: 'Description',
-              maxLines: 3,
-            ),
-            10.height,
-            AppLabeledCheckbox(
-              label: 'Notify Me',
-              value: true,
-              onChanged: (value) {},
-              centerPadding: 10,
-            ),
-            20.height,
-            AppButton(
-                title: 'Add Time',
-                onPressed: () {
-                  showAddTimeToMedicine(context, onAddClick: (List<String> times) {
-                    appDebugPrint(times);
-                  });
-                },
-                buttonStyleClass: ButtonStyleClass(width: 100, height: 40)),
-            const Spacer(),
-            AppButton(
-                title: 'Save',
-                onPressed: () async {
-                  DateTime? pickedDateTime = await pickDateTime(context);
-                  if (pickedDateTime != null) {
-                    // Do something with the selected date and time
-                    print('Selected DateTime: $pickedDateTime');
+      body: Obx(() => Padding(
+            padding: const EdgeInsets.all(AppSizeConstant.kPadding),
+            child: Column(
+              children: [
+                AppInputField(
+                  hintText: 'Medicine Name',
+                  onChanged: (value) {
+                    controller.model.value.medicineName = value;
+                  },
+                  labelText: 'Medicine Name',
+                  controller: TextEditingController(
+                      text: controller.model.value.medicineName),
+                ),
+                10.height,
+                AppInputField(
+                  hintText: 'Description',
+                  onChanged: (value) {
+                    controller.model.value.description = value;
+                  },
+                  labelText: 'Description',
+                  controller: TextEditingController(
+                      text: controller.model.value.description),
+                  maxLines: 3,
+                ),
+                10.height,
+                AppLabeledCheckbox(
+                  label: 'Notify Me',
+                  value: controller.model.value.notifyMe,
+                  onChanged: (value) {
+                    controller.model.value.notifyMe = value;
+                  },
+                  centerPadding: 10,
+                ),
+                20.height,
+                AppButton(
+                    title: 'Add Time',
+                    onPressed: () {
+                      showAddTimeToMedicine(
+                        context,
+                        selectedTimeDates: controller.model.value.timing,
+                        onAddClick: (List<String> times) {
+                          controller.model.value.timing = times;
+                          controller.model.refresh();
+                          appDebugPrint(times);
+                        },
+                      );
+                    },
+                    buttonStyleClass: ButtonStyleClass(width: 100, height: 40)),
+                if (controller.model.value.timing.isNotEmpty) ...[
+                  getMapDatesListview()
+                ],
+                // const Spacer(),
+                AppButton(title: 'Save', onPressed: () async {
+                  if(controller.model.value.isMedicineEmpty()){
+                    appAlerts.customAlert(
+                      title: 'Error',
+                      subTitle: 'Please fill add fields'
+                    );
                   }
+                  else{
+                    controller.addMedicine();
+                  }
+
                 }),
-            setHeight(20),
-          ],
-        ),
+                setHeight(20),
+              ],
+            ),
+          )),
+    );
+  }
+
+  getMapDatesListview() {
+    var data = controller.groupTimesByDay(controller.model.value.timing);
+    return Expanded(
+      child: ListView.builder(
+        itemCount: daysOfWeek.length,
+        itemBuilder: (context, index) {
+          String day = daysOfWeek[index];
+          List<String> times = data[day] ?? [];
+          return times.isNotEmpty ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppText(
+                title: day,
+                textType: TextTypeEnum.Bold,
+                fontSize: 13,
+              ),
+              Wrap(
+                spacing: 8,
+                children: times.map((time) {
+                  return chipWidget(context, 
+                      title: time, 
+                      borderRadius : 20,
+                      color : AppColors.secondary
+                  );
+                }).toList(),
+              ),
+            ],
+          ) : SizedBox();
+        },
       ),
     );
   }
-}
-
-void showAddTimeToMedicine(BuildContext context, {required Function(List<String>) onAddClick}) {
-  List<String> daysOfWeek = [
-    'Mon', // Changed to abbreviations
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun',
-  ];
-
-  Map<String, bool> selectedDays = {};
-  bool selectAll = false;
-  List<String> timeList = [];
-  List<String> selectedTimes = [];
-
-  List<String> generateTimeList() {
-    List<String> timeList = [];
-    for (int i = 1; i <= 12; i++) {
-      String time = i.toString().padLeft(2, '0');
-      timeList.add('$time:00 AM');
-      timeList.add('$time:00 PM'); // Combine both AM and PM in one loop
-    }
-    return timeList;
-  }
-
-  void addDaysToMap() {
-    for (var day in daysOfWeek) {
-      selectedDays[day] = false;
-    }
-  }
-
-  void toggleSelectAll(setState) {
-    setState(() {
-      selectAll = !selectAll;
-      selectedDays.forEach((key, _) {
-        selectedDays[key] = selectAll;
-      });
-    });
-  }
-
-  List<String> getSelectedDateAndTime() {
-    List<String> selectedDateAndTime = [];
-    selectedDays.forEach((day, isSelected) {
-      if (isSelected) {
-        for (var time in selectedTimes) {
-          selectedDateAndTime.add('$day $time');
-        }
-      }
-    });
-    return selectedDateAndTime;
-  }
-
-  showDialog(
-      context: context,
-      builder: (context) {
-        timeList = generateTimeList();
-        addDaysToMap(); // Initialize days in the map
-        return StatefulBuilder(builder: (context, setState) {
-          return AlertDialog(
-              contentPadding: EdgeInsets.zero,
-              insetPadding: EdgeInsets.zero,
-              titlePadding: EdgeInsets.zero,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              content: IntrinsicHeight(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.98,
-                  alignment: Alignment.topCenter,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 10,
-                  ),
-                  child: Column(
-                    children: [
-                      appHeaderText('Add Time'),
-                      const SizedBox(height: 20), // Use SizedBox for spacing
-                      AppLabeledCheckbox(
-                        label: 'Select All',
-                        value: selectAll,
-                        onChanged: (value) {
-                          toggleSelectAll(setState);
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: daysOfWeek.map((day) {
-                            return Padding(
-                              padding: const EdgeInsets.all(3),
-                              child: FilterChip(
-                                selectedColor: Colors.green.shade300,
-                                disabledColor: Colors.green.shade100,
-                                label: Text(day),
-                                selected: selectedDays[day] ?? false,
-                                onSelected: (value) {
-                                  setState(() {
-                                    selectedDays[day] = value;
-                                  });
-                                },
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Wrap(
-                        children: timeList.map((time) {
-                          bool isSelected = selectedTimes.contains(time);
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 3),
-                            child: AppChips(
-                              label: time,
-                              value: isSelected,
-                              onTap: (value) {
-                                setState(() {
-                                  if (value) {
-                                    selectedTimes.add(time);
-                                  } else {
-                                    selectedTimes.remove(time);
-                                  }
-                                });
-                              },
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      AppButton(
-                        title: 'Add',
-                        onPressed: () {
-                          if (selectedTimes.isEmpty || selectedDays.values.every((isSelected) => !isSelected)) {
-                            appAlerts.customAlert(
-                              title: 'Error',
-                              subTitle: 'Please select at least one time and day',
-                            );
-                          } else {
-                            onAddClick(getSelectedDateAndTime());
-                            Get.back();
-                          }
-                        },
-                        buttonStyleClass: ButtonStyleClass(
-                          width: 100,
-                          height: 35,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ));
-        });
-      });
 }

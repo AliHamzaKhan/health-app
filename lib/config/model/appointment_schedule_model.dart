@@ -1,9 +1,6 @@
-
-
-
 import 'package:health_app/config/services/data_parser_service.dart';
 
-class AppointmentScheduleModel{
+class AppointmentScheduleModel {
   String id;
   String doctorName;
   String hospitalName;
@@ -23,8 +20,7 @@ class AppointmentScheduleModel{
   });
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
+    Map<String, dynamic> data = {
       'doctorName': doctorName,
       'hospitalName': hospitalName,
       'date': date,
@@ -32,9 +28,12 @@ class AppointmentScheduleModel{
       'address': address,
       'notifyMe': notifyMe ? 1 : 0, // SQLite doesn't support boolean directly
     };
+    if (id.trim().isNotEmpty) {
+      data['id'] = id;
+    }
+    return data;
   }
 
-  // Create an object from JSON (Map<String, dynamic>)
   static AppointmentScheduleModel fromJson(Map<String, dynamic> json) {
     return AppointmentScheduleModel(
       id: dataParser.getString(json['id']),
@@ -45,5 +44,13 @@ class AppointmentScheduleModel{
       address: dataParser.getString(json['address']),
       notifyMe: dataParser.getBool(json['notifyMe']),
     );
+  }
+
+  bool isAppointmentEmpty() {
+    return doctorName.trim().isEmpty ||
+        hospitalName.trim().isEmpty ||
+        date.trim().isEmpty ||
+        description.trim().isEmpty ||
+        address.trim().isEmpty;
   }
 }

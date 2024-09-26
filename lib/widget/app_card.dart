@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:health_app/config/size_config.dart';
 import 'package:health_app/config/theme/app_colors.dart';
 import 'package:health_app/constant/assets_contant.dart';
+import 'package:health_app/utils/app_print.dart';
 import 'package:health_app/widget/app_button.dart';
 import '../config/model/appointment_schedule_model.dart';
 import '../config/model/medicine_schedule_model.dart';
@@ -38,10 +39,14 @@ class MedicineScheduleCard extends StatelessWidget {
             Expanded(
               child: Column(
                 children: [
-                  TitleSubTitleText(head: 'Medicine', title: 'Panadol'),
-                  TitleSubTitleText(head: 'Timing', title: '2am'),
                   TitleSubTitleText(
-                      head: 'Description', title: 'every 2 hours'),
+                      head: 'Medicine', title: model.medicineName),
+                  TitleSubTitleText(head: 'Timing', title: model.description),
+                  TitleSubTitleText(
+                      head: 'Description',
+                      title: formatTimingList(model.timing),
+                      titleOverFlow: TextOverflow.clip,
+                      titleMaxLines: 3),
                   setHeight(10),
                 ],
               ),
@@ -66,6 +71,51 @@ class MedicineScheduleCard extends StatelessWidget {
         ),
       ],
     ));
+  }
+
+  String formatTimingList(List<String> timingList) {
+    // Create a map to group timings by day
+    Map<String, List<String>> groupedTimings = {};
+
+    // Group timings by day
+    for (var timing in timingList) {
+      print('Processing timing: $timing'); // Debug print
+
+      // Use a regular expression to capture day and time properly
+      var match =
+          RegExp(r'(\w{3})\s+([\d:]+)\s+(AM|PM)').firstMatch(timing.trim());
+
+      if (match != null) {
+        String day = match.group(1)!; // Day (e.g., Thu)
+        String time =
+            match.group(2)! + ' ' + match.group(3)!; // Time (e.g., 01:00 PM)
+
+        // Add the time to the appropriate day in the map
+        if (!groupedTimings.containsKey(day)) {
+          groupedTimings[day] = [];
+        }
+        groupedTimings[day]!.add(time);
+      } else {
+        // Debug print if the format is unexpected
+        print('Unexpected format for timing: $timing');
+      }
+    }
+
+    // Check if any timings were grouped
+    if (groupedTimings.isEmpty) {
+      return 'No timings available';
+    }
+
+    // Build the formatted string
+    List<String> formattedList = [];
+    groupedTimings.forEach((day, times) {
+      // Join times with a comma
+      String timeString = times.join(', ');
+      formattedList.add('$day($timeString)'); // Format as "Day(Time1, Time2)"
+    });
+
+    // Join all day strings with a space
+    return formattedList.join(' ');
   }
 }
 
@@ -95,13 +145,13 @@ class AppointmentScheduleCard extends StatelessWidget {
             Expanded(
               child: Column(
                 children: [
-                  TitleSubTitleText(head: 'Doctor', title: 'name'),
-                  TitleSubTitleText(head: 'Hospital', title: 'name'),
-                  TitleSubTitleText(head: 'Date', title: '2am'),
+                  TitleSubTitleText(head: 'Doctor', title: model.doctorName),
+                  TitleSubTitleText(head: 'Hospital', title: model.hospitalName),
+                  TitleSubTitleText(head: 'Date', title: model.date),
                   TitleSubTitleText(
-                      head: 'Description', title: 'every 2 hours'),
+                      head: 'Description', title: model.description),
                   TitleSubTitleText(
-                      head: 'Hospital Address', title: 'every 2 hours'),
+                      head: 'Hospital Address', title: model.address),
                   setHeight(10),
                 ],
               ),
@@ -120,7 +170,7 @@ class AppointmentScheduleCard extends StatelessWidget {
         ),
         AppLabeledCheckbox(
           label: 'Notify Me',
-          value: true,
+          value: model.notifyMe,
           onChanged: onNotifyChanged,
           centerPadding: 10,
         ),

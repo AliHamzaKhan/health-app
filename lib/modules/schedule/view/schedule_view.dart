@@ -5,7 +5,7 @@ import 'package:health_app/widget/app_scaffold.dart';
 import 'package:health_app/widget/app_text.dart';
 import '../../../widget/app_appbar.dart';
 import '../controller/schedule_controller.dart';
-import 'appointment/appointment_schedule_view.dart';
+import 'appointment/view/appointment_schedule_view.dart';
 import 'medicine/view/medicine_schedule_view.dart';
 
 class ScheduleView extends StatelessWidget {
