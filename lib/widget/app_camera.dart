@@ -15,7 +15,8 @@ class AppCamera extends StatelessWidget {
   // Controller should be initialized once in the constructor or via a method
   final AppCameraController controller = Get.put(AppCameraController());
 
-  AppCamera({super.key,required this.onImageClick});
+  AppCamera({super.key, required this.onImageClick});
+
   Function(File) onImageClick;
 
   @override
@@ -58,15 +59,18 @@ class AppCamera extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                              child:
-                                  AppButton(title: 'Retake', onPressed: () {
+                              child: AppButton(
+                                  title: 'Retake',
+                                  onPressed: () {
                                     controller.imageFile = null;
                                   })),
                           setWidth(10),
                           Expanded(
-                              child:
-                                  AppButton(title: 'Check', onPressed: () {
-                                    onImageClick(File(controller.imageFile!.value.path));
+                              child: AppButton(
+                                  title: 'Check',
+                                  onPressed: () {
+                                    onImageClick(
+                                        File(controller.imageFile!.value.path));
                                   })),
                         ],
                       ),
@@ -206,8 +210,7 @@ class AppCameraController extends GetxController
     }
   }
 
-  Future<void> initializeCameraController(
-      CameraDescription cameraDescription) async {
+  Future<void> initializeCameraController(CameraDescription cameraDescription) async {
     final CameraController controller = CameraController(
       cameraDescription,
       kIsWeb ? ResolutionPreset.max : ResolutionPreset.medium,
@@ -241,6 +244,7 @@ class AppCameraController extends GetxController
             .getMinZoomLevel()
             .then((double value) => minAvailableZoom = value),
       ]);
+      cameraController = controller;
     } on CameraException catch (e) {
       handleCameraException(e);
     }
@@ -328,15 +332,19 @@ class AppCameraController extends GetxController
   Future<void> onCameraChange() async {
     if (cameraController == null) return;
 
-    final cameras = await availableCameras();
-    final currentIndex = cameras.indexOf(cameraController!.description);
+    try {
+      final cameras = await availableCameras();
 
-    // Determine the next camera index
-    final nextIndex = (currentIndex + 1) % cameras.length;
-    final newCameraDescription = cameras[nextIndex];
+      appDebugPrint('cameras_length ${cameras.length}');
+      final currentIndex = cameras.indexOf(cameraController!.description);
 
-    // Reinitialize the camera controller with the new camera
-    await initializeCameraController(newCameraDescription);
+      // Determine the next camera index
+      final nextIndex = (currentIndex + 1) % cameras.length;
+      final newCameraDescription = cameras[nextIndex];
+      await initializeCameraController(newCameraDescription);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future<void> onPictureClick() async {

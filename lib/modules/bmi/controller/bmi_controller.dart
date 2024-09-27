@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_app/config/services/data_parser_service.dart';
 
+import '../../../config/theme/bmi_values.dart';
+
 class BmiController extends GetxController {
   var weightUnitList = ['kg', 'lbs'].obs;
   var heightUnitList = ['cm', 'ft/in'];
@@ -17,8 +19,7 @@ class BmiController extends GetxController {
 
   void calculateBMI() {
     if (heightCm > 0) {
-      bmi.value =
-          weightKg.value / ((heightCm.value / 100) * (heightCm.value / 100));
+      bmi.value = weightKg.value / ((heightCm.value / 100) * (heightCm.value / 100));
     } else {
       bmi.value = 0.0;
     }
@@ -43,7 +44,7 @@ class BmiController extends GetxController {
         heightInches.value = (cm / 2.54) % 12;
       }
     } else if (unit == 'ft/in') {
-      var parts = value.split('.'); // Splitting by dot for feet and inches
+      var parts = value.split(RegExp(r'[.,\/\\;! ]+')); // Splitting by dot for feet and inches
       if (parts.length == 2) {
         var feet = dataParser.getDouble(parts[0]);
         var inches = dataParser.getDouble(parts[1]);
@@ -56,16 +57,19 @@ class BmiController extends GetxController {
     }
   }
   Color getBMIcolor(){
-    var color = Colors.grey; // Default color
-    if (bmi >= 30) {
-      color = Colors.red; // Obese
-    } else if (bmi >= 25) {
-      color = Colors.orange; // Overweight
-    } else if (bmi >= 18.5) {
-      color = Colors.green; // Normal
+    // var color = Colors.grey; // Default color
+    Color color = resultsColor[4]; // Severe Obesity
+
+    if (bmi.value >= 30) {
+      color = resultsColor[3]; // Obesity
+    } else if (bmi.value >= 25) {
+      color = resultsColor[2]; // Overweight
+    } else if (bmi.value >= 18.5) {
+      color = resultsColor[1]; // Normal weight
     } else {
-      color = Colors.blue; // Underweight
+      color = resultsColor[0]; // Underweight
     }
     return color;
   }
 }
+
