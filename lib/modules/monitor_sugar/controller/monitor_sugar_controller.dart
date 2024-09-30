@@ -66,7 +66,7 @@ class MonitorSugarController extends GetxController {
           "Your sugar levels are slightly elevated. Consider monitoring closely.";
     } else {
       insight =
-          "Your sugar levels are high. It's advisable to consult with a healthcare provider.";
+      "Your sugar levels are high. It's advisable to consult with a healthcare provider.";
     }
 
     return GlucoseInsight(

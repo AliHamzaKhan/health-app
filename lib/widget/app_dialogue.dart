@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../config/services/data_parser_service.dart';
 import '../config/theme/button_styles.dart';
+import '../modules/monitor_sugar/controller/monitor_sugar_controller.dart';
 import '../utils/app_print.dart';
 import '../utils/date_selection.dart';
 import 'app_alerts.dart';
 import 'app_button.dart';
 import 'app_checkbox.dart';
 import 'app_chips.dart';
+import 'app_input_field.dart';
 import 'app_widgets.dart';
 
 void showAddTimeToMedicine(
@@ -186,4 +189,85 @@ void showAddTimeToMedicine(
       });
     },
   );
+}
+
+addSugarDialogue(context, {required Function(GlucoseType, double) onAddClick}) {
+  GlucoseType selected = GlucoseType.fasting;
+  var sugarValue = 0.0;
+  showDialog(
+      context: context,
+      builder: (_) {
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.zero,
+            insetPadding: EdgeInsets.zero,
+            titlePadding: EdgeInsets.zero,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            content: IntrinsicHeight(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.98,
+                alignment: Alignment.topCenter,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
+                ),
+                child: Column(
+                  children: [
+                    appHeaderText('Add Your Sugar Level'),
+                    const SizedBox(height: 20),
+                    appInputWithCustomLabel(
+                        label: 'Sugar *mg/dl',
+                        hintText: '*mg/dl',
+                        keyboardType: const TextInputType.numberWithOptions(),
+                        controller: TextEditingController(),
+                        onChanged: (value) {
+                          sugarValue = dataParser.getDouble(value);
+                        }),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: GlucoseType.values
+                          .map((e) => Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: AppChips(
+                                    label: e.name,
+                                    value: selected == e,
+                                    fontSize: 15,
+                                    padding:
+                                        const EdgeInsets.symmetric(horizontal: 10),
+                                    onTap: (value) {
+                                      setState(() {
+                                        selected = e;
+                                      });
+                                    }),
+                              ))
+                          .toList(),
+                    ),
+                    AppButton(
+                      title: 'Add Sugar',
+                      onPressed: () {
+                        if (sugarValue > 0.0) {
+                          onAddClick(selected, sugarValue);
+                        } else {
+                          appAlerts.customAlert(
+                            title: 'Error',
+                            subTitle: 'Please add sugar value',
+                          );
+                        }
+                      },
+                      buttonStyleClass: ButtonStyleClass(
+                        width: 100,
+                        height: 35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+      });
 }

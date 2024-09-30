@@ -75,6 +75,7 @@ dependencies:
   alarm: ^3.1.5
   uuid: ^4.5.0
   pie_chart: ^5.4.0
+  animated_text_kit: ^4.2.2
 
 
 dev_dependencies:

@@ -30,7 +30,7 @@ class AppChips extends StatefulWidget {
 class _PbChipsState extends State<AppChips> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         setState(() {
           widget.value = !widget.value;
