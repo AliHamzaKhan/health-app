@@ -40,15 +40,15 @@ class AuthService extends GetxService {
   }
 
   logoutApiCall() async {
-    ApiResponseModel response =
-        await APIService().get(endpoint: UrlEndPoints.Logout, params: {
-      'token': saveData.getToken(),
-    });
-    appDebugPrint(response);
+    // ApiResponseModel response =
+    //     await APIService().get(endpoint: UrlEndPoints.Logout, params: {
+    //   'token': saveData.getToken(),
+    // });
+    // appDebugPrint(response);
   }
 
   logout() async {
-    await logoutApiCall();
+    // await logoutApiCall();
     saveData.clearAll();
     Get.offAllNamed(AppRoutes.login);
     dataStore.clearData();

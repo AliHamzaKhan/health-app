@@ -44,10 +44,10 @@ class LoginView extends StatelessWidget {
               AppButton(
                 title: 'Continue',
                 onPressed: () {
-                  // if(formkey.currentState!.validate()){
-                  //   controller.login();
-                  // }
-                  Get.toNamed(AppRoutes.otp);
+                  if(formkey.currentState!.validate()){
+                    controller.login();
+                  }
+                  // controller.login();
                 },
                 buttonStyleClass:
                     ButtonStyleClass(width: Get.width, height: 50),

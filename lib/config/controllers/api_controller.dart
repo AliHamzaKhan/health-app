@@ -9,4 +9,6 @@ class ApiController extends GetxService {
 
   Future saveProfile() async{}
   Future getProfile() async{}
+  Future processData() async{}
+  Future getProcessData() async{}
 }

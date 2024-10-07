@@ -1,7 +1,7 @@
 
 
 class AppEnvironment {
-  static final String _env = String.fromEnvironment('ENV', defaultValue: ApiEnvironmentEnum.Prod.value);
+  static final String _env = String.fromEnvironment('ENV', defaultValue: ApiEnvironmentEnum.Debug.value);
 
   static String env() {
     return _env;
@@ -14,7 +14,7 @@ class AppEnvironment {
       case 'staging':
         return 'http://203.128.254.251:1949/api/';
       case 'debug':
-        return 'https://teletixapp.crescenttrack.com:8888/api';
+        return 'http://172.17.0.214:8000/';
       default:
         return '';
     }
