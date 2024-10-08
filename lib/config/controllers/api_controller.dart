@@ -61,12 +61,11 @@ class ApiController extends GetxService {
     return dataProcess;
   }
 
-  Future<List<DataProcessModel>> getProcessData(
-      {AiRequestTypeEnum? requestType}) async {
+  Future<List<DataProcessModel>> getProcessData({AiRequestTypeEnum? requestType}) async {
     List<DataProcessModel> dataProcess = [];
     String userId = authService.saveData.getId();
-    Map<String, dynamic> data = {'userId': userId};
-    if (requestType != null) {
+    Map<String, dynamic> data = {'userId': '121221'};
+    if (requestType != null && requestType != AiRequestTypeEnum.none) {
       data['ai_request_type'] = requestType.value;
     }
     ApiResponseModel response = await apiService.post(

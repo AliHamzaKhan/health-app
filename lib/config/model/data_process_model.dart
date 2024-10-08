@@ -10,6 +10,7 @@ class DataProcessModel {
   String userId;
   String prompt;
   String imageUrl;
+  int tokenUsed;
   AiGeneratedTextModel aiGeneratedText;
   AiRequestTypeEnum requestType;
 
@@ -18,6 +19,7 @@ class DataProcessModel {
     required this.userId,
     required this.prompt,
     required this.imageUrl,
+    required this.tokenUsed,
     required this.aiGeneratedText,
     required this.requestType,
   });
@@ -28,6 +30,7 @@ class DataProcessModel {
       userId: dataParser.getString(json['userId']),
       prompt: dataParser.getString(json['prompt']),
       imageUrl: dataParser.getString(json['imageUrl']),
+      tokenUsed: dataParser.getInt(json['tokenUsed']),
       aiGeneratedText: AiGeneratedTextModel.fromJson(json['aiGeneratedText'] ?? {}),
       requestType: getAiRequestTypeEnum(json['requestType'] ?? ''),
     );
@@ -39,6 +42,7 @@ class DataProcessModel {
       'userId': userId,
       'prompt': prompt,
       'imageUrl': imageUrl,
+      'tokenUsed': tokenUsed,
       'aiGeneratedText': aiGeneratedText.toJson(),
       'requestType': requestType.value,
     };
@@ -55,4 +59,5 @@ DataProcessModel tempDataDataProcessModel = DataProcessModel(
         treatment: 'to much blood loss early seek treatment',
         doctorsRecommended: ['Hemothologist', 'General_physician'],
         suggestions: ['eat cheeries', 'spanish', 'pomogrenate']),
-    requestType: AiRequestTypeEnum.ecgReport);
+    requestType: AiRequestTypeEnum.ecgReport,
+    tokenUsed: 686);

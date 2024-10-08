@@ -166,7 +166,8 @@ class APIService {
       if (!disableLoading) AppLoader.showLoading();
       headers ??= {};
       String url = "${AppEnvironment.apiUrl()}$endpoint";
-
+      appDebugPrint(url);
+      appDebugPrint(body);
       http.Response response = await http.post(
         Uri.parse(url),
         headers: {...headers, ..._setHeaders()},

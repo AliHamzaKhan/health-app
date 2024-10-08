@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:health_app/config/model/data_process_model.dart';
 import 'package:health_app/config/size_config.dart';
 import 'package:health_app/config/theme/app_colors.dart';
 import 'package:health_app/constant/assets_contant.dart';
 import 'package:health_app/utils/app_print.dart';
 import 'package:health_app/widget/app_button.dart';
+import 'package:health_app/widget/app_image.dart';
 import '../config/model/appointment_schedule_model.dart';
 import '../config/model/medicine_schedule_model.dart';
+import '../config/theme/button_styles.dart';
 import '../constant/app_key_contant.dart';
 import 'app_checkbox.dart';
 import 'app_text.dart';
@@ -146,7 +149,8 @@ class AppointmentScheduleCard extends StatelessWidget {
               child: Column(
                 children: [
                   TitleSubTitleText(head: 'Doctor', title: model.doctorName),
-                  TitleSubTitleText(head: 'Hospital', title: model.hospitalName),
+                  TitleSubTitleText(
+                      head: 'Hospital', title: model.hospitalName),
                   TitleSubTitleText(head: 'Date', title: model.date),
                   TitleSubTitleText(
                       head: 'Description', title: model.description),
@@ -179,13 +183,140 @@ class AppointmentScheduleCard extends StatelessWidget {
   }
 }
 
-Widget appCard({required Widget child}) {
+class DoctorRecommendedCard extends StatelessWidget {
+  DoctorRecommendedCard(
+      {super.key, required this.name, required this.onFindDoctors});
+
+  String name;
+  Function(String) onFindDoctors;
+
+  @override
+  Widget build(BuildContext context) {
+    return appCard(
+      child: Row(
+        children: [
+          Expanded(child: AppText(title: name)),
+          IntrinsicWidth(
+            child: AppButton(
+              title: 'Find Doctors',
+              onPressed: () {
+                onFindDoctors(name);
+              },
+              buttonStyleClass: ButtonStyleClass(
+                height: 30,
+                width: 60,
+                textSize: 15,
+                horizontalPadding: 0,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class SuggestionsCard extends StatelessWidget {
+  SuggestionsCard({super.key, required this.name});
+
+  String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return appCard(
+        margin: EdgeInsets.symmetric(
+            horizontal: setWidthValue(30), vertical: setHeightValue(3)),
+        child: AppText(
+            title: name,
+            overflow: TextOverflow.clip,
+        ));
+  }
+}
+
+class DataProcessCard extends StatelessWidget {
+  DataProcessCard({super.key, required this.model, this.onClick});
+
+  DataProcessModel model;
+  Function()? onClick;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onClick,
+      child: appCard(
+          child: Column(
+        children: [
+          Row(
+            children: [
+              ImageDisplay(image: AssetsConstant.gallery, size: Size(50, 50)),
+              Spacer(),
+              IntrinsicWidth(
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: setWidthValue(20),
+                      vertical: setHeightValue(3)),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: TitleSubTitleText(
+                    head: 'Token Used',
+                    title: model.tokenUsed.toString(),
+                    headColor: Theme.of(context).scaffoldBackgroundColor,
+                    titleColor: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                ),
+              )
+            ],
+          ),
+          TitleSubTitleText(
+            head: 'Diagnosis',
+            title: model.aiGeneratedText.diagnosis,
+          ),
+          TitleSubTitleText(
+            head: 'Treatment',
+            title: model.aiGeneratedText.treatment,
+          ),
+          TitleSubTitleText(
+            head: 'Doctors Recommended',
+            title: model.aiGeneratedText.doctorsRecommended.toString(),
+          ),
+          TitleSubTitleText(
+            head: 'Suggestions',
+            title: model.aiGeneratedText.suggestions.toString(),
+          ),
+        ],
+      )),
+    );
+  }
+}
+
+class LatestNewsCard extends StatelessWidget {
+  const LatestNewsCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: Get.width,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppSizeConstant.kCardRadius),
+          border: Border.all(color: AppColors.borderColor.withOpacity(0.5))),
+    );
+  }
+}
+
+
+Widget appCard(
+    {required Widget child,
+      EdgeInsets? margin,
+      EdgeInsets? padding}) {
   return Container(
     width: Get.width,
-    padding: EdgeInsets.symmetric(
-        horizontal: setWidthValue(30), vertical: setHeightValue(10)),
-    margin: EdgeInsets.symmetric(
-        horizontal: setWidthValue(30), vertical: setHeightValue(10)),
+    padding: padding ??
+        EdgeInsets.symmetric(
+            horizontal: setWidthValue(30), vertical: setHeightValue(10)),
+    margin: margin ??
+        EdgeInsets.symmetric(
+            horizontal: setWidthValue(30), vertical: setHeightValue(10)),
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppSizeConstant.kCardRadius),
         border: Border.all(color: AppColors.borderColor.withOpacity(0.5))),

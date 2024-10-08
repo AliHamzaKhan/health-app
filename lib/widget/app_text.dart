@@ -89,7 +89,7 @@ class AppText extends StatelessWidget {
 Widget TitleSubTitleText({
   required String head,
   required String title,
-  maxLines,
+  // maxLines,
   CrossAxisAlignment? crossAxisAlignment,
   int? headFlex,
   Color? titleColor,

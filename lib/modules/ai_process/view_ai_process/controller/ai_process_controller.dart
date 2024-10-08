@@ -8,7 +8,8 @@ class AiProcessController extends GetxController{
   Rx<DataProcessModel> dataProcessModel = DataProcessModel.fromJson({}).obs;
 
   getData(){
-    dataProcessModel(tempDataDataProcessModel);
+    dataProcessModel.value = Get.arguments['args'] ?? DataProcessModel.fromJson({});
+    // dataProcessModel(tempDataDataProcessModel);
   }
   @override
   void onInit() {

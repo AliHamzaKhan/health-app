@@ -9,6 +9,7 @@ abstract class AppRoutes {
   static const String profile = '/profile';
   static const String setupProfile = '/setup_profile';
   static const String aiProcess = '/ai_process';
+  static const String aiProcessListing = '/ai_process_listing';
 
   static const String ecg = '/ecg';
   static const String bmi = '/bmi';

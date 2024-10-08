@@ -114,7 +114,7 @@ class ApiResponseModel {
   factory ApiResponseModel.fromMap(Map<String, dynamic> map) {
     return ApiResponseModel(
       isSuccess: dataParser.getBool(map['success']),
-      data: dataParser.getMap(map['data']),
+      data: dataParser.getMap(map['data'] ?? {}),
       message: dataParser.getString(map['message']),
     );
   }

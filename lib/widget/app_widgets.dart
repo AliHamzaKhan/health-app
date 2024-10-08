@@ -37,3 +37,4 @@ Widget appSubtitleText(String title){
     textAlign: TextAlign.center,
   );
 }
+

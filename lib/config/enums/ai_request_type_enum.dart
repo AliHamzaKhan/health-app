@@ -5,7 +5,8 @@ enum AiRequestTypeEnum {
   bloodTest("Blood_Test"),
   radiologyReport("Radiology_Report"),
   ecgReport("ECG_Report"),
-  eegReport("EEG_Report");
+  eegReport("EEG_Report"),
+  none("none");
 
   final String value;
   const AiRequestTypeEnum(this.value);

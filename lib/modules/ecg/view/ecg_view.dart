@@ -18,10 +18,9 @@ class EcgView extends StatelessWidget {
       appBar: HaAppBar(
         titleText: 'ECG Reader',
         actionType: AppBarActionType.Ai,
-        onActionClick: (){
-            Get.toNamed(AppRoutes.aiProcess, arguments: {
-
-            });
+        onActionClick: () {
+          Get.toNamed(AppRoutes.aiProcessListing,
+              arguments: {'args': AiRequestTypeEnum.ecgReport});
         },
       ),
       body: AppCamera(
