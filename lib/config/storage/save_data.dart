@@ -6,7 +6,7 @@ import 'data_store_service.dart';
 
 class SaveData {
   void saveAll({
-    int? id,
+    String? id,
     String? name,
     String? email,
     String? token,
@@ -16,6 +16,9 @@ class SaveData {
     String? password,
     bool? isDarkTheme,
   }) {
+    if(id != null){
+      saveId(id);
+    }
     if (name != null) {
       saveName(name);
     }
@@ -44,6 +47,9 @@ class SaveData {
 
   // Save methods
 
+  void saveId(String name) {
+    dataStore.setString(AppKeyConstant.kId, name);
+  }
   void saveName(String name) {
     dataStore.setString(AppKeyConstant.kName, name);
   }
@@ -78,6 +84,9 @@ class SaveData {
 
   // Retrieve methods
 
+  String getId() {
+    return dataStore.getString(AppKeyConstant.kId) ?? '';
+  }
 
   String getName() {
     return dataStore.getString(AppKeyConstant.kName) ?? '';

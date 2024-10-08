@@ -1,6 +1,9 @@
 import 'package:health_app/config/services/data_parser_service.dart';
 
-class UserModel {
+List<UserProfile> userProfileList(List value) =>
+    value.map((json) => UserProfile.fromJson(json)).toList();
+
+class UserProfile {
   String id;
   String firstName;
   String lastName;
@@ -8,6 +11,7 @@ class UserModel {
   String phoneNo;
   String dob;
   String country;
+  String city;
   String gender;
   String profileImage;
   bool isVerified;
@@ -15,8 +19,7 @@ class UserModel {
   double usage;
   int userTypeId;
 
-  // Constructor
-  UserModel({
+  UserProfile({
     required this.id,
     required this.firstName,
     required this.lastName,
@@ -24,6 +27,7 @@ class UserModel {
     required this.phoneNo,
     required this.dob,
     required this.country,
+    required this.city,
     required this.gender,
     required this.profileImage,
     required this.isVerified,
@@ -32,41 +36,44 @@ class UserModel {
     required this.userTypeId,
   });
 
-  // fromJson: Create a UserModel from JSON data
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    return UserProfile(
       id: dataParser.getString(json['id']),
-      firstName: dataParser.getString(json['firstName']),
-      lastName: dataParser.getString(json['lastName']),
+      firstName: dataParser.getString(json['first_name']),
+      lastName: dataParser.getString(json['last_name']),
       email: dataParser.getString(json['email']),
-      phoneNo: dataParser.getString(json['phoneNo']),
+      phoneNo: dataParser.getString(json['phone_no']),
       dob: dataParser.getString(json['dob']),
       country: dataParser.getString(json['country']),
+      city: dataParser.getString(json['city']),
       gender: dataParser.getString(json['gender']),
-      profileImage: dataParser.getString(json['profileImage']),
-      isVerified: dataParser.getBool(json['isVerified']),
-      packageId: dataParser.getInt(json['packageId']),
+      profileImage: dataParser.getString(json['profile_image']),
+      isVerified: dataParser.getBool(json['is_verified']),
+      packageId: dataParser.getInt(json['package_id']),
       usage: dataParser.getDouble(json['usage']),
-      userTypeId: dataParser.getInt(json['userTypeId']),
+      userTypeId: dataParser.getInt(json['user_type_id']),
     );
   }
 
-  // toJson: Convert a UserModel into JSON data
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
+    Map<String, dynamic> data = {
+      'first_name': firstName,
+      'last_name': lastName,
       'email': email,
-      'phoneNo': phoneNo,
+      'phone_no': phoneNo,
       'dob': dob,
       'country': country,
+      'city': city,
       'gender': gender,
-      'profileImage': profileImage,
-      'isVerified': isVerified,
-      'packageId': packageId,
+      'profile_image': profileImage,
+      'is_verified': isVerified,
+      'package_id': packageId,
       'usage': usage,
-      'userTypeId': userTypeId,
+      'user_type_id': userTypeId,
     };
+    if (id.isNotEmpty) {
+      data['id'] = id;
+    }
+    return data;
   }
 }

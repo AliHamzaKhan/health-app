@@ -333,6 +333,7 @@ class AppCameraController extends GetxController
     if (cameraController == null) return;
 
     try {
+
       final cameras = await availableCameras();
 
       appDebugPrint('cameras_length ${cameras.length}');
@@ -348,12 +349,19 @@ class AppCameraController extends GetxController
   }
 
   Future<void> onPictureClick() async {
+    appDebugPrint('onPictureClick');
+    appDebugPrint('${cameraController == null} || ${!cameraController!.value.isInitialized}');
+
+
     if (cameraController == null || !cameraController!.value.isInitialized)
       return;
 
     try {
       final XFile picture = await cameraController!.takePicture();
-      imageFile?.value = picture;
+      appDebugPrint('imageFile1 ${picture}');
+      imageFile!(picture);
+      appDebugPrint('imageFile2 ${imageFile!.value.path}');
+
 
       // You can also add code here to display the picture or navigate to a different screen.
       showInSnackBar('Picture captured successfully!');

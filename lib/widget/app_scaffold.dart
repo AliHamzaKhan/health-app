@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:health_app/constant/app_key_contant.dart';
 
 //ignore: must_be_immutable
 class AppScaffold extends StatelessWidget {
@@ -18,7 +19,7 @@ class AppScaffold extends StatelessWidget {
       this.scaffoldKey,
       this.bodyColor,
       this.bodyPadding,
-        this.allowCorners = true,
+      this.allowCorners = true,
       this.resizeToAvoidBottomInset});
 
   PreferredSizeWidget? appBar;
@@ -35,7 +36,6 @@ class AppScaffold extends StatelessWidget {
   Widget? endDrawer;
   var scaffoldKey;
   EdgeInsets? bodyPadding;
-
   bool allowCorners;
 
   @override
@@ -47,13 +47,26 @@ class AppScaffold extends StatelessWidget {
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
         appBar: appBar,
-        body: body,
+        body: isTab() ? tabBody() : body,
         bottomNavigationBar: bottomNavBar,
         floatingActionButton: floatingButton,
-        drawer: drawer,
-        endDrawer: endDrawer,
+        drawer: isTab() ? null : drawer,
+        endDrawer: isTab() ? null : endDrawer,
+      ),
+    );
+  }
+
+  tabBody() {
+    return Container(
+      width: Get.width,
+      height: Get.height,
+      child: Row(
+        children: [
+          (drawer ?? SizedBox()),
+          (body ?? SizedBox()),
+          (endDrawer ?? SizedBox()),
+        ],
       ),
     );
   }
 }
-

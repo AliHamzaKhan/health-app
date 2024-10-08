@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_app/config/enums/ai_request_type_enum.dart';
 import 'package:health_app/widget/app_scaffold.dart';
+import '../../../config/routes/app_routes.dart';
 import '../../../widget/app_appbar.dart';
 import '../../../widget/app_camera.dart';
 import '../controller/ecg_controller.dart';
@@ -15,6 +17,12 @@ class EcgView extends StatelessWidget {
     return AppScaffold(
       appBar: HaAppBar(
         titleText: 'ECG Reader',
+        actionType: AppBarActionType.Ai,
+        onActionClick: (){
+            Get.toNamed(AppRoutes.aiProcess, arguments: {
+
+            });
+        },
       ),
       body: AppCamera(
         onImageClick: (file) {},

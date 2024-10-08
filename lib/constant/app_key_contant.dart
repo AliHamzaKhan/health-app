@@ -26,6 +26,7 @@ abstract class AppStringConstant {
 }
 
 abstract class AppKeyConstant {
+  static const String kId = 'id';
   static const String kToken = 'token';
   static const String kName = 'name';
   static const String kEmail = 'email';
@@ -58,6 +59,6 @@ extension View on num {
 isTab(){
   return Get.width > 600;
 }
-getMaxMobile(){
+double getMaxMobile(){
   return 600;
 }

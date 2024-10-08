@@ -75,7 +75,7 @@ appBar(context, {
   );
 }
 
-enum LeadingType { Menu, Back }
+enum LeadingType { Menu, Back, Ai }
 
 class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
   HaAppBar({super.key,
@@ -88,7 +88,9 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.titleWidget,
     this.titleText = '',
     this.backgroundColor,
-    this.appbarHeight = 70
+    this.appbarHeight = 70,
+    this.actionType = AppBarActionType.Profile,
+    this.onActionClick
   });
 
   AppBarType appBarType;
@@ -97,11 +99,14 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget? actionWidget;
   var onBackPressed;
   var onMenuClick;
+
   // var onProfileClick;
   Widget? titleWidget;
   String titleText;
   Color? backgroundColor;
   double appbarHeight;
+  AppBarActionType actionType;
+  var onActionClick;
 
   @override
   Widget build(BuildContext context) {
@@ -109,8 +114,7 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
       width: Get.width,
       color: backgroundColor,
       padding: EdgeInsets.symmetric(
-          horizontal: setWidthValue(30),
-          vertical: setHeightValue(10)),
+          horizontal: setWidthValue(30), vertical: setHeightValue(10)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -139,20 +143,50 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
                   .scaffoldBackgroundColor,
             )
           ],
-          (titleWidget ?? AppText(title: titleText ?? '', textType: TextTypeEnum.Bold,)),
+          (titleWidget ??
+              AppText(
+                title: titleText ?? '',
+                textType: TextTypeEnum.Bold,
+              )),
 
-          actionWidget ??
+          if(actionType == AppBarActionType.Profile)...[
+            AppIconButton(
+              icon: AssetsConstant.profile,
+              onTap: () {
+                Get.toNamed(AppRoutes.profile);
+              },
+              width: 30,
+              height: 30,
+              iconSize: 18,
+              iconColor: Theme
+                  .of(context)
+                  .scaffoldBackgroundColor,
+            )
+          ]
+          else
+            if(actionType == AppBarActionType.Ai)...[
               AppIconButton(
-                icon: AssetsConstant.profile,
-                onTap: (){
-                  Get.toNamed(AppRoutes.profile);
-                },
+                icon: AssetsConstant.gallery,
+                onTap: onActionClick,
                 width: 30,
                 height: 30,
                 iconSize: 18,
-                iconColor: Theme.of(context).scaffoldBackgroundColor,
+                iconColor: Theme
+                    .of(context)
+                    .scaffoldBackgroundColor,
               )
-
+            ]
+            else
+              if(actionType == AppBarActionType.Custom)...[
+                AppIconButton(
+                  icon: AssetsConstant.profile,
+                  onTap: onActionClick,
+                  width: 30,
+                  height: 30,
+                  iconSize: 18,
+                  iconColor: Theme.of(context).scaffoldBackgroundColor,
+                )
+              ]
         ],
       ),
     );
@@ -163,3 +197,5 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 enum AppBarType { Back, Home, Menu }
+
+enum AppBarActionType { Profile, Ai, Custom }

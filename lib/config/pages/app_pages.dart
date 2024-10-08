@@ -13,6 +13,7 @@ import 'package:health_app/modules/monitor_sugar/view/monitor_sugar_view.dart';
 import 'package:health_app/modules/onBoarding/view/on_boarding_view.dart';
 import 'package:health_app/modules/radiology/view/radiology_view.dart';
 import 'package:health_app/modules/registry/view/otp_screen_view.dart';
+import '../../modules/ai_process/view_ai_process/view/ai_process_view.dart';
 import '../../modules/profile/view/profile_view.dart';
 import '../../modules/profile/view/setup_profile_view.dart';
 import '../../modules/registry/view/user_type_view.dart';
@@ -62,8 +63,6 @@ abstract class AppPages {
       transition: appTransition,
       transitionDuration: screenDuration,
     ),
-
-
     GetPage(
       name: AppRoutes.app,
       page: () => AppView(),
@@ -85,6 +84,12 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.home,
       page: () => HomeView(),
+      transition: appTransition,
+      transitionDuration: screenDuration,
+    ),
+    GetPage(
+      name: AppRoutes.aiProcess,
+      page: () => AiProcessView(),
       transition: appTransition,
       transitionDuration: screenDuration,
     ),
