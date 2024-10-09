@@ -99,8 +99,6 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget? actionWidget;
   var onBackPressed;
   var onMenuClick;
-
-  // var onProfileClick;
   Widget? titleWidget;
   String titleText;
   Color? backgroundColor;
@@ -178,15 +176,7 @@ class HaAppBar extends StatelessWidget implements PreferredSizeWidget {
             ]
             else
               if(actionType == AppBarActionType.Custom)...[
-                setWidth(30)
-                // AppIconButton(
-                //   icon: AssetsConstant.profile,
-                //   onTap: onActionClick,
-                //   width: 30,
-                //   height: 30,
-                //   iconSize: 18,
-                //   iconColor: Theme.of(context).scaffoldBackgroundColor,
-                // )
+                actionWidget ?? setWidth(30)
               ]
         ],
       ),

@@ -9,7 +9,6 @@ class AiProcessController extends GetxController{
 
   getData(){
     dataProcessModel.value = Get.arguments['args'] ?? DataProcessModel.fromJson({});
-    // dataProcessModel(tempDataDataProcessModel);
   }
   @override
   void onInit() {

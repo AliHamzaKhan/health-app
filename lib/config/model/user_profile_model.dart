@@ -76,4 +76,17 @@ class UserProfile {
     }
     return data;
   }
+  bool isProfileEmpty() {
+    return firstName.isEmpty ||
+        lastName.isEmpty ||
+        email.isEmpty ||
+        phoneNo.isEmpty ||
+        dob.isEmpty ||
+        country.isEmpty ||
+        city.isEmpty ||
+        gender.isEmpty ||
+        profileImage.isEmpty ||
+        packageId <= 0 || // Assuming packageId should be a positive value
+        usage <= 0; // Assuming usage should be greater than zero
+  }
 }

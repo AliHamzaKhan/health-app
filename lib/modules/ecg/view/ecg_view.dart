@@ -24,7 +24,11 @@ class EcgView extends StatelessWidget {
         },
       ),
       body: AppCamera(
-        onImageClick: (file) {},
+        onImageClick: (file) async{
+          controller.file = file;
+          await controller.processData();
+          // Get.toNamed(page)
+        },
       ),
     );
   }

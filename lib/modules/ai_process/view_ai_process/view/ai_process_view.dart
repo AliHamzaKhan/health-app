@@ -33,10 +33,13 @@ class AiProcessView extends StatelessWidget {
           children: [
             GestureDetector(
                 onTap: () {
-                  Get.to(() => AiImageView());
+                  Get.to(() => AiImageView(image: 'Base64:img/${controller.dataProcessModel.value.imageUrl}',));
                 },
                 child: ImageDisplay(
-                    image: AssetsConstant.gallery, size: Size(Get.width, 200))),
+                    image: 'Base64:img/${controller.dataProcessModel.value.imageUrl}',
+                    size: Size(Get.width, 200),
+                    boxFit: BoxFit.cover,
+                )),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,

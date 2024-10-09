@@ -152,6 +152,18 @@ class DataParserService {
     return imgStr.replaceAll("_", " ");
   }
 
+  String getFormatPricing(num number) {
+    if (number >= 10000000) {
+      return (number / 10000000).toStringAsFixed(1) + ' Crore';
+    } else if (number >= 100000) {
+      return (number / 100000).toStringAsFixed(1) + ' Lac';
+    } else if (number >= 1000) {
+      return (number / 1000).toStringAsFixed(1) + ' Thousand';
+    } else {
+      return number.toString(); // For numbers below 1000
+    }
+  }
+
   int generateRandomNumber() {
     var random = Random();
 

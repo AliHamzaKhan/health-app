@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_app/config/routes/app_routes.dart';
 import 'package:health_app/config/size_config.dart';
 import 'package:health_app/constant/app_key_contant.dart';
 import 'package:health_app/constant/assets_contant.dart';
@@ -35,10 +36,10 @@ class HomeView extends StatelessWidget {
         child: Column(
           children: [
             tokenUsed(context),
-            latestNewInCity(context),
-            nearbyHospitals(context),
-            topDoctors(context),
-            sugarReport(context)
+            // latestNewInCity(context),
+            // nearbyHospitals(context),
+            // topDoctors(context),
+            // sugarReport(context)
           ],
         ),
       ),
@@ -47,21 +48,46 @@ class HomeView extends StatelessWidget {
   }
 
   Widget tokenUsed(context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: IntrinsicWidth(
-          child: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: setWidthValue(30), vertical: 5),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(10)),
-              child: TitleSubTitleText(
-                head: 'Token Used',
-                title: '1000',
-                headColor: Theme.of(context).scaffoldBackgroundColor,
-                titleColor: Theme.of(context).scaffoldBackgroundColor,
-              ))),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        GestureDetector(
+          onTap: (){
+            Get.toNamed(AppRoutes.packages);
+          },
+          child: IntrinsicWidth(
+              child: Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: setWidthValue(30), vertical: 5),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: TitleSubTitleText(
+                    head: 'Packages:',
+                    title: 'Buy',
+                    headColor: Theme.of(context).scaffoldBackgroundColor,
+                    titleColor: Theme.of(context).scaffoldBackgroundColor,
+                  ))),
+        ),
+        GestureDetector(
+          onTap: (){
+            Get.toNamed(AppRoutes.tokensUsed);
+          },
+          child: IntrinsicWidth(
+              child: Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: setWidthValue(30), vertical: 5),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: TitleSubTitleText(
+                    head: 'Token Used',
+                    title: '1000',
+                    headColor: Theme.of(context).scaffoldBackgroundColor,
+                    titleColor: Theme.of(context).scaffoldBackgroundColor,
+                  ))),
+        )
+      ],
     );
   }
 
@@ -74,6 +100,8 @@ class HomeView extends StatelessWidget {
         5.height,
         AppCarouselSlider(
           items: [
+            LatestNewsCard(),
+            LatestNewsCard(),
             LatestNewsCard(),
           ],
         ),

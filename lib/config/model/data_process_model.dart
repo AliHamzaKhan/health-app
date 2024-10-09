@@ -47,6 +47,11 @@ class DataProcessModel {
       'requestType': requestType.value,
     };
   }
+
+  @override
+  String toString() {
+    return 'DataProcessModel{id: $id, userId: $userId, prompt: $prompt, imageUrl: $imageUrl, tokenUsed: $tokenUsed, aiGeneratedText: $aiGeneratedText, requestType: $requestType}';
+  }
 }
 
 DataProcessModel tempDataDataProcessModel = DataProcessModel(

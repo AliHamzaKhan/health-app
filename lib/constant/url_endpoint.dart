@@ -10,5 +10,7 @@ abstract class UrlEndPoints {
   static const String getDoctors = 'get_doctors';
   static const String getDoctorsInHospital = 'get_doctors_in_hospital';
   static const String getHospitalRating = 'get_hospital_rating';
+  static const String packages = 'packages';
+  static const String getUserTypes = 'get_user_types';
 
 }

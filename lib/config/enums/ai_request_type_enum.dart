@@ -2,10 +2,10 @@
 
 
 enum AiRequestTypeEnum {
-  bloodTest("Blood_Test"),
-  radiologyReport("Radiology_Report"),
-  ecgReport("ECG_Report"),
-  eegReport("EEG_Report"),
+  bloodTest("Blood Test"),
+  radiologyReport("Radiology Report"),
+  ecgReport("ECG Report"),
+  eegReport("EEG Report"),
   none("none");
 
   final String value;

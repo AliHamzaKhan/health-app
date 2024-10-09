@@ -3,16 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:health_app/config/model/data_process_model.dart';
+import 'package:health_app/config/model/package_model.dart';
+import 'package:health_app/config/services/data_parser_service.dart';
 import 'package:health_app/config/size_config.dart';
 import 'package:health_app/config/theme/app_colors.dart';
 import 'package:health_app/constant/assets_contant.dart';
 import 'package:health_app/utils/app_print.dart';
 import 'package:health_app/widget/app_button.dart';
 import 'package:health_app/widget/app_image.dart';
+import 'package:health_app/widget/app_widgets.dart';
+import '../config/enums/user_type_enum.dart';
 import '../config/model/appointment_schedule_model.dart';
 import '../config/model/medicine_schedule_model.dart';
+import '../config/model/token_used_model.dart';
 import '../config/theme/button_styles.dart';
 import '../constant/app_key_contant.dart';
+import '../utils/app_utility.dart';
 import 'app_checkbox.dart';
 import 'app_text.dart';
 
@@ -227,8 +233,8 @@ class SuggestionsCard extends StatelessWidget {
         margin: EdgeInsets.symmetric(
             horizontal: setWidthValue(30), vertical: setHeightValue(3)),
         child: AppText(
-            title: name,
-            overflow: TextOverflow.clip,
+          title: name,
+          overflow: TextOverflow.clip,
         ));
   }
 }
@@ -297,18 +303,95 @@ class LatestNewsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: Get.width,
+      padding: EdgeInsets.symmetric(horizontal: setWidthValue(20)),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppSizeConstant.kCardRadius),
-          border: Border.all(color: AppColors.borderColor.withOpacity(0.5))),
+        color: generateRandomLightColor(),
+        borderRadius: BorderRadius.circular(AppSizeConstant.kCardRadius),
+        // border: Border.all(color: AppColors.borderColor.withOpacity(0.5))
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ImageDisplay(
+            image: AssetsConstant.gallery,
+            size: Size(100, 100),
+          ),
+          20.width,
+          Expanded(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppText(
+                title: 'Disease Name',
+                textType: TextTypeEnum.Medium,
+                fontSize: 16,
+              ),
+              10.height,
+              AppText(title: 'diseases description'),
+            ],
+          ))
+        ],
+      ),
     );
+  }
+}
+
+class PackageCard extends StatelessWidget {
+  PackageCard({super.key, required this.model});
+
+  PackageModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    return appCard(
+        padding: EdgeInsets.only(
+          left: setWidthValue(20),
+          right: setWidthValue(20),
+          top: setHeightValue(10),
+        ),
+        child: Column(children: [
+          TitleSubTitleText(
+              head: 'package name'.toTitleCase(), title: model.packageName),
+          TitleSubTitleText(
+              head: 'description'.toTitleCase(), title: model.description),
+          TitleSubTitleText(
+              head: 'price'.toTitleCase(),
+              title: '${dataParser.getFormatPricing(model.price)} PKR'),
+          TitleSubTitleText(
+              head: 'total tokens'.toTitleCase(),
+              title: dataParser.getFormatPricing(model.totalTokens)),
+          TitleSubTitleText(
+              head: 'For :'.toTitleCase(),
+              title: getUserTypeNameFromId(model.userTypeId)),
+          AppButton(
+            title: 'Buy',
+            onPressed: () {},
+            buttonStyleClass: ButtonStyleClass(width: 100, height: 34),
+          )
+        ]));
+  }
+}
+
+class TokensUsedCard extends StatelessWidget {
+  TokensUsedCard({super.key,required this.model});
+
+  TokenUsedModel model;
+  @override
+  Widget build(BuildContext context) {
+    return appCard(child: Column(
+      children: [
+        TitleSubTitleText(head: 'data process id'.toTitleCase(), title: model.dataProcessId),
+        TitleSubTitleText(head: 'tokens used'.toTitleCase(), title: model.dataProcessId),
+      ],
+    ));
   }
 }
 
 
 Widget appCard(
-    {required Widget child,
-      EdgeInsets? margin,
-      EdgeInsets? padding}) {
+    {required Widget child, EdgeInsets? margin, EdgeInsets? padding}) {
   return Container(
     width: Get.width,
     padding: padding ??

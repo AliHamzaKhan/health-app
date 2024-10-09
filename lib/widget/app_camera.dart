@@ -44,7 +44,7 @@ class AppCamera extends StatelessWidget {
           ),
         );
       } else {
-        return controller.imageFile?.value != null
+        return controller.imageFile?.value.path != ''
             ? Stack(
                 children: [
                   Image.file(
@@ -62,15 +62,14 @@ class AppCamera extends StatelessWidget {
                               child: AppButton(
                                   title: 'Retake',
                                   onPressed: () {
-                                    controller.imageFile = null;
+                                    controller.imageFile.value = XFile('');
                                   })),
                           setWidth(10),
                           Expanded(
                               child: AppButton(
                                   title: 'Check',
                                   onPressed: () {
-                                    onImageClick(
-                                        File(controller.imageFile!.value.path));
+                                    onImageClick(File(controller.imageFile!.value.path));
                                   })),
                         ],
                       ),
@@ -153,7 +152,7 @@ class AppCamera extends StatelessWidget {
 class AppCameraController extends GetxController
     with GetTickerProviderStateMixin, WidgetsBindingObserver {
   CameraController? cameraController;
-  Rx<XFile>? imageFile;
+  Rx<XFile> imageFile = XFile('').obs;
   double minAvailableZoom = 1.0;
   double maxAvailableZoom = 1.0;
   double currentScale = 1.0;
@@ -360,6 +359,7 @@ class AppCameraController extends GetxController
       final XFile picture = await cameraController!.takePicture();
       appDebugPrint('imageFile1 ${picture}');
       imageFile!(picture);
+
       appDebugPrint('imageFile2 ${imageFile!.value.path}');
 
 

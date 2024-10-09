@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:health_app/config/api/api_response_model.dart';
 import 'package:health_app/config/enums/ai_request_type_enum.dart';
+import 'package:health_app/config/model/package_model.dart';
 import 'package:health_app/constant/url_endpoint.dart';
 import 'package:health_app/utils/app_print.dart';
 import '../api/api_service.dart';
@@ -14,18 +15,23 @@ import '../model/hospital_model.dart';
 import '../model/rating_model.dart';
 import '../model/token_used_model.dart';
 import '../model/user_profile_model.dart';
+import '../model/user_type_model.dart';
 
 class ApiController extends GetxService {
   APIService apiService = APIService();
   AuthService authService = Get.find();
 
-  Future login({required int userTypeId,required String email,required String phoneNo}) async {
-    
-    ApiResponseModel response = await apiService.post(endpoint: UrlEndPoints.login, body: {
-      "user_type_id": 2,
-      "phone_number": "8327487234",
-      "email": "string"
-    });
+  Future login(
+      {required int userTypeId,
+      required String email,
+      required String phoneNo}) async {
+    ApiResponseModel response = await apiService.post(
+        endpoint: UrlEndPoints.login,
+        body: {
+          "user_type_id": 2,
+          "phone_number": "8327487234",
+          "email": "string"
+        });
     appDebugPrint(response.data);
   }
 
@@ -41,7 +47,9 @@ class ApiController extends GetxService {
     String userId = authService.saveData.getId();
     ApiResponseModel response =
         await apiService.get(endpoint: UrlEndPoints.getProfile + userId);
-    profile = UserProfile.fromJson(response.data['profile'] ?? {});
+    if (response.isSuccess) {
+      profile = UserProfile.fromJson(response.data['profile'] ?? {});
+    }
     return profile;
   }
 
@@ -49,19 +57,27 @@ class ApiController extends GetxService {
       {required File image, required AiRequestTypeEnum requestType}) async {
     DataProcessModel dataProcess = DataProcessModel.fromJson({});
     String userId = authService.saveData.getId();
-    String base64Image = base64Encode(image.readAsBytesSync());
-    ApiResponseModel response =
-        await apiService.post(endpoint: UrlEndPoints.processData, body: {
-      'userId': userId,
-      'ai_request_type': requestType,
-      'image': base64Image,
-    });
-    dataProcess =
-        DataProcessModel.fromJson(response.data['data_process'] ?? {});
+    // String base64Image = base64Encode(image.readAsBytesSync());
+    ApiResponseModel response = await apiService.postFile(
+      endpoint: UrlEndPoints.processData,
+      body: {
+        'userId': userId.isNotEmpty ? userId : '12132',
+        'ai_request_type': requestType.value,
+      },
+      filePath: [image.path],
+    );
+    if (response.isSuccess) {
+      dataProcess =
+          DataProcessModel.fromJson(response.data['data_process'] ?? {});
+    }
+    appDebugPrint('dataProcess ${dataProcess.toString()}');
+    // appDebugPrint('success $success');
+
     return dataProcess;
   }
 
-  Future<List<DataProcessModel>> getProcessData({AiRequestTypeEnum? requestType}) async {
+  Future<List<DataProcessModel>> getProcessData(
+      {AiRequestTypeEnum? requestType}) async {
     List<DataProcessModel> dataProcess = [];
     String userId = authService.saveData.getId();
     Map<String, dynamic> data = {'userId': '121221'};
@@ -70,20 +86,28 @@ class ApiController extends GetxService {
     }
     ApiResponseModel response = await apiService.post(
         endpoint: UrlEndPoints.getProcessData, body: data);
-    dataProcess = dataProcessModelList(response.data['process_data'] ?? []);
+    if (response.isSuccess) {
+      dataProcess = dataProcessModelList(response.data['process_data'] ?? []);
+    }
     return dataProcess;
   }
 
   Future<List<TokenUsedModel>> getUsedTokens({String? dataProcessId}) async {
     List<TokenUsedModel> tokenUsed = [];
     String userId = authService.saveData.getId();
-    Map<String, dynamic> data = {'userId': userId};
+    Map<String, dynamic> data = {
+      'user_id': userId.isEmpty ? '12132' : userId,
+      // "data_process_id": "string"
+    };
     if (dataProcessId != null) {
       data['data_process_id'] = dataProcessId;
     }
+    appDebugPrint(data);
     ApiResponseModel response =
         await apiService.post(endpoint: UrlEndPoints.getTokensUsed, body: data);
-    tokenUsed = tokenUsedModelList(response.data['tokens'] ?? {});
+    if (response.isSuccess) {
+      tokenUsed = tokenUsedModelList(response.data['tokens'] ?? []);
+    }
     return tokenUsed;
   }
 
@@ -93,7 +117,9 @@ class ApiController extends GetxService {
     Map<String, dynamic> data = {'userId': userId};
     ApiResponseModel response =
         await apiService.post(endpoint: UrlEndPoints.getHospitals, body: data);
-    hospitals = hospitalModelList(response.data['hospitals'] ?? []);
+    if (response.isSuccess) {
+      hospitals = hospitalModelList(response.data['hospitals'] ?? []);
+    }
     return hospitals;
   }
 
@@ -101,7 +127,9 @@ class ApiController extends GetxService {
     List<DoctorModel> doctors = [];
     ApiResponseModel response =
         await apiService.get(endpoint: UrlEndPoints.getDoctors + hospitalId);
-    doctors = doctorModelList(response.data['doctors'] ?? []);
+    if (response.isSuccess) {
+      doctors = doctorModelList(response.data['doctors'] ?? []);
+    }
     return doctors;
   }
 
@@ -109,7 +137,9 @@ class ApiController extends GetxService {
     DoctorModel doctor = DoctorModel.fromJson({});
     ApiResponseModel response =
         await apiService.get(endpoint: UrlEndPoints.getDoctors + doctorId);
-    doctor = DoctorModel.fromJson(response.data['doctors'] ?? {});
+    if (response.isSuccess) {
+      doctor = DoctorModel.fromJson(response.data['doctors'] ?? {});
+    }
     return doctor;
   }
 
@@ -118,7 +148,30 @@ class ApiController extends GetxService {
     List<RatingModel> ratings = [];
     ApiResponseModel response =
         await apiService.get(endpoint: UrlEndPoints.getDoctors + doctorId);
-    ratings = ratingModelList(response.data['ratings'] ?? []);
+    if (response.isSuccess) {
+      ratings = ratingModelList(response.data['ratings'] ?? []);
+    }
+
     return ratings;
+  }
+
+  Future<List<PackageModel>> getPackages() async {
+    List<PackageModel> packages = [];
+    ApiResponseModel response =
+        await apiService.get(endpoint: UrlEndPoints.packages);
+    if (response.isSuccess) {
+      packages = packageModelList(response.data['packages'] ?? []);
+    }
+    return packages;
+  }
+
+  Future<List<UserTypeModel>> getUserTypes() async {
+    List<UserTypeModel> userTypeList = [];
+    ApiResponseModel response =
+        await apiService.get(endpoint: UrlEndPoints.getUserTypes);
+    if (response.isSuccess) {
+      userTypeList = userTypeModelList(response.data['user_types'] ?? []);
+    }
+    return userTypeList;
   }
 }

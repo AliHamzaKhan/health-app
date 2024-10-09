@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -19,7 +17,6 @@ typedef SuccessCallback = void Function(dynamic success);
 typedef ErrorsCallback = void Function(dynamic error);
 
 class APIService {
-
   String commonError = "Something went wrong, Please try again later";
   String connectivityError = "No internet connection, Please try again later";
   String validationError = "Please enter valid information to proceed";
@@ -30,17 +27,18 @@ class APIService {
   var kDebugMode = false;
 
   Future<Map> getWithoutCallBack(
-      String url,
-      Map<String, String> queryParams, {
-        showLoader = true,
-        BuildContext? context,
-        Function? logout,
-      }) async {
+    String url,
+    Map<String, String> queryParams, {
+    showLoader = true,
+    BuildContext? context,
+    Function? logout,
+  }) async {
     try {
       if (showLoader) {
         AppLoader.showLoading();
       }
-      String uri = "${AppEnvironment.apiUrl()}$url${Uri(queryParameters: queryParams)}";
+      String uri =
+          "${AppEnvironment.apiUrl()}$url${Uri(queryParameters: queryParams)}";
 
       var response = await http.get(
         Uri.parse(uri),
@@ -81,7 +79,8 @@ class APIService {
     try {
       if (!disableLoading) AppLoader.showLoading();
 
-      String url = "${AppEnvironment.apiUrl()}$endpoint${Uri(queryParameters: params)}";
+      String url =
+          "${AppEnvironment.apiUrl()}$endpoint${Uri(queryParameters: params)}";
       appDebugPrint(url);
       http.Response response = await http.get(
         Uri.parse(url),
@@ -90,7 +89,8 @@ class APIService {
       if (!disableLoading) {
         AppLoader.dismiss();
       }
-      if ((response.statusCode == 401 || response.statusCode == 403) && logout != null) {
+      if ((response.statusCode == 401 || response.statusCode == 403) &&
+          logout != null) {
         appDebugPrint(response.statusCode);
         logout();
         Get.find<AuthService>().logoutWithRedirection();
@@ -108,7 +108,7 @@ class APIService {
         appAlerts.customAlert(
           alertTypes: AlertTypes.error,
           title: errorMessage + (kDebugMode ? ' $endpoint' : ''),
-          subTitle: message.message  + (kDebugMode ? ' $endpoint' : ''),
+          subTitle: message.message + (kDebugMode ? ' $endpoint' : ''),
         );
       }
 
@@ -123,11 +123,11 @@ class APIService {
 
         appAlerts.customAlert(
           alertTypes:
-          !isConnectivity ? AlertTypes.connectivity : AlertTypes.error,
+              !isConnectivity ? AlertTypes.connectivity : AlertTypes.error,
           title: !isConnectivity
               ? connectivityError + (kDebugMode ? ' $endpoint' : '')
               : serverError + (kDebugMode ? ' $endpoint' : ''),
-          subTitle: !isConnectivity ? connectivityError : (commonError ),
+          subTitle: !isConnectivity ? connectivityError : (commonError),
         );
       }
 
@@ -161,7 +161,7 @@ class APIService {
     bool disableLoading = false,
     bool showError = true,
     Function? logout,
-     }) async {
+  }) async {
     try {
       if (!disableLoading) AppLoader.showLoading();
       headers ??= {};
@@ -182,7 +182,7 @@ class APIService {
         return ApiResponseModel.fromJson('');
       } else if (response.statusCode == 500) {
         var responseApi = ApiResponseModel.fromJson('');
-        responseApi.message = commonError ;
+        responseApi.message = commonError;
         return responseApi;
       }
       ApiResponseModel message = ApiResponseModel.fromJson(response.body);
@@ -191,8 +191,7 @@ class APIService {
         appAlerts.customAlert(
             alertTypes: AlertTypes.error,
             title: 'Error${kDebugMode ? ' $endpoint' : ''}',
-            subTitle: message.message
-        );
+            subTitle: message.message);
       }
       return message;
     } on Exception catch (e) {
@@ -205,9 +204,9 @@ class APIService {
         var isConnectivity = await internetConnectivityCheck();
         appAlerts.customAlert(
           alertTypes:
-          !isConnectivity ? AlertTypes.connectivity : AlertTypes.error,
+              !isConnectivity ? AlertTypes.connectivity : AlertTypes.error,
           title: 'Error${kDebugMode ? ' $endpoint' : ''}',
-          subTitle: !isConnectivity ? connectivityError : (commonError ),
+          subTitle: !isConnectivity ? connectivityError : (commonError),
         );
       }
 
@@ -287,7 +286,6 @@ class APIService {
             alertTypes: AlertTypes.error,
             title: 'Error',
             subTitle: message.message);
-
       }
 
       return message;
@@ -309,7 +307,8 @@ class APIService {
     try {
       if (!disableLoading) AppLoader.showLoading();
 
-      String url = "${AppEnvironment.apiUrl()}$endpoint${Uri(queryParameters: params)}";
+      String url =
+          "${AppEnvironment.apiUrl()}$endpoint${Uri(queryParameters: params)}";
       http.Response response = await http.delete(
         Uri.parse(url),
         headers: _setHeaders(),
@@ -368,58 +367,64 @@ class APIService {
   * 8 -- loader optional default true, for showing loader while request
   * */
 
-  postFile({
+  Future<ApiResponseModel> postFile({
     required String endpoint,
-    // required File file,
     Map<String, dynamic>? body,
-    required SuccessCallback success,
-    required ErrorsCallback requestFail,
+    required List<String> filePath,
     showLoader = true,
   }) async {
     String url = "${AppEnvironment.apiUrl()}$endpoint";
     var request = http.MultipartRequest("POST", Uri.parse(url));
     request.headers.addAll({...request.headers, ..._setHeaders()});
+
+    // Add body fields
     if (body != null) {
       body.forEach((key, value) {
-        request.fields[key] = '$value';
+        request.fields[key] = value.toString();
       });
     }
 
+    // Add files
+    for (var path in filePath) {
+      request.files.add(await http.MultipartFile.fromPath('image', path));
+    }
+
+    // Show loader if needed
     if (showLoader) {
       AppLoader.showLoading();
     }
-    request.send().then((streamedResponse) async {
+
+    try {
+      var streamedResponse = await request.send();
+
+      // Handle response
       if (streamedResponse.statusCode >= 200 &&
-          streamedResponse.statusCode < 399) {
-        // showLoader && CBLoader.dismiss();
+          streamedResponse.statusCode < 400) {
         var response = await http.Response.fromStream(streamedResponse);
-        var responseJson = json.decode(response.body);
-        if (responseJson != null) {
-          success(responseJson);
-        } else {
-          requestFail(commonError);
-        }
+        return ApiResponseModel.fromJson(response.body);
       } else {
-        requestFail(commonError);
+        return ApiResponseModel.fromJson('');
       }
-    }).catchError((error) {
+    } catch (error) {
+      return ApiResponseModel.fromJson('');
+    } finally {
       if (showLoader) {
-        AppLoader.dismiss();
+        AppLoader.dismiss(); // Dismiss loader in both success and error cases
       }
-      requestFail(commonError);
-    });
+    }
   }
 
   patchWithoutContext(
-      String url,
-      Map<String, String> queryParams,
-      Map<String, dynamic> body,
-      SuccessCallback success,
-      ErrorsCallback requestFail, {
-        showLoader = true,
-        Function? logout,
-      }) async {
-    String uri = "${AppEnvironment.apiUrl()}$url${Uri(queryParameters: queryParams)}";
+    String url,
+    Map<String, String> queryParams,
+    Map<String, dynamic> body,
+    SuccessCallback success,
+    ErrorsCallback requestFail, {
+    showLoader = true,
+    Function? logout,
+  }) async {
+    String uri =
+        "${AppEnvironment.apiUrl()}$url${Uri(queryParameters: queryParams)}";
     appDebugPrint(uri);
     try {
       if (showLoader) {
@@ -446,8 +451,7 @@ class APIService {
         AppLoader.fail(error: "$e");
       }
 
-      if (true)
-      {
+      if (true) {
         requestFail(e);
       }
     }
@@ -467,7 +471,7 @@ class APIService {
 
     String thisToken = dataStore.getString(AppKeyConstant.kToken);
 
-    if (/*thisUser != "" && */thisToken != "") {
+    if (/*thisUser != "" && */ thisToken != "") {
       // ignore: no_leading_underscores_for_local_identifiers
       // var _userData = dataParser.decodeMap(thisUser);
       // var user = PbUserModel.fromJson(_userData);
@@ -477,10 +481,9 @@ class APIService {
         // ,
         // 'X-Authorization': dataParser.base64Encoder(user.userId!.toString()),
       };
-    }else{
+    } else {
       return {};
     }
-
   }
 
   _response({isSuccess = false, statusCode = 200, message}) {

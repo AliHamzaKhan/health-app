@@ -15,11 +15,13 @@ import 'package:health_app/modules/radiology/view/radiology_view.dart';
 import 'package:health_app/modules/registry/view/otp_screen_view.dart';
 import '../../modules/ai_process/ai_process_listing/view/ai_process_listing_view.dart';
 import '../../modules/ai_process/view_ai_process/view/ai_process_view.dart';
+import '../../modules/packages/view/packages_view.dart';
 import '../../modules/profile/view/profile_view.dart';
 import '../../modules/profile/view/setup_profile_view.dart';
 import '../../modules/registry/view/user_type_view.dart';
 import '../../modules/splash/view/splash_view.dart';
 import '../../modules/registry/view/login_view.dart';
+import '../../modules/tokens/view/tokens_used_view.dart';
 import '../routes/app_routes.dart';
 
 abstract class AppPages {
@@ -97,6 +99,18 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.aiProcessListing,
       page: () => AiProcessListingView(),
+      transition: appTransition,
+      transitionDuration: screenDuration,
+    ),
+    GetPage(
+      name: AppRoutes.packages,
+      page: () => PackagesView(),
+      transition: appTransition,
+      transitionDuration: screenDuration,
+    ),
+    GetPage(
+      name: AppRoutes.tokensUsed,
+      page: () => TokensUsedView(),
       transition: appTransition,
       transitionDuration: screenDuration,
     ),

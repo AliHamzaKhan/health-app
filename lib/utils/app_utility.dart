@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../config/services/date_parser_service.dart';
@@ -155,4 +157,23 @@ String formatValue(int value) {
   } else {
     return NumberFormat.decimalPattern().format(value);
   }
+}
+Color generateRandomColor() {
+  final Random random = Random();
+  return Color.fromARGB(
+    255, // Alpha channel (fully opaque)
+    random.nextInt(256), // Red value (0 to 255)
+    random.nextInt(256), // Green value (0 to 255)
+    random.nextInt(256), // Blue value (0 to 255)
+  );
+}
+Color generateRandomLightColor() {
+  final Random random = Random();
+  // Generate random values between 180 and 255 to ensure light colors
+  return Color.fromARGB(
+    255, // Alpha channel (fully opaque)
+    180 + random.nextInt(76), // Red value (180 to 255)
+    180 + random.nextInt(76), // Green value (180 to 255)
+    180 + random.nextInt(76), // Blue value (180 to 255)
+  );
 }
