@@ -14,6 +14,7 @@ abstract class AppRoutes {
   static const String tokensUsed = '/tokens_used';
 
   static const String ecg = '/ecg';
+  static const String eeg = '/eeg';
   static const String bmi = '/bmi';
   static const String bloodTest = '/bloodTest';
   static const String allergyDetection = '/allergyDetection';

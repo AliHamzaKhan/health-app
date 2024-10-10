@@ -1,12 +1,39 @@
 import 'package:get/get.dart';
+import '../../../config/db/sugar_monitor_db.dart';
+import '../../../config/model/sugar_model.dart';
+import '../../../utils/app_print.dart';
 
 class MonitorSugarController extends GetxController {
-  List<Map<GlucoseType, double>> sugarList = [
-    {GlucoseType.fasting: 90.0},
-    {GlucoseType.random: 150.0},
-    {GlucoseType.fasting: 100.0},
-    {GlucoseType.random: 160.0},
-  ];
+
+  RxList<SugarModel> sugarList = <SugarModel>[].obs;
+
+  // List<Map<GlucoseType, double>> sugarList = [
+  //   {GlucoseType.fasting: 90.0},
+  //   {GlucoseType.random: 150.0},
+  //   {GlucoseType.fasting: 100.0},
+  //   {GlucoseType.random: 160.0},
+  // ];
+  SugarMonitorDb  db = SugarMonitorDb.instance;
+
+  addSugarData(SugarModel model) async{
+    appDebugPrint('insertSugarData');
+    db.insertSugarData(model);
+    await getSugarData();
+    Get.back();
+  }
+  updateSugarData(SugarModel model) async{
+    if (model.id.trim().isEmpty) {
+
+    } else {
+      appDebugPrint('updateSugarData');
+      db.updateSugarData(model);
+    }
+    await getSugarData();
+  }
+  getSugarData() async{
+    sugarList.value = await db.getAllSugarData();
+    appDebugPrint('sugarList ${sugarList.length}');
+  }
 
   double calculateEstimatedHbA1c(List<Map<GlucoseType, double>> sugarList) {
     double totalFasting = 0.0;
@@ -75,12 +102,21 @@ class MonitorSugarController extends GetxController {
       insight: insight,
     );
   }
+
+  @override
+  void onInit() {
+    super.onInit();
+    getSugarData();
+  }
+
 }
 
 enum GlucoseType {
   fasting,
   random,
 }
+
+
 
 class GlucoseInsight {
   final double averageFasting;

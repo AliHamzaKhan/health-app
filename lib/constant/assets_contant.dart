@@ -52,6 +52,7 @@ abstract class AssetsConstant {
   static const String bmi = 'assets/icons/bmi.png';
   static const String doctor = 'assets/icons/doctor.png';
   static const String ecg = 'assets/icons/ecg.png';
+  static const String eeg = 'assets/icons/eeg.png';
   static const String hospital = 'assets/icons/hospital.png';
   static const String medicine = 'assets/icons/medicine.png';
   static const String radiology = 'assets/icons/radiology.png';

@@ -15,6 +15,7 @@ import 'package:health_app/modules/radiology/view/radiology_view.dart';
 import 'package:health_app/modules/registry/view/otp_screen_view.dart';
 import '../../modules/ai_process/ai_process_listing/view/ai_process_listing_view.dart';
 import '../../modules/ai_process/view_ai_process/view/ai_process_view.dart';
+import '../../modules/eeg/view/eeg_view.dart';
 import '../../modules/packages/view/packages_view.dart';
 import '../../modules/profile/view/profile_view.dart';
 import '../../modules/profile/view/setup_profile_view.dart';
@@ -117,6 +118,12 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.ecg,
       page: () => EcgView(),
+      transition: appTransition,
+      transitionDuration: screenDuration,
+    ),
+    GetPage(
+      name: AppRoutes.eeg,
+      page: () => EegView(),
       transition: appTransition,
       transitionDuration: screenDuration,
     ),

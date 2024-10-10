@@ -1,6 +1,8 @@
 
 
 
+import 'package:health_app/config/services/data_parser_service.dart';
+
 List<UserTypeModel> userTypeModelList(List value) =>
     value.map((json) => UserTypeModel.fromJson(json)).toList();
 
@@ -17,8 +19,8 @@ class UserTypeModel {
   // Convert a JSON map to a UserTypeModel instance
   factory UserTypeModel.fromJson(Map<String, dynamic> json) {
     return UserTypeModel(
-      userTypeId: json['user_type_id'],
-      userTypeName: json['user_type_name'],
+      userTypeId: dataParser.getInt(json['user_type_id']),
+      userTypeName: dataParser.getString(json['user_type_name']),
     );
   }
 

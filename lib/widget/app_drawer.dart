@@ -118,6 +118,12 @@ List<AppDrawerClass> appDrawersList = [
         Get.toNamed(AppRoutes.ecg);
       }),
   AppDrawerClass(
+      title: 'EEG Reader',
+      image: AssetsConstant.eeg,
+      onClick: () {
+        Get.toNamed(AppRoutes.eeg);
+      }),
+  AppDrawerClass(
       title: 'BMI Calculator',
       image: AssetsConstant.bmi,
       onClick: () {
@@ -178,6 +184,5 @@ class AppDrawerClass {
   String image;
   var onClick;
 
-  AppDrawerClass(
-      {required this.title, required this.image, required this.onClick});
+  AppDrawerClass({required this.title, required this.image, required this.onClick});
 }

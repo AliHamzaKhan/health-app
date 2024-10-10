@@ -27,7 +27,6 @@ class EcgView extends StatelessWidget {
         onImageClick: (file) async{
           controller.file = file;
           await controller.processData();
-          // Get.toNamed(page)
         },
       ),
     );

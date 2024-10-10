@@ -39,7 +39,7 @@ class LoginView extends StatelessWidget {
                   controller.phoneNo = value;
                 },
                 keyboardType: TextInputType.phone,
-                controller: TextEditingController(text: '+923222319787'),
+                controller: TextEditingController(text: controller.phoneNo),
               ),
               setHeight(20),
               AppButton(

@@ -22,16 +22,14 @@ class ApiController extends GetxService {
   AuthService authService = Get.find();
 
   Future login(
-      {required int userTypeId,
-      required String email,
-      required String phoneNo}) async {
-    ApiResponseModel response = await apiService.post(
-        endpoint: UrlEndPoints.login,
-        body: {
-          "user_type_id": 2,
-          "phone_number": "8327487234",
-          "email": "string"
-        });
+      {required int userTypeId, String email = '', String phoneNo = ''}) async {
+    Map<String, dynamic> data = {
+      "user_type_id": 2,
+      "phone_number": phoneNo,
+      "email": email
+    };
+
+    ApiResponseModel response = await apiService.post(endpoint: UrlEndPoints.login, body: data);
     appDebugPrint(response.data);
   }
 

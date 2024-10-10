@@ -54,6 +54,7 @@ dependencies:
   firebase_crashlytics: ^4.0.2
   firebase_analytics: ^11.1.0
   firebase_auth: ^5.1.4
+  firebase_messaging: ^15.1.3
   flutter_date_range_picker: ^0.1.1
 #  firebase_messaging: ^15.0.2
   image_picker: ^1.1.2
@@ -89,7 +90,7 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/images/app_icon_plain_bg.jpg"
-  min_sdk_android: 21
+  min_sdk_android: 26
   remove_alpha_ios : true
 
 

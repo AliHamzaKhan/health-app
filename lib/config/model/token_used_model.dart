@@ -12,12 +12,14 @@ class TokenUsedModel {
   String dataProcessId;
   String userId;
   int tokenUsed;
+  String createdAt;
 
   TokenUsedModel({
     required this.id,
     required this.dataProcessId,
     required this.userId,
     required this.tokenUsed,
+    required this.createdAt,
   });
 
   factory TokenUsedModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class TokenUsedModel {
       dataProcessId: dataParser.getString(json['data_process_id']),
       userId: dataParser.getString(json['user_id']),
       tokenUsed: dataParser.getInt(json['token_used']),
+      createdAt: dataParser.getString(json['created_at']),
     );
   }
 
@@ -35,6 +38,7 @@ class TokenUsedModel {
       'data_process_id': dataProcessId,
       'user_id': userId,
       'token_used': tokenUsed,
+      'created_at': createdAt,
     };
   }
 }

@@ -27,12 +27,12 @@ class DataProcessModel {
   factory DataProcessModel.fromJson(Map<String, dynamic> json) {
     return DataProcessModel(
       id: dataParser.getString(json['id']),
-      userId: dataParser.getString(json['userId']),
+      userId: dataParser.getString(json['user_ud']),
       prompt: dataParser.getString(json['prompt']),
-      imageUrl: dataParser.getString(json['imageUrl']),
-      tokenUsed: dataParser.getInt(json['tokenUsed']),
-      aiGeneratedText: AiGeneratedTextModel.fromJson(json['aiGeneratedText'] ?? {}),
-      requestType: getAiRequestTypeEnum(json['requestType'] ?? ''),
+      imageUrl: dataParser.getString(json['image_url']),
+      tokenUsed: dataParser.getInt(json['token_used']),
+      aiGeneratedText: AiGeneratedTextModel.fromJson(json['ai_generated_text'] ?? {}),
+      requestType: getAiRequestTypeEnum(json['request_type'] ?? ''),
     );
   }
 

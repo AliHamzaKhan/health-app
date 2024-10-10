@@ -1,7 +1,6 @@
-
-
-
 import 'package:sqflite/sqflite.dart';
+import 'package:uuid/uuid.dart';
+import '../../utils/app_print.dart';
 import '../model/appointment_schedule_model.dart';
 import 'package:path/path.dart';
 
@@ -71,8 +70,14 @@ class AppointmentScheduleDB {
   }
 
   Future<int> insertAppointment(AppointmentScheduleModel appointment) async {
-    final db = await instance.database;
-    return await db.insert('appointment_schedule', appointment.toJson());
+    try {
+      appointment.id = Uuid().v4();
+      final db = await instance.database;
+      return await db.insert('appointment_schedule', appointment.toJson());
+    } catch (e) {
+      appDebugPrint('Error inserting sugar data: $e');
+      return -1;
+    }
   }
 
   Future<List<AppointmentScheduleModel>> getAllAppointments() async {
@@ -80,28 +85,40 @@ class AppointmentScheduleDB {
 
     final result = await db.query('appointment_schedule');
 
-    return result.map((json) => AppointmentScheduleModel.fromJson(json)).toList();
+    return result
+        .map((json) => AppointmentScheduleModel.fromJson(json))
+        .toList();
   }
 
   Future<int> updateAppointment(AppointmentScheduleModel appointment) async {
-    final db = await instance.database;
+    try {
+      final db = await instance.database;
 
-    return db.update(
-      'appointment_schedule',
-      appointment.toJson(),
-      where: 'id = ?',
-      whereArgs: [appointment.id],
-    );
+      return db.update(
+        'appointment_schedule',
+        appointment.toJson(),
+        where: 'id = ?',
+        whereArgs: [appointment.id],
+      );
+    } catch (e) {
+      appDebugPrint('Error updating sugar data: $e');
+      return -1;
+    }
   }
 
   Future<int> deleteAppointment(String id) async {
-    final db = await instance.database;
+    try {
+      final db = await instance.database;
 
-    return await db.delete(
-      'appointment_schedule',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+      return await db.delete(
+        'appointment_schedule',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+    } catch (e) {
+      appDebugPrint('Error deleting sugar data: $e');
+      return -1; // Indicate failure
+    }
   }
 
   Future close() async {

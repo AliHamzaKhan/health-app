@@ -17,11 +17,13 @@ class EcgController extends GetxController {
       await apiController
           .processData(image: file, requestType: AiRequestTypeEnum.ecgReport)
           .then((data) {
-        appDebugPrint('data');
-        appDebugPrint(data);
-        dataProcessModel = data;
-        appDebugPrint(dataProcessModel.toString());
-        Get.toNamed(AppRoutes.aiProcess, arguments: {'args': dataProcessModel});
+              appDebugPrint('data');
+              appDebugPrint(data);
+              dataProcessModel = data;
+              appDebugPrint(dataProcessModel.toString());
+              Get.toNamed(AppRoutes.aiProcess, arguments: {'args': dataProcessModel})?.then((value){
+                file = File('');
+              });
       });
     } catch (e) {
       AppLoader.dismiss();

@@ -1,9 +1,7 @@
-
-
-
 import 'package:health_app/utils/app_print.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:uuid/uuid.dart';
 import '../model/medicine_schedule_model.dart';
 
 // final db = MedicineScheduleDB.instance;
@@ -49,7 +47,7 @@ class MedicineScheduleDB {
   }
 
   Future _createDB(Database db, int version) async {
-    const idType = 'TEXT PRIMARY KEY';  // Using UUID, which is a TEXT type
+    const idType = 'TEXT PRIMARY KEY'; // Using UUID, which is a TEXT type
     const textType = 'TEXT NOT NULL';
     const boolType = 'INTEGER NOT NULL'; // Store booleans as INTEGER (0 or 1)
 
@@ -65,38 +63,52 @@ class MedicineScheduleDB {
   }
 
   Future<int> insertMedicineSchedule(MedicineScheduleModel medicine) async {
-    final db = await instance.database;
-    return await db.insert('medicine_schedule', medicine.toJson());
+    try {
+      medicine.id = Uuid().v4();
+      final db = await instance.database;
+      return await db.insert('medicine_schedule', medicine.toJson());
+    } catch (e) {
+      appDebugPrint('Error inserting sugar data: $e');
+      return -1;
+    }
   }
 
   Future<List<MedicineScheduleModel>> getAllMedicineSchedules() async {
     final db = await instance.database;
-
     final result = await db.query('medicine_schedule');
-
     appDebugPrint('result $result');
     return result.map((json) => MedicineScheduleModel.fromJson(json)).toList();
   }
 
   Future<int> updateMedicineSchedule(MedicineScheduleModel medicine) async {
-    final db = await instance.database;
+    try {
+      final db = await instance.database;
 
-    return db.update(
-      'medicine_schedule',
-      medicine.toJson(),
-      where: 'id = ?',
-      whereArgs: [medicine.id],
-    );
+      return db.update(
+        'medicine_schedule',
+        medicine.toJson(),
+        where: 'id = ?',
+        whereArgs: [medicine.id],
+      );
+    } catch (e) {
+      appDebugPrint('Error updating sugar data: $e');
+      return -1;
+    }
   }
 
   Future<int> deleteMedicineSchedule(String id) async {
-    final db = await instance.database;
+    try {
+      final db = await instance.database;
 
-    return await db.delete(
-      'medicine_schedule',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
+      return await db.delete(
+        'medicine_schedule',
+        where: 'id = ?',
+        whereArgs: [id],
+      );
+    } catch (e) {
+      appDebugPrint('Error deleting sugar data: $e');
+      return -1; // Indicate failure
+    }
   }
 
   Future close() async {

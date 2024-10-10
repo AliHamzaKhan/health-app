@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_app/constant/app_key_contant.dart';
+import 'package:health_app/widget/app_text.dart';
 import '../config/services/data_parser_service.dart';
+import '../config/services/date_parser_service.dart';
 import '../config/theme/button_styles.dart';
 import '../modules/monitor_sugar/controller/monitor_sugar_controller.dart';
 import '../utils/app_print.dart';
@@ -191,9 +194,11 @@ void showAddTimeToMedicine(
   );
 }
 
-addSugarDialogue(context, {required Function(GlucoseType, double) onAddClick}) {
+addSugarDialogue(context, {required Function(GlucoseType, double, String) onAddClick}) {
   GlucoseType selected = GlucoseType.fasting;
   var sugarValue = 0.0;
+  String date = '';
+  bool isNowSelected = true;
   showDialog(
       context: context,
       builder: (_) {
@@ -246,11 +251,50 @@ addSugarDialogue(context, {required Function(GlucoseType, double) onAddClick}) {
                               ))
                           .toList(),
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AppText(title: 'Sugar Check time'),
+                        Row(
+                          children: [
+                            AppButton(
+                              title: 'Select',
+                              onPressed: () async{
+                                DateTime? pickedDateTime = await pickDateTime(context);
+                                if (pickedDateTime != null) {
+                                  isNowSelected = false;
+                                  date = dateTimeParserService.getFormattedDate(pickedDateTime, format: "EEE MM dd yyyy");
+                                  print('Selected DateTime: $pickedDateTime');
+                                  setState((){});
+                                }
+                              },
+                              buttonType: !isNowSelected ? ButtonType.Primary : ButtonType.Outline,
+                              buttonStyleClass: ButtonStyleClass(
+                                  width: 50,
+                                  height: 30,
+                                  textSize: 15,
+                                  textColor: !isNowSelected ? null : Theme.of(context).primaryColor)),
+                            10.width,
+                            AppButton(
+                              buttonType: isNowSelected ? ButtonType.Primary : ButtonType.Outline,
+                              title: 'Now',
+                              onPressed: (){
+                                isNowSelected = true;
+                              date = dateTimeParserService.getFormattedDate(DateTime.now(), format: "EEE MM dd yyyy");
+                              setState((){});
+                            }, buttonStyleClass: ButtonStyleClass(width: 40, height: 30, textSize: 15,textColor: isNowSelected ? null : Theme.of(context).primaryColor),),
+                          ],
+                        )
+                      ],
+                    ),
+                    10.height,
+                    AppText(title: date),
+                    10.height,
                     AppButton(
                       title: 'Add Sugar',
                       onPressed: () {
-                        if (sugarValue > 0.0) {
-                          onAddClick(selected, sugarValue);
+                        if (sugarValue > 0.0 && date.trim().isNotEmpty) {
+                          onAddClick(selected, sugarValue, date);
                         } else {
                           appAlerts.customAlert(
                             title: 'Error',

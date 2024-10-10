@@ -7,6 +7,7 @@ class DateTimeParserService {
   String FORMAT = 'yyyy-MM-dd HH:mm:ss';
   String FORMAT2 = 'yyyy-MM-dd 00:00:00';
   String FORMAT3 = 'yyyy-MMM-dd';
+  String FORMAT4 = 'yyyy-MMM-dd HH:mm:ss';
 
   String timeDifferenceTillNowToDisplay(String stringDate,
       {myCurrentTime = false}) {

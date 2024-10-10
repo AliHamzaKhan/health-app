@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:health_app/config/model/data_process_model.dart';
 import 'package:health_app/config/model/package_model.dart';
 import 'package:health_app/config/services/data_parser_service.dart';
+import 'package:health_app/config/services/date_parser_service.dart';
 import 'package:health_app/config/size_config.dart';
 import 'package:health_app/config/theme/app_colors.dart';
 import 'package:health_app/constant/assets_contant.dart';
@@ -383,7 +384,8 @@ class TokensUsedCard extends StatelessWidget {
     return appCard(child: Column(
       children: [
         TitleSubTitleText(head: 'data process id'.toTitleCase(), title: model.dataProcessId),
-        TitleSubTitleText(head: 'tokens used'.toTitleCase(), title: model.dataProcessId),
+        TitleSubTitleText(head: 'tokens used'.toTitleCase(), title: dataParser.getFormatPricing(model.tokenUsed)),
+        TitleSubTitleText(head: 'Date'.toTitleCase(), title: dateTimeParserService.dateParser(model.createdAt, format: DateTimeParserService().FORMAT4)),
       ],
     ));
   }

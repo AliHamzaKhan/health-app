@@ -11,6 +11,8 @@ import 'package:health_app/widget/app_button.dart';
 import 'package:health_app/widget/app_scaffold.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'app_toast.dart';
+
 class AppCamera extends StatelessWidget {
   // Controller should be initialized once in the constructor or via a method
   final AppCameraController controller = Get.put(AppCameraController());
@@ -69,7 +71,8 @@ class AppCamera extends StatelessWidget {
                               child: AppButton(
                                   title: 'Check',
                                   onPressed: () {
-                                    onImageClick(File(controller.imageFile!.value.path));
+                                    onImageClick(
+                                        File(controller.imageFile!.value.path));
                                   })),
                         ],
                       ),
@@ -209,7 +212,8 @@ class AppCameraController extends GetxController
     }
   }
 
-  Future<void> initializeCameraController(CameraDescription cameraDescription) async {
+  Future<void> initializeCameraController(
+      CameraDescription cameraDescription) async {
     final CameraController controller = CameraController(
       cameraDescription,
       kIsWeb ? ResolutionPreset.max : ResolutionPreset.medium,
@@ -221,7 +225,10 @@ class AppCameraController extends GetxController
 
     controller.addListener(() {
       if (controller.value.hasError) {
-        showInSnackBar('Camera error: ${controller.value.errorDescription}');
+        showToast(
+            title: 'Camera Error',
+            message: '${controller.value.errorDescription}');
+        // showInSnackBar('Camera error: ${controller.value.errorDescription}');
       }
     });
 
@@ -305,22 +312,36 @@ class AppCameraController extends GetxController
   void handleCameraException(CameraException e) {
     switch (e.code) {
       case 'CameraAccessDenied':
-        showInSnackBar('You have denied camera access.');
+        showToast(
+            title: 'Camera Error', message: 'You have denied camera access.');
+        // showInSnackBar();
         break;
       case 'CameraAccessDeniedWithoutPrompt':
-        showInSnackBar('Please go to Settings app to enable camera access.');
+        showToast(
+            title: 'Camera Error',
+            message: 'Please go to Settings app to enable camera access.');
+        // showInSnackBar('Please go to Settings app to enable camera access.');
         break;
       case 'CameraAccessRestricted':
-        showInSnackBar('Camera access is restricted.');
+        showToast(
+            title: 'Camera Error', message: 'Camera access is restricted.');
+        // showInSnackBar('Camera access is restricted.');
         break;
       case 'AudioAccessDenied':
-        showInSnackBar('You have denied audio access.');
+        showToast(
+            title: 'Camera Error', message: 'You have denied audio access.');
+        // showInSnackBar('You have denied audio access.');
         break;
       case 'AudioAccessDeniedWithoutPrompt':
-        showInSnackBar('Please go to Settings app to enable audio access.');
+        showToast(
+            title: 'Camera Error',
+            message: 'Please go to Settings app to enable audio access.');
+        // showInSnackBar('Please go to Settings app to enable audio access.');
         break;
       case 'AudioAccessRestricted':
-        showInSnackBar('Audio access is restricted.');
+        showToast(
+            title: 'Camera Error', message: 'Audio access is restricted.');
+        // showInSnackBar('Audio access is restricted.');
         break;
       default:
         _showCameraException(e);
@@ -332,7 +353,6 @@ class AppCameraController extends GetxController
     if (cameraController == null) return;
 
     try {
-
       final cameras = await availableCameras();
 
       appDebugPrint('cameras_length ${cameras.length}');
@@ -349,8 +369,8 @@ class AppCameraController extends GetxController
 
   Future<void> onPictureClick() async {
     appDebugPrint('onPictureClick');
-    appDebugPrint('${cameraController == null} || ${!cameraController!.value.isInitialized}');
-
+    appDebugPrint(
+        '${cameraController == null} || ${!cameraController!.value.isInitialized}');
 
     if (cameraController == null || !cameraController!.value.isInitialized)
       return;
@@ -362,9 +382,10 @@ class AppCameraController extends GetxController
 
       appDebugPrint('imageFile2 ${imageFile!.value.path}');
 
-
       // You can also add code here to display the picture or navigate to a different screen.
-      showInSnackBar('Picture captured successfully!');
+      showToast(
+          title: 'Picture captured', message: 'Picture captured successfully!');
+      // showInSnackBar('Picture captured successfully!');
     } catch (e) {
       handleCameraException(
           CameraException('PictureCaptureError', e.toString()));
@@ -380,9 +401,12 @@ class AppCameraController extends GetxController
       if (pickedFile != null) {
         imageFile?.value = pickedFile;
         // Add code to display the selected image or perform other actions.
-        showInSnackBar('Image selected from gallery!');
+        showToast(title: 'Image', message: 'Image selected from gallery!');
       } else {
-        showInSnackBar('No image selected.');
+        showToast(
+            title: 'Image',
+            message: 'Error getting Image selected from gallery!',
+            isError: true);
       }
     } catch (e) {
       handleCameraException(
@@ -391,12 +415,9 @@ class AppCameraController extends GetxController
   }
 }
 
-void showInSnackBar(String message) {
-  ScaffoldMessenger.of(Get.context!)
-      .showSnackBar(SnackBar(content: Text(message)));
-}
-
 void _showCameraException(CameraException e) {
   appDebugPrint('${e.code} : ${e.description}');
-  showInSnackBar('Error: ${e.code}\n${e.description}');
+  showToast(
+      title: 'Camera Error', message: 'Error: ${e.code}\n${e.description}');
+  // showInSnackBar('Error: ${e.code}\n${e.description}');
 }

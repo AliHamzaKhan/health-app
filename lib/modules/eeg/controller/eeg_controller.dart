@@ -11,7 +11,7 @@ import '../../../config/routes/app_routes.dart';
 import '../../../utils/app_print.dart';
 import '../../../widget/app_loading.dart';
 
-class RadiologyController extends GetxController{
+class EegController extends GetxController{
 
   ApiController apiController = Get.find();
   late File file;
@@ -20,7 +20,7 @@ class RadiologyController extends GetxController{
   Future processData() async {
     try {
       await apiController
-          .processData(image: file, requestType: AiRequestTypeEnum.radiologyReport)
+          .processData(image: file, requestType: AiRequestTypeEnum.eegReport)
           .then((data) {
         appDebugPrint('data');
         appDebugPrint(data);
